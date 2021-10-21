@@ -616,8 +616,17 @@ class AccountMove(models.Model):
 
     def verifica_exento_iva(self):
         acum=0
+        for det in self.invoice_line_ids:
+            if det.tax_ids:
+                for rec in det.tax_ids:
+                    acum=acum+rec.amount
+        return acum
+
+    """def verifica_exento_iva(self):
+        acum=0
         #raise UserError(_('self = %s')%self.id)
         puntero_move_line = self.env['account.move.line'].search([('move_id','=',self.id)])
         for det_puntero in puntero_move_line:
+            raise UserError(_('self = %s')%det_puntero.tax_line_id.name)
             acum=acum+det_puntero.tax_line_id.amount
-        return acum
+        return acum"""
