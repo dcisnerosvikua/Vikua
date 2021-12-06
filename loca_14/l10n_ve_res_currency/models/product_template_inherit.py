@@ -13,9 +13,13 @@ class Productos(models.Model):
 
     @api.onchange('list_price2','moneda_divisa_venta','habilita_precio_div')
     def _compute_monto(self):
+        #self.list_price_comp=0
         if self.habilita_precio_div==True:
             if self.moneda_divisa_venta:
-                lista_tasa = self.env['res.currency.rate'].search([('currency_id', '=', self.moneda_divisa_venta.id)],order='id ASC')
+                moneda=2
+                if self.moneda_divisa_venta.id:
+                    moneda=self.moneda_divisa_venta.id
+                lista_tasa = self.env['res.currency.rate'].search([('currency_id', '=', moneda)],order='id ASC')
                 if lista_tasa:
                     for det in lista_tasa:
                         precio_actualizado=det.rate_real*self.list_price2
