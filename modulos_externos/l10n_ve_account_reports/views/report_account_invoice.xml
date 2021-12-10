@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_account_invoice_with_payments">
+            <t t-call="web.html_container">
+                <t t-call="web.basic_layout">
+                    <style>
+                        .title{
+                        text-align: end;
+                        margin-right: 30px;
+                        }
+                        h6{
+                        font-size: 12px !important;
+                        }
+                        .bordeAbajo{
+                        border-bottom: 1px solid black;
+                        }
+                        .bordeIzquierda{
+                        border-left: 1px solid black;
+
+                        }
+                        .borde-lef-right{
+                        border-right: 1px solid black
+                        border-left: 1px solid black;
+                        }
+                    </style>
+                    <t t-foreach="docs" t-as="o">
+                        <div claas="page">
+                            <div class="row">
+                                <div class="col-5">
+                                    <h4 t-if="o.move_type == 'out_invoice'">Factura:
+                                        <span t-field="o.invoice_number_cli"/>
+                                    </h4>
+                                    <h4 t-if="o.move_type == 'out_refund'">Nota de Credito:
+                                        <span t-field="o.refund_ctrl_number_cli"/>
+                                    </h4>
+                                </div>
+                                <div class="col-6">
+                                    <ul class="list-unstyled text-right">
+                                        <li t-if="o.invoice_date">FECHA DE EMISION:
+                                            <span t-field="o.invoice_date"/>
+                                        </li>
+                                        <li t-if="o.invoice_date_due">FECHA DE VENCIMIENTO:
+                                            <span t-field="o.invoice_date_due"/>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="border: 2px solid black; margin-top:40px !important;">
+                            <table class="table"
+                                   style="margin-top:10px !important; margin-left:70px !important; margin-right:15px !important;">
+                                <tbody>
+                                    <tr style="max-height:15px; font-size:12px !important;">
+                                        <td style="border-top:0px !important; padding:0px !important;">
+                                            <strong>CLIENTE:</strong>
+                                        </td>
+                                        <td style="border-top:0px !important; padding:0px !important; min-width:240px; max-width:240px;">
+                                            <strong>
+                                                <span t-field="o.partner_id.name"/>
+                                            </strong>
+                                        </td>
+                                        <td style="border-top:0px !important; padding:0px !important;">
+                                            <strong>RIF:</strong>
+                                        </td>
+                                        <td style="border-top:0px !important; padding:0px !important; min-width:240px; max-width:240px;">
+                                            <span t-field="o.partner_id.vat"/>
+                                        </td>
+                                    </tr>
+                                    <tr style="max-height:15px; font-size:12px !important;">
+                                        <td style="border-top:0px !important; padding:0px !important;">
+                                            <strong>DIRECCION:</strong>
+                                        </td>
+                                        <td style="border-top:0px !important; padding:0px !important;">
+                                            <span t-field="o.partner_id.street"/>
+                                            <span t-field="o.partner_id.street2"/>
+                                            <br/>
+                                            <span t-field="o.partner_id.city"/>
+                                            -
+                                            <span t-field="o.partner_id.state_id.name"/>
+                                            <span t-field="o.partner_id.zip"/>
+                                        </td>
+                                        <td style="border-top:0px !important; padding:0px !important;">
+                                            <strong>COD. PAGO:</strong>
+                                        </td>
+                                    </tr>
+                                    <tr style="max-height:15px; font-size:12px !important;">
+                                        <td style="border-top:0px !important; padding:0px !important;">
+                                            <strong>TELEFONO:</strong>
+                                        </td>
+                                        <td style="border-top:0px !important; padding:0px !important;">
+                                            <span t-field="o.partner_id.phone"/>
+                                        </td>
+                                        <td style="border-top:0px !important; padding:0px !important;">
+                                            <strong>EMAIL:</strong>
+                                        </td>
+                                        <td style="border-top:0px !important; padding:0px !important;">
+                                            <span t-field="o.partner_id.email"/>
+                                        </td>
+                                    </tr>
+                                    <tr style="max-height:15px; font-size:12px !important;">
+                                        <td style="border-top:0px !important; padding:0px !important;">
+                                            <strong>CONTACTO:</strong>
+                                        </td>
+                                        <td style="border-top:0px !important; padding:0px !important;"/>
+                                        <td style="border-top:0px !important; padding:0px !important;">
+                                            <strong>N. DOC.CLIENTE:</strong>
+                                        </td>
+                                        <td style="border-top:0px !important; padding:0px !important;"/>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div>
+                            <t t-set="cant_reduced" t-value="0"/>
+                            <t t-set="cant_adicional" t-value="0"/>
+                            <t t-set="cant_general" t-value="0"/>
+                            <t t-set="cant_exento" t-value="0"/>
+                            <!---->
+                            <t t-set="iva_reduced" t-value="0"/>
+                            <t t-set="iva_adicional" t-value="0"/>
+                            <t t-set="iva_general" t-value="0"/>
+                            <!---->
+                            <t t-set="discount" t-value="0"/>
+                            <table class="table table-borderless table-sm"
+                                   style="margin-top:5px !important; margin-bottom:0px !important; border:1px solid black;">
+                                <thead style="border:1px solid black;">
+                                    <tr class="text-center table-secondary">
+                                        <th style="border:1px solid black;">DESCRIPCION</th>
+                                        <th style="border:1px solid black;">MEDIDA</th>
+                                        <th style="border:1px solid black;">CANT.</th>
+                                        <th style="border:1px solid black;">IMP</th>
+                                        <th style="border:1px solid black;">PRECIO UNIT.</th>
+                                        <th style="border:1px solid black;">TOTAL</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-center" style="font-size:15px !important; ">
+                                    <t t-foreach="o.invoice_line_ids" t-as="line">
+                                        <tr style="line-height: 8em;">
+                                            <td style="border-left: 1px solid black; border-right: 1px solid black;">
+                                                <span t-esc="line.product_id.name"/>
+                                            </td>
+                                            <td>
+                                                <span t-esc="line.product_uom_id.name"/>
+                                            </td>
+                                            <td style="border-left:1px solid black;">
+                                                <span t-esc="line.quantity"/>
+                                            </td>
+                                            <td style="border-left:1px solid black;">
+                                                <span t-esc="line.tax_ids.name"/>
+                                                <t t-if="line.tax_ids.aliquot == 'reduced'">
+                                                    <t t-set="cant_reduced"
+                                                       t-value="cant_reduced + line.price_subtotal"/>
+                                                    <t t-set="iva_reduced"
+                                                       t-value="iva_reduced + (line.price_total - line.price_subtotal)"/>
+                                                </t>
+                                                <t t-if="line.tax_ids.aliquot == 'general'">
+                                                    <t t-set="cant_general"
+                                                       t-value="cant_general + line.price_subtotal"/>
+                                                    <t t-set="iva_general"
+                                                       t-value="iva_general + (line.price_total - line.price_subtotal)"/>
+                                                </t>
+                                                <t t-if="line.tax_ids.aliquot == 'additional'">
+                                                    <t t-set="cant_adicional"
+                                                       t-value="cant_adicional + line.price_subtotal"/>
+                                                    <t t-set="iva_adicional"
+                                                       t-value="iva_adicional + (line.price_total - line.price_subtotal)"/>
+                                                </t>
+                                                <t t-if="line.tax_ids.aliquot == 'exempt'">
+                                                    <t t-set="cant_exento" t-value="cant_exento + line.price_subtotal"/>
+                                                </t>
+                                            </td>
+                                            <td style="border-left:1px solid black;">
+                                                <span t-esc="line.price_unit"/>
+                                            </td>
+                                            <td style="border-left:1px solid black;">
+                                                <span t-esc="o.amount_total"
+                                                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                            </td>
+                                            <t t-if="line.discount">
+                                                <t t-set="discount"
+                                                   t-value="discount + (line.quantity * line.price_unit * line.discount / 100)"/>
+                                            </t>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                                <tfoot style=" border: black 1px solid;" t-if="o.move_type == 'out_invoice'">
+                                    <tr style="font-size: 12px !important;">
+                                        <td>
+
+                                            <strong>
+                                                SUB-TOTAL (EXP):
+                                            </strong>
+
+                                        </td>
+                                        <td>0.0</td>
+                                        <td>IVA 0.00%</td>
+                                        <td>0.0%</td>
+                                        <td style="border-left: black 1px solid;border-bottom: black 1px solid;border-right: black 1px solid;">
+                                            <strong>TOTAL EXENTO</strong>
+                                        </td>
+                                        <td style="width: 12.80% !important; border-bottom: 1px solid black;"
+                                            t-esc="cant_exento"
+                                            t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                    </tr>
+                                    <tr style="font-size: 12px !important;">
+                                        <td>
+                                            <strong>SUB-TOTAL (RED):</strong>
+                                        </td>
+                                        <td t-esc="cant_reduced"
+                                            t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        <td>IVA 8.0%</td>
+                                        <td t-esc="'{0:,.2f}'.format(iva_reduced) + '%'"/>
+                                        <td style="border-left: 1px solid black; border-right: 1px solid black; border-bottom: 1px solid black;">
+                                            <strong>TOTAL BASE IMPONIBLE</strong>
+                                        </td>
+                                        <td style="border-bottom: 1px solid black;"
+                                            t-esc="cant_reduced + cant_general + cant_adicional"
+                                            t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                    </tr>
+                                    <tr style="font-size: 12px !important;">
+                                        <td>
+                                            <strong>SUB-TOTAL (GEN):</strong>
+                                        </td>
+                                        <td t-esc="cant_general"
+                                            t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        <td>IVA 16%</td>
+                                        <td t-esc="'{0:,.2f}'.format(iva_general) + '%'"/>
+                                        <td style="border-left: 1px solid black; border-right: 1px solid black; border-bottom: 1px solid black;">
+                                            <strong>TOTAL DESCUENTO</strong>
+                                        </td>
+                                        <td style="border-bottom: 1px solid black;" t-esc="discount"
+                                            t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                    </tr>
+
+
+                                    <tr style="font-size: 12px !important;">
+                                        <td>
+                                            <strong>SUB-TOTAL (C.S):</strong>
+                                        </td>
+                                        <td t-esc="cant_adicional"
+                                            t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        <td>IVA 31%</td>
+                                        <td t-esc="'{0:,.2f}'.format(iva_adicional) + '%'"/>
+                                        <td style="border-left: 1px solid black; border-right: 1px solid black; border-bottom: 1px solid black;">
+                                            <strong>TOTAL I.V.A</strong>
+                                        </td>
+                                        <td style="border-bottom: 1px solid black;"
+                                            t-esc="'{0:,.2f}'.format(iva_reduced + iva_general + iva_adicional)"/>
+                                    </tr>
+                                    <tr style="font-size: 12px !important;">
+                                        <td colspan="4"></td>
+                                        <td style="border-bottom: 1px solid black;border-left: 1px solid black; border-right: 1px solid black;">
+                                            <strong>TOTAL FACTURA</strong>
+                                        </td>
+                                        <td style="border-bottom: 1px solid black;" t-esc="o.amount_total"/>
+                                    </tr>
+                                    <tr style="font-size: 12px !important;border-top: 1px solid black; ">
+                                        <td>
+                                            <strong>SON:</strong>
+                                        </td>
+                                        <td colspan="5">
+                                            <span t-esc="o.get_literal_amount(o.amount_total)"/>
+                                            <t t-if="o.currency_id.long_name">
+                                                <span t-esc="o.currency_id.long_name"/>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                    <tr style="font-size: 12px !important;border-top: 1px solid black;">
+                                        <td colspan="6">
+                                            <strong>FAVOR EMITIR CHECQUE A NOMBRE DE:</strong>
+                                        </td>
+                                    </tr>
+                                    <tr style="font-size: 12px !important;">
+                                        <td colspan="6">
+                                            <strong>REALIZAR DEPOSITO/TRANSFERENCIA A LA CTA:</strong>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+
+                                <tfoot style=" border: black 1px solid;" t-if="o.move_type == 'out_refund'">
+                                    <tr style="font-size: 12px !important;">
+                                        <td>
+                                            <strong>SUB-TOTAL (EXP):</strong>
+                                        </td>
+                                        <td colspan="3">0.0</td>
+                                        <td style="border-left: black 1px solid;border-bottom: black 1px solid;border-right: black 1px solid;">
+                                            <strong>TOTAL EXENTO</strong>
+                                        </td>
+                                        <td style="width: 12.80% !important; border-bottom: 1px solid black;"
+                                            t-esc="cant_exento"
+                                            t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                    </tr>
+
+
+                                    <tr style="font-size: 12px !important;">
+                                        <td>
+                                            <strong>SUB-TOTAL (RED):</strong>
+                                        </td>
+                                        <td colspan="3" t-esc="cant_reduced"
+                                            t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        <td style="border-left: 1px solid black; border-right: 1px solid black; border-bottom: 1px solid black;">
+                                            <strong>TOTAL BASE IMPONIBLE</strong>
+                                        </td>
+                                        <td style="border-bottom: 1px solid black;"
+                                            t-esc="cant_reduced + cant_general + cant_adicional"
+                                            t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                    </tr>
+                                    <tr style="font-size: 12px !important;">
+                                        <td>
+                                            <strong>SUB-TOTAL (GEN):</strong>
+                                        </td>
+                                        <td colspan="3" t-esc="cant_general"
+                                            t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        <td style="border-left: 1px solid black; border-right: 1px solid black; border-bottom: 1px solid black;">
+                                            <strong>TOTAL DESCUENTO</strong>
+                                        </td>
+                                        <td style="border-bottom: 1px solid black;" t-esc="discount"
+                                            t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                    </tr>
+                                    <tr style="font-size: 12px !important;">
+                                        <td>
+                                            <strong>SUB-TOTAL (C.S):</strong>
+                                        </td>
+                                        <td colspan="3" t-esc="cant_adicional"
+                                            t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        <td style="border-left: 1px solid black; border-right: 1px solid black; border-bottom: 1px solid black;">
+                                            <strong>TOTAL I.V.A</strong>
+                                        </td>
+                                        <td style="border-bottom: 1px solid black;"
+                                            t-esc="'{0:,.2f}'.format(iva_reduced + iva_general + iva_adicional)"/>
+                                    </tr>
+                                    <tr style="font-size: 12px !important;">
+                                        <td colspan="4"></td>
+                                        <td style="border-bottom: 1px solid black;border-left: 1px solid black; border-right: 1px solid black;">
+                                            <strong>TOTAL FACTURA</strong>
+                                        </td>
+                                        <td style="border-bottom: 1px solid black;" t-esc="o.amount_total"/>
+                                    </tr>
+                                    <tr style="font-size: 12px !important;border-top: 1px solid black; ">
+                                        <td>
+                                            <strong>SON:</strong>
+                                        </td>
+                                        <td colspan="5">
+                                            <span t-esc="o.get_literal_amount(o.amount_total)"/>
+                                            <t t-if="o.currency_id.long_name">
+                                                <span t-esc="o.currency_id.long_name"/>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                    <tr style="font-size: 12px !important;border-top: 1px solid black;">
+                                        <td colspan="6">
+                                            <strong>FAVOR EMITIR CHECQUE A NOMBRE DE:</strong>
+                                        </td>
+                                    </tr>
+                                    <tr style="font-size: 12px !important;">
+                                        <td colspan="6">
+                                            <strong>REALIZAR DEPOSITO/TRANSFERENCIA A LA CTA:</strong>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                            <p style="page-break-before: auto;"/>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>
