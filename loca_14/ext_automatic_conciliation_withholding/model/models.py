@@ -26,13 +26,15 @@ class RetentionVat(models.Model):
         busca_movimientos = self.env['account.move'].search([('isrl_ret_id','=',id_islr)])
         #raise UserError(_('busca_movimientos = %s')%busca_movimientos)
         for det_movimientos in busca_movimientos:
-            busca_line_mov = self.env['account.move.line'].search([('move_id','=',det_movimientos.id),('account_internal_type','=',type_internal)])
-            if busca_line_mov.credit==0:
-                id_move_debit=busca_line_mov.id
-                monto_debit=busca_line_mov.debit
-            if busca_line_mov.debit==0:
-                id_move_credit=busca_line_mov.id
-                monto_credit=busca_line_mov.credit
+            busca_line_mov = self.env['account.move.line'].search([('move_id','=',det_movimientos.id)])
+            for b_l_m in busca_line_mov:
+                if b_l_m.account_id.user_type_id.type==type_internal:
+                    if b_l_m.credit==0:
+                        id_move_debit=b_l_m.id
+                        monto_debit=b_l_m.debit
+                    if b_l_m.debit==0:
+                        id_move_credit=b_l_m.id
+                        monto_credit=b_l_m.credit
         if tipo_empresa=="in_invoice" or tipo_empresa=="out_refund" or tipo_empresa=="in_receipt":
             monto=monto_debit
         if tipo_empresa=="out_invoice" or tipo_empresa=="in_refund" or tipo_empresa=="out_receipt":
@@ -68,13 +70,15 @@ class AccountMove(models.Model):
             type_internal="receivable"
         busca_movimientos = self.env['account.move'].search([('vat_ret_id','=',id_retention)])
         for det_movimientos in busca_movimientos:
-            busca_line_mov = self.env['account.move.line'].search([('move_id','=',det_movimientos.id),('account_internal_type','=',type_internal)])
-            if busca_line_mov.credit==0:
-                id_move_debit=busca_line_mov.id
-                monto_debit=busca_line_mov.debit
-            if busca_line_mov.debit==0:
-                id_move_credit=busca_line_mov.id
-                monto_credit=busca_line_mov.credit
+            busca_line_mov = self.env['account.move.line'].search([('move_id','=',det_movimientos.id)])
+            for b_l_m in busca_line_mov:
+                if b_l_m.account_id.user_type_id.type==type_internal:
+                    if b_l_m.credit==0:
+                        id_move_debit=b_l_m.id
+                        monto_debit=b_l_m.debit
+                    if b_l_m.debit==0:
+                        id_move_credit=b_l_m.id
+                        monto_credit=b_l_m.credit
         if tipo_empresa=="in_invoice" or tipo_empresa=="out_refund" or tipo_empresa=="in_receipt":
             monto=monto_debit
         if tipo_empresa=="out_invoice" or tipo_empresa=="in_refund" or tipo_empresa=="out_receipt":
@@ -108,16 +112,15 @@ class MUnicipalityTax(models.Model):
         busca_movimientos = self.env['account.move'].search([('wh_muni_id','=',id_municipality)])
         #raise UserError(_('busca_movimientos = %s')%busca_movimientos)
         for det_movimientos in busca_movimientos:
-            busca_line_movv = self.env['account.move.line'].search([('move_id','=',det_movimientos.id),('account_internal_type','=',type_internal)])
-            for busca_line_mov in busca_line_movv: #PQC
-                basura=0 #PQC
-            #raise UserError(_('busca_line_mov = %s')%busca_line_mov)
-            if busca_line_mov.credit==0:
-                id_move_debit=busca_line_mov.id
-                monto_debit=busca_line_mov.debit
-            if busca_line_mov.debit==0:
-                id_move_credit=busca_line_mov.id
-                monto_credit=busca_line_mov.credit
+            busca_line_mov = self.env['account.move.line'].search([('move_id','=',det_movimientos.id)])
+            for b_l_m in busca_line_mov:
+                if b_l_m.account_id.user_type_id.type==type_internal:
+                    if b_l_m.credit==0:
+                        id_move_debit=b_l_m.id
+                        monto_debit=b_l_m.debit
+                    if b_l_m.debit==0:
+                        id_move_credit=b_l_m.id
+                        monto_credit=b_l_m.credit
         if tipo_empresa=="in_invoice" or tipo_empresa=="out_refund" or tipo_empresa=="in_receipt":
             monto=monto_debit
         if tipo_empresa=="out_invoice" or tipo_empresa=="in_refund" or tipo_empresa=="out_receipt":
