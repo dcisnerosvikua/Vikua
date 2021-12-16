@@ -13,10 +13,10 @@ class AccountMove(models.Model):
     _inherit = 'account.move'
 
     amount_total_signed_bs=fields.Float()
-    amount_untaxed_signed_bs=fields.Float(compute="_compute_monto_conversion_untaxed")
-    amount_total_signed_aux_bs=fields.Float(compute="_compute_monto_conversion")
-    amount_residual_signed_bs=fields.Float(compute="_compute_monto_conversion_residual")
-    amount_tax_bs = fields.Float(compute="_compute_monto_conversion_tax")
+    amount_untaxed_signed_bs=fields.Float(compute="_compute_monto_conversion_untaxed",digits=(12, 4))
+    amount_total_signed_aux_bs=fields.Float(compute="_compute_monto_conversion",digits=(12, 4))
+    amount_residual_signed_bs=fields.Float(compute="_compute_monto_conversion_residual",digits=(12, 4))
+    amount_tax_bs = fields.Float(compute="_compute_monto_conversion_tax",digits=(12, 4))
 
     def _compute_monto_conversion(self):
         valor=0
@@ -76,9 +76,9 @@ class AccountMove(models.Model):
 class  AccountMoveLine(models.Model):
     _inherit = 'account.move.line'
 
-    balance_aux=fields.Float(compute='_compute_balance_conversion')
-    credit_aux=fields.Float(compute='_compute_monto_credit_conversion')
-    debit_aux=fields.Float(compute='_compute_monto_debit_conversion')
+    balance_aux=fields.Float(compute='_compute_balance_conversion',digits=(12, 4))
+    credit_aux=fields.Float(compute='_compute_monto_credit_conversion',digits=(12, 4))
+    debit_aux=fields.Float(compute='_compute_monto_debit_conversion',digits=(12, 4))
 
     def _compute_monto_credit_conversion(self):
         valor=0
