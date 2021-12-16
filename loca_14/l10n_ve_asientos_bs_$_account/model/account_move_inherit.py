@@ -43,7 +43,7 @@ class AccountMove(models.Model):
                 if lista_tasa:
                     for det in lista_tasa:
                         valor=selff.amount_untaxed_signed*det.rate
-            selff.amount_untaxed_signed_bs=det.rate_real#valor
+            selff.amount_untaxed_signed_bs=det.id#valor
 
     def _compute_monto_conversion_residual(self):
         valor=0
