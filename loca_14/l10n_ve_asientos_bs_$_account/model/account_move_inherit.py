@@ -65,7 +65,7 @@ class AccountMove(models.Model):
             if self.env.company.currency_secundaria_id.id==selff.currency_id.id:
                 valor=selff.amount_tax
             if self.env.company.currency_id.id==selff.currency_id.id:
-                lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('name','<=',invoice_selff.date)],order='id ASC')
+                lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('name','<=',selff.invoice_date)],order='id ASC')
                 if lista_tasa:
                     for det in lista_tasa:
                         valor=selff.amount_tax_signed*det.rate
