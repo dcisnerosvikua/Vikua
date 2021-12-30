@@ -69,6 +69,8 @@ class AccountMove(models.Model):
 
     def create_retention(self):
         active=False
+        base=0
+        cont=0
         if self.type in ('in_invoice','out_invoice','in_refund','out_refund','in_receipt','out_receipt'):#darrell
             if self.isrl_ret_id.id:
                 pass
@@ -95,7 +97,7 @@ class AccountMove(models.Model):
                                 for rate in item.concept_isrl_id.rate_ids:
                                     #raise UserError(_('item.price_subtotal=%s ')%rate.min)
                                     if self.partner_id.people_type == rate.people_type and  self.conv_div_nac(item.price_subtotal) > rate.min  :
-                                        base = item.price_subtotal * (rate.subtotal / 100)
+                                        base = base+item.price_subtotal * (rate.subtotal / 100)
                                         subtotal =  base * (rate.retention_percentage / 100)
                                         #raise UserError(_('base = %s')%base)
                                         self.isrl_ret_id.lines_id = self.env['isrl.retention.invoice.line'].create({

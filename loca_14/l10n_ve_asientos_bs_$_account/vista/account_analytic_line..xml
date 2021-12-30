@@ -1,0 +1,33 @@
+<odoo>
+  <data>
+
+    <record id="account_analytic_line_inherit2" model="ir.ui.view">
+        <field name="name">account.analytic.line.inherit2</field>
+        <field name="model">account.analytic.line</field>
+        <field name="inherit_id" ref="analytic.view_account_analytic_line_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='amount']" position="after">
+                <field name="amount_signed_bs" string="Importe ($)" sum="amount_signed_bs"/>
+                <field name="amount_signed_aux_bs" string="Importe 2($)" sum="amount_signed_aux_bs"/>
+
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="account_analytic_line_inherit_from3" model="ir.ui.view">
+        <field name="name">account.analytic.line.inherit.from3</field>
+        <field name="model">account.analytic.line</field>
+        <field name="inherit_id" ref="analytic.view_account_analytic_line_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='amount']" position="after">
+                <field name="amount_signed_bs" string="Importe ($)" sum="amount_signed_bs"/>
+                <field name="amount_signed_aux_bs" string="Importe 2($)" sum="amount_signed_aux_bs"/>
+
+            </xpath>
+
+        </field>
+    </record>
+
+  </data>
+</odoo>
