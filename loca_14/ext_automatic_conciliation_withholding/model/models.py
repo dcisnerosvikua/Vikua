@@ -43,11 +43,29 @@ class RetentionVat(models.Model):
              'debit_move_id':id_move_debit,
              'credit_move_id':id_move_credit,
              'amount':monto,
-             'debit_amount_currency':monto,
-             'credit_amount_currency':monto,
+             'debit_amount_currency':self.conv_div_extranjera(monto) if tipo_empresa in ('out_invoice','out_receipt') else monto,
+             'credit_amount_currency':self.conv_div_extranjera(monto) if tipo_empresa in ('in_invoice','in_receipt') else monto,
              'max_date':self.date_move,
         }
         self.env['account.partial.reconcile'].create(value)
+
+    def conv_div_extranjera(self,valor):
+        self.invoice_id.currency_id.id
+        fecha_contable_doc=self.invoice_id.date
+        monto_factura=self.invoice_id.amount_total
+        valor_aux=0
+        #raise UserError(_('moneda compañia: %s')%self.company_id.currency_id.id)
+        if self.invoice_id.currency_id.id!=self.invoice_id.company_id.currency_id.id:
+            tasa= self.env['res.currency.rate'].search([('currency_id','=',self.invoice_id.currency_id.id),('name','<=',self.invoice_id.invoice_date)],order="name asc")
+            for det_tasa in tasa:
+                if fecha_contable_doc>=det_tasa.name:
+                    valor_aux=det_tasa.rate
+            rate=round(1/valor_aux,2)  # LANTA
+            #rate=round(valor_aux,2)  # ODOO SH
+            resultado=valor/rate
+        else:
+            resultado=valor
+        return resultado
 
 
 
@@ -87,11 +105,29 @@ class AccountMove(models.Model):
              'debit_move_id':id_move_debit,
              'credit_move_id':id_move_credit,
              'amount':monto,
-             'debit_amount_currency':monto,
-             'credit_amount_currency':monto,
+             'debit_amount_currency':self.conv_div_extranjera(monto) if tipo_empresa in ('out_invoice','out_receipt') else monto,
+             'credit_amount_currency':self.conv_div_extranjera(monto) if tipo_empresa in ('in_invoice','in_receipt') else monto,
              'max_date':self.accouting_date,
         }
         self.env['account.partial.reconcile'].create(value)
+
+    def conv_div_extranjera(self,valor):
+        self.invoice_id.currency_id.id
+        fecha_contable_doc=self.invoice_id.date
+        monto_factura=self.invoice_id.amount_total
+        valor_aux=0
+        #raise UserError(_('moneda compañia: %s')%self.company_id.currency_id.id)
+        if self.invoice_id.currency_id.id!=self.invoice_id.company_id.currency_id.id:
+            tasa= self.env['res.currency.rate'].search([('currency_id','=',self.invoice_id.currency_id.id),('name','<=',self.invoice_id.invoice_date)],order="name asc")
+            for det_tasa in tasa:
+                if fecha_contable_doc>=det_tasa.name:
+                    valor_aux=det_tasa.rate
+            rate=round(1/valor_aux,2)  # LANTA
+            #rate=round(valor_aux,2)  # ODOO SH
+            resultado=valor/rate
+        else:
+            resultado=valor
+        return resultado
 
 class MUnicipalityTax(models.Model):
     _inherit = 'municipality.tax'
@@ -129,8 +165,27 @@ class MUnicipalityTax(models.Model):
              'debit_move_id':id_move_debit,
              'credit_move_id':id_move_credit,
              'amount':monto,
-             'debit_amount_currency':monto,
-             'credit_amount_currency':monto,
+             'debit_amount_currency':self.conv_div_extranjera(monto) if tipo_empresa in ('out_invoice','out_receipt') else monto,
+             'credit_amount_currency':self.conv_div_extranjera(monto) if tipo_empresa in ('in_invoice','in_receipt') else monto,
              'max_date':self.transaction_date,
         }
         self.env['account.partial.reconcile'].create(value)
+
+
+    def conv_div_extranjera(self,valor):
+        self.invoice_id.currency_id.id
+        fecha_contable_doc=self.invoice_id.date
+        monto_factura=self.invoice_id.amount_total
+        valor_aux=0
+        #raise UserError(_('moneda compañia: %s')%self.company_id.currency_id.id)
+        if self.invoice_id.currency_id.id!=self.invoice_id.company_id.currency_id.id:
+            tasa= self.env['res.currency.rate'].search([('currency_id','=',self.invoice_id.currency_id.id),('name','<=',self.invoice_id.invoice_date)],order="name asc")
+            for det_tasa in tasa:
+                if fecha_contable_doc>=det_tasa.name:
+                    valor_aux=det_tasa.rate
+            rate=round(1/valor_aux,2)  # LANTA
+            #rate=round(valor_aux,2)  # ODOO SH
+            resultado=valor/rate
+        else:
+            resultado=valor
+        return resultado

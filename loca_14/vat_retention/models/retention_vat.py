@@ -491,7 +491,7 @@ class RetentionVat(models.Model):
         #raise UserError(_('darrell = %s')%self.partner_id.vat_retention_rate)
         name = consecutivo_asiento
         signed_amount_total=0
-        amont_totall=self.conv_div_extranjera(self.vat_retentioned)#self.conv_div_extranjera(self.vat_retentioned)
+        amont_totall=self.vat_retentioned #self.conv_div_extranjera(self.vat_retentioned)
         #amount_itf = round(float(total_monto) * float((igtf_porcentage / 100.00)),2)
         if self.type=="in_invoice" or self.type=="in_receipt":
             signed_amount_total=amont_totall
@@ -532,7 +532,7 @@ class RetentionVat(models.Model):
     def registro_movimiento_linea_retencion(self,id_movv,consecutivo_asiento):
         #raise UserError(_('ID MOVE = %s')%id_movv)
         name = consecutivo_asiento
-        valores = self.conv_div_extranjera(self.vat_retentioned) #self.conv_div_extranjera(self.vat_retentioned) #VALIDAR CONDICION
+        valores = self.vat_retentioned #self.conv_div_extranjera(self.vat_retentioned) #VALIDAR CONDICION
         #raise UserError(_('valores = %s')%valores)
         cero = 0.0
         if self.type=="out_invoice" or self.type=="out_refund" or self.type=="out_receipt":
