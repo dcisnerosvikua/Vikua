@@ -512,6 +512,7 @@ class RetentionVat(models.Model):
         value = {
             'name': name,
             'date': self.move_id.date,#listo
+            'invoice_date':self.move_id.invoice_date,
             #'amount_total':self.vat_retentioned,# LISTO
             'partner_id': self.partner_id.id, #LISTO
             'journal_id':id_journal,
