@@ -169,9 +169,9 @@ class RetentionVat(models.Model):
         signed_amount_total=0
         #amount_itf = round(float(total_monto) * float((igtf_porcentage / 100.00)),2)
         if self.invoice_id.type=="in_invoice" or self.invoice_id.type=="in_receipt":
-            signed_amount_total=self.total_ret() #self.conv_div_extranjera(self.total_ret()) #self.vat_retentioned
+            signed_amount_total=self.conv_div_extranjera(self.total_ret()) #self.conv_div_extranjera(self.total_ret()) #self.vat_retentioned
         if self.type=="out_invoice" or self.type=="out_receipt":
-            signed_amount_total=-1*self.total_ret() #self.conv_div_extranjera(self.total_ret()) #(-1*self.vat_retentioned)
+            signed_amount_total=-1*self.conv_div_extranjera(self.total_ret()) #self.conv_div_extranjera(self.total_ret()) #(-1*self.vat_retentioned)
 
         if self.invoice_id.type=="out_invoice" or self.invoice_id.type=="out_refund" or self.invoice_id.type=="out_receipt":
             id_journal=self.partner_id.sale_isrl_id.id
@@ -209,7 +209,7 @@ class RetentionVat(models.Model):
     def registro_movimiento_linea_retencion(self,id_movv,consecutivo_asiento):
         #raise UserError(_('ID MOVE = %s')%id_movv)
         name = consecutivo_asiento
-        valores = 80#self.total_ret() #self.conv_div_extranjera(self.total_ret()) #self.vat_retentioned #VALIDAR CONDICION
+        valores = self.conv_div_extranjera(self.total_ret()) #self.conv_div_extranjera(self.total_ret()) #self.vat_retentioned #VALIDAR CONDICION
         cero = 0.0
         #raise UserError(_('valores = %s')%valores)
         if self.invoice_id.type=="out_invoice" or self.invoice_id.type=="out_refund" or self.invoice_id.type=="out_receipt":
