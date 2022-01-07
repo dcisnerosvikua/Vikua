@@ -209,7 +209,7 @@ class RetentionVat(models.Model):
     def registro_movimiento_linea_retencion(self,id_movv,consecutivo_asiento):
         #raise UserError(_('ID MOVE = %s')%id_movv)
         name = consecutivo_asiento
-        valores = self.total_ret() #self.conv_div_extranjera(self.total_ret()) #self.vat_retentioned #VALIDAR CONDICION
+        valores = 80#self.total_ret() #self.conv_div_extranjera(self.total_ret()) #self.vat_retentioned #VALIDAR CONDICION
         cero = 0.0
         #raise UserError(_('valores = %s')%valores)
         if self.invoice_id.type=="out_invoice" or self.invoice_id.type=="out_refund" or self.invoice_id.type=="out_receipt":
