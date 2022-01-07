@@ -152,7 +152,7 @@ class RetentionVat(models.Model):
         valor_aux=0
         #raise UserError(_('moneda compañia: %s')%self.company_id.currency_id.id)
         if self.invoice_id.currency_id.id!=self.invoice_id.company_id.currency_id.id:
-            tasa= self.env['res.currency.rate'].search([('currency_id','=',self.invoice_id.currency_id.id),('name','<=',self.invoice_id.date)],order="name asc")
+            tasa= self.env['res.currency.rate'].search([('currency_id','=',self.invoice_id.currency_id.id),('name','<=',self.invoice_id.invoice_date)],order="name asc")
             for det_tasa in tasa:
                 if fecha_contable_doc>=det_tasa.name:
                     valor_aux=det_tasa.rate
