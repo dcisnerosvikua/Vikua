@@ -37,7 +37,7 @@ class AccountMove(models.Model):
         self.type_aux=self.move_type
         self.type=self.move_type
 
-class AccountMoveLine(object):
+class AccountMoveLine(models.Model):
     _inherit = 'account.move.line'
 
     asiento_retencion = fields.Boolean(default=False)
