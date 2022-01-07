@@ -30,16 +30,17 @@ class AccountMove(models.Model):
     asiento_retencion = fields.Boolean(default=False)
     type = fields.Char()
 
-class AccountMoveLine(object):
-    _inherit = 'account.move.line'
-
-    asiento_retencion = fields.Boolean(default=False)
         
 
     @api.depends('move_type')
     def _compute_move_type(self):
         self.type_aux=self.move_type
         self.type=self.move_type
+
+class AccountMoveLine(object):
+    _inherit = 'account.move.line'
+
+    asiento_retencion = fields.Boolean(default=False)
 
 class ResPartner(models.Model):
     _inherit = 'res.partner'
