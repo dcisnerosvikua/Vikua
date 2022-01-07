@@ -96,7 +96,7 @@ class  AccountMoveLine(models.Model):
         valor=0
         self.env.company.currency_secundaria_id.id
         for selff in self:
-            if selff.move_id.move_type!="entry":
+            if selff.move_id.move_type=="entry":
                 lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('name','<=',selff.move_id.date)],order='hora ASC')
             else:
                 lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('name','<=',selff.move_id.invoice_date)],order='hora ASC')
@@ -109,7 +109,7 @@ class  AccountMoveLine(models.Model):
         valor=0
         self.env.company.currency_secundaria_id.id
         for selff in self:
-            if selff.move_id.move_type!="entry":
+            if selff.move_id.move_type=="entry":
                 lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('name','<=',selff.move_id.date)],order='hora ASC')
             else:
                 lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('name','<=',selff.move_id.invoice_date)],order='hora ASC')

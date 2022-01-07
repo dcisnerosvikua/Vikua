@@ -27,6 +27,7 @@ class AccountMove(models.Model):
 
     invoice_payment_state = fields.Char()
     type_aux = fields.Char(compute='_compute_move_type')
+    asiento_retencion = fields.Boolean(default=False)
     type = fields.Char()
 
     @api.depends('move_type')

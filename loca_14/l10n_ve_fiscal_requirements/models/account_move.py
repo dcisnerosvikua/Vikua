@@ -29,7 +29,6 @@ class AccountInherit(models.Model):
     import_form_num = fields.Char(string='Import form number')
     import_dossier = fields.Char(string='Import dossier number')
     import_date = fields.Char(string='Import date')
-    asiento_retencion = fields.Boolean(default=False)
 
 
 
