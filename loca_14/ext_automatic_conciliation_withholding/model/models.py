@@ -13,7 +13,7 @@ class RetentionVat(models.Model):
 
     def action_post(self):
         super().action_post()
-        #self.concilio_saldo_pendiente_isrl()
+        self.concilio_saldo_pendiente_isrl()
 
 
     def concilio_saldo_pendiente_isrl(self):
