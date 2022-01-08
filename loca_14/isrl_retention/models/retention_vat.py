@@ -120,7 +120,7 @@ class RetentionVat(models.Model):
             idv_move=id_move.id
             valor=self.registro_movimiento_linea_retencion(idv_move,name_asiento)
             moves= self.env['account.move'].search([('id','=',idv_move)])
-            moves._post(soft=False)
+            #moves._post(soft=False)
             ##moves.filtered(lambda move: move.journal_id.post_at != 'bank_rec').post()
 
     def total_ret(self):
