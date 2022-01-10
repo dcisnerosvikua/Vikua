@@ -9,6 +9,17 @@ class AccountMove(models.Model):
     delivery_note_next_number = fields.Char(string='No. Nota de Entrega')
     doc_currency_id = fields.Many2one("res.currency", string="Moneda del documento Fisico")
 
+    def float_format(self,valor):
+        #valor=self.base_tax
+        if valor:
+            result = '{:,.2f}'.format(valor)
+            result = result.replace(',','*')
+            result = result.replace('.',',')
+            result = result.replace('*','.')
+        else:
+            result = "0,00"
+        return result
+
     def action_post(self):
         res = super(AccountMove, self).action_post()
         if self.is_delivery_note:

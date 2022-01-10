@@ -34,6 +34,9 @@
                                     <h4 t-if="o.move_type == 'out_refund'">Nota de Credito:
                                         <span t-field="o.refund_ctrl_number_cli"/>
                                     </h4>
+                                    <h4 t-if="o.move_type == 'out_refund'">Nota de Credito:
+                                        <span t-field="o.refund_ctrl_number_cli"/>
+                                    </h4>
                                 </div>
                                 <div class="col-6">
                                     <ul class="list-unstyled text-right">
@@ -171,11 +174,11 @@
                                                 </t>
                                             </td>
                                             <td style="border-left:1px solid black;">
-                                                <span t-esc="line.price_unit"/>
+                                                <span t-esc="o.float_format(line.price_unit)"/>
                                             </td>
                                             <td style="border-left:1px solid black;">
-                                                <span t-esc="o.amount_total"
-                                                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                                <span t-esc="o.float_format(o.amount_total)"/>
+<!--                                                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>-->
                                             </td>
                                             <t t-if="line.discount">
                                                 <t t-set="discount"
@@ -193,9 +196,9 @@
                                             </strong>
 
                                         </td>
-                                        <td>0.0</td>
-                                        <td>IVA 0.00%</td>
-                                        <td>0.0%</td>
+                                        <td>0,0</td>
+                                        <td>IVA 0%</td>
+                                        <td>0,0</td>
                                         <td style="border-left: black 1px solid;border-bottom: black 1px solid;border-right: black 1px solid;">
                                             <strong>TOTAL EXENTO</strong>
                                         </td>
@@ -209,8 +212,8 @@
                                         </td>
                                         <td t-esc="cant_reduced"
                                             t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
-                                        <td>IVA 8.0%</td>
-                                        <td t-esc="'{0:,.2f}'.format(iva_reduced) + '%'"/>
+                                        <td>IVA 8%</td>
+                                        <td t-esc="o.float_format(iva_reduced)"/>
                                         <td style="border-left: 1px solid black; border-right: 1px solid black; border-bottom: 1px solid black;">
                                             <strong>TOTAL BASE IMPONIBLE</strong>
                                         </td>
@@ -225,7 +228,8 @@
                                         <td t-esc="cant_general"
                                             t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
                                         <td>IVA 16%</td>
-                                        <td t-esc="'{0:,.2f}'.format(iva_general) + '%'"/>
+<!--                                        <td t-esc="'{0:,.2f}'.format(iva_general)"/>-->
+                                        <td t-esc="o.float_format(iva_general)"/>
                                         <td style="border-left: 1px solid black; border-right: 1px solid black; border-bottom: 1px solid black;">
                                             <strong>TOTAL DESCUENTO</strong>
                                         </td>
@@ -241,19 +245,19 @@
                                         <td t-esc="cant_adicional"
                                             t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
                                         <td>IVA 31%</td>
-                                        <td t-esc="'{0:,.2f}'.format(iva_adicional) + '%'"/>
+                                        <td t-esc="o.float_format(iva_adicional)"/>
                                         <td style="border-left: 1px solid black; border-right: 1px solid black; border-bottom: 1px solid black;">
                                             <strong>TOTAL I.V.A</strong>
                                         </td>
                                         <td style="border-bottom: 1px solid black;"
-                                            t-esc="'{0:,.2f}'.format(iva_reduced + iva_general + iva_adicional)"/>
+                                            t-esc="o.float_format(iva_reduced + iva_general + iva_adicional)"/>
                                     </tr>
                                     <tr style="font-size: 12px !important;">
                                         <td colspan="4"></td>
                                         <td style="border-bottom: 1px solid black;border-left: 1px solid black; border-right: 1px solid black;">
                                             <strong>TOTAL FACTURA</strong>
                                         </td>
-                                        <td style="border-bottom: 1px solid black;" t-esc="o.amount_total"/>
+                                        <td style="border-bottom: 1px solid black;" t-esc="o.float_format(o.amount_total)"/>
                                     </tr>
                                     <tr style="font-size: 12px !important;border-top: 1px solid black; ">
                                         <td>
@@ -283,7 +287,7 @@
                                         <td>
                                             <strong>SUB-TOTAL (EXP):</strong>
                                         </td>
-                                        <td colspan="3">0.0</td>
+                                        <td colspan="3">0,0</td>
                                         <td style="border-left: black 1px solid;border-bottom: black 1px solid;border-right: black 1px solid;">
                                             <strong>TOTAL EXENTO</strong>
                                         </td>
@@ -315,8 +319,9 @@
                                         <td style="border-left: 1px solid black; border-right: 1px solid black; border-bottom: 1px solid black;">
                                             <strong>TOTAL DESCUENTO</strong>
                                         </td>
-                                        <td style="border-bottom: 1px solid black;" t-esc="discount"
-                                            t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        <td style="border-bottom: 1px solid black;"
+                                            t-esc="o.float_format(discount)"/>
+<!--                                            t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>-->
                                     </tr>
                                     <tr style="font-size: 12px !important;">
                                         <td>
@@ -328,14 +333,14 @@
                                             <strong>TOTAL I.V.A</strong>
                                         </td>
                                         <td style="border-bottom: 1px solid black;"
-                                            t-esc="'{0:,.2f}'.format(iva_reduced + iva_general + iva_adicional)"/>
+                                            t-esc="o.float_format(iva_reduced + iva_general + iva_adicional)"/>
                                     </tr>
                                     <tr style="font-size: 12px !important;">
                                         <td colspan="4"></td>
                                         <td style="border-bottom: 1px solid black;border-left: 1px solid black; border-right: 1px solid black;">
                                             <strong>TOTAL FACTURA</strong>
                                         </td>
-                                        <td style="border-bottom: 1px solid black;" t-esc="o.amount_total"/>
+                                        <td style="border-bottom: 1px solid black;" t-esc="o.float_format(o.amount_total)"/>
                                     </tr>
                                     <tr style="font-size: 12px !important;border-top: 1px solid black; ">
                                         <td>
