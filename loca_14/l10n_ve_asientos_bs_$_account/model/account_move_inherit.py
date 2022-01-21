@@ -129,5 +129,5 @@ class  AccountMoveLine(models.Model):
             if lista_tasa:
                 for det in lista_tasa:
                     valor=(selff.balance*det.rate)
-            selff.balance_aux=abs(valor)
+            selff.balance_aux=valor #abs(valor)
         
