@@ -13,11 +13,6 @@ import base64
 
 
 class AccountBankStatement(models.Model):
-    _inherit = 'account.bank.statement'
-
-    balance_start = fields.Monetary(string='Starting Balance', states={'confirm': [('readonly', False)]}, default=_default_opening_balance)
-    balance_end_real = fields.Monetary('Ending Balance', states={'confirm': [('readonly', False)]})
-
     @api.model
     def _default_opening_balance(self):
         #Search last bank statement and set current opening balance as closing balance of previous one
@@ -25,3 +20,10 @@ class AccountBankStatement(models.Model):
         if journal_id:
             return self._get_opening_balance(journal_id)
         return 0
+        
+    _inherit = 'account.bank.statement'
+
+    balance_start = fields.Monetary(string='Starting Balance', states={'confirm': [('readonly', False)]}, default=_default_opening_balance)
+    balance_end_real = fields.Monetary('Ending Balance', states={'confirm': [('readonly', False)]})
+
+    
