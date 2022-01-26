@@ -25,3 +25,11 @@ class AccountMove(models.Model):
 
     balance_start = fields.Monetary(string='Starting Balance', states={'confirm': [('readonly', False)]}, default=_default_opening_balance)
     balance_end_real = fields.Monetary('Ending Balance', states={'confirm': [('readonly', False)]})
+
+    @api.model
+    def _default_opening_balance(self):
+        #Search last bank statement and set current opening balance as closing balance of previous one
+        journal_id = self._context.get('default_journal_id', False) or self._context.get('journal_id', False)
+        if journal_id:
+            return self._get_opening_balance(journal_id)
+        return 0
