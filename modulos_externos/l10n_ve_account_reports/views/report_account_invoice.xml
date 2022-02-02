@@ -139,7 +139,7 @@
                                 </thead>
                                 <tbody class="text-center" style="font-size:15px !important; ">
                                     <t t-foreach="o.invoice_line_ids" t-as="line">
-                                        <tr style="line-height: 4em;">
+                                        <tr style="line-height: 6em;">
                                             <td style="border-left: 1px solid black; border-right: 1px solid black;">
                                                 <span t-esc="line.product_id.name"/>
                                             </td>
