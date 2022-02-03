@@ -67,7 +67,7 @@
                                             <strong>RIF:</strong>
                                         </td>
                                         <td style="border-top:0px !important;min-width:200px; max-width:200px;border-right: 1px solid black;">
-                                            <span t-field="o.partner_id.vat"/>
+                                            <span t-field="o.partner_id.doc_type"/><span t-field="o.partner_id.vat"/>
                                         </td>
                                     </tr>
                                     <tr style="max-height:15px; font-size:12px !important;">
