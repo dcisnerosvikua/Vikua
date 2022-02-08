@@ -199,7 +199,7 @@
                             <tr>
                               <td><t t-esc="contador"/></td>
                               <td><t t-esc="line.formato_fecha2(line.invoice_id.invoice_date)"/></td>
-                              <td><t t-esc="line.doc_cedula(line.partner.id)"/></td>
+                              <td><t t-esc="line.partner.id"/></td>
                               <td><t t-esc="line.partner.name"/></td>
                               <!--
                                 <t t-if="line.partner.people_type == 'resident_nat_people' ">
