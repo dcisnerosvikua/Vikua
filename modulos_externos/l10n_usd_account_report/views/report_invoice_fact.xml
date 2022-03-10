@@ -20,27 +20,23 @@
 
                                 <div class="row">
                                     <div class="col-4">
-                                        <ul class="list-inline mb4" style="font-size:12px;">
+                                        <ul class="list-inline" style="font-size:12px;">
                                             <li t-if="o.company_id.name"><h4 t-field="o.company_id.name"/></li>
                                             
-                                            <li style="color:#6e6e6e;" t-if="o.company_id.street or o.company_id.street2"><span t-field="o.company_id.street"/><span t-field="o.company_id.street2"/></li>
+                                            <li style="color:#6e6e6e;" t-if="o.company_id.street"><span t-field="o.company_id.street"/></li>
                                             
-                                            <li style="color:#6e6e6e;" t-if="o.company_id.city or o.company_id.state_id.name or o.company_id.zip"><span t-field="o.company_id.city"/> <span t-field="o.company_id.state_id.name"/> <span t-field="o.company_id.zip"/> </li>
+                                            <li style="color:#6e6e6e;" t-if="o.company_id.street2"><span t-field="o.company_id.street2"/><span>&amp;nbsp;&amp;nbsp;</span> <span t-field="o.company_id.zip"/> </li>
                                         </ul>
 
                                     </div>
 
                                     <div class="col-8 ">
-                                        <ul class="list-inline mb4 text-center" style="font-size:16px; float: right;">
+                                        <ul class="list-inline text-center" style="font-size:16px; float: right;">
                                             <br/>
-                                            <li t-if="o.invoice_date"><strong>Date: </strong><span t-field="o.invoice_date"/></li>
+                                            <li t-if="o.invoice_date"><strong>Date:</strong><span style="margin-left:15px;" t-field="o.invoice_date"/></li>
                                             <li t-if="o.invoice_ctrl_number_cli"><strong>Invoices #: </strong> VUSA - <span t-field="o.invoice_number_cli"/></li>
                                         </ul>
                                     </div>
-
-                                    <!--div class="col-4 pull-right text-right" style="margin-top:-50px;">
-                                        <img t-attf-src="data:image/*;base64,{{o.company_id.logo}}" style="width:auto; height:150px;"/>
-                                    </div-->
                                 </div>
 
                                 <div style="font-size:16px; color:#6e6e6e;">
@@ -69,13 +65,13 @@
                                             
                                             <li>
                                                 <strong>Contact Person: </strong> 
-                                                <span style="margin-left:20px;" t-field="o.partner_shipping_id.name"></span>
+                                                <span style="margin-left:20px;" t-field="o.partner_id.child_ids.name"></span>
                                             </li>
                                             
                                             <li>
                                                 <strong>Phone Number: </strong>
-                                                <span style="margin-left:21px;" class="o_force_ltr" t-field="o.partner_id.phone"/>/
-                                                <span style="margin-left:21px;" class="o_force_ltr" t-field="o.partner_id.mobile"/>
+                                                <span style="margin-left:21px;" class="o_force_ltr" t-field="o.partner_id.child_ids.phone"/>/
+                                                <span style="margin-left:21px;" class="o_force_ltr" t-field="o.partner_id.child_ids.mobile"/>
                                             </li>
                                         
                                         </ul>
@@ -116,8 +112,9 @@
                                     <tbody>
                                         <t t-foreach="o.invoice_line_ids" t-as="line">
                                             <tr style="font-size:12px;">
-                                                <td  Width="10%" style="border:1px solid #1ab761;" t-esc="line.quantity" class="text-center"/>
-                                                <td style="border:1px solid #1ab761;"   t-esc="line.name"/>
+                                                <td  Width="10%" style="border:1px solid #1ab761;" t-esc="line.quantity" class="text-center" t-options='{"widget": "float", "precision": 0}'/>
+                                                <!--td style="border:1px solid #1ab761;"   t-esc="line.name"/-->
+                                                <td style="border:1px solid #1ab761;"   t-esc="line.product_id.name"/>
                                                 <td style="border:1px solid #1ab761;"   t-esc="line.price_unit" class="text-right"/>
                                                 <td style="border:1px solid #1ab761;"   t-esc="line.price_subtotal" class="text-right"/>
                                             </tr>
