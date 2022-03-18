@@ -548,8 +548,8 @@ class AccountMove(models.Model):
     def _reverse_moves(self, default_values_list=None, cancel=False):
 
         # CODIGO DARRELL  VALORES DE LA FACTURA A REVERSAR
-        fact_org=self.invoice_number
-        id_fact_org=self.id
+        fact_org=move.invoice_number
+        id_fact_org=move.id
         # FIN CODIGO DARRELL
         
         if not default_values_list:
@@ -606,9 +606,9 @@ class AccountMove(models.Model):
                         .reconcile()"""
 
         # CODIGO DARRELL AQUI COLOCA EN EL CAMPO DE REFERENCIA LA FACTURA AFECTADA
-        lista_move = self.env['account.move'].search([('id','=',id_fact_rec)])
+        lista_move = move.env['account.move'].search([('id','=',id_fact_rec)])
         for det in lista_move:
-            self.env['account.move'].browse(det.id).write({
+            move.env['account.move'].browse(det.id).write({
                 'ref': fact_org,
                 })
         # FIN CODIGO DARRELL
