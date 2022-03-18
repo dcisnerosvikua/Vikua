@@ -545,11 +545,11 @@ class AccountMove(models.Model):
             sums = [res[1] for res in query_res]
             #raise UserError(_("Cannot create unbalanced journal entry. Ids: %s\nDifferences debit - credit: %s") % (ids, sums))
 
-    def _reverse_moves(self, default_values_list=None, cancel=False):
+    """def _reverse_moves(self, default_values_list=None, cancel=False):
 
         # CODIGO DARRELL  VALORES DE LA FACTURA A REVERSAR
-        fact_org=move.invoice_number
-        id_fact_org=move.id
+        fact_org=self.invoice_number
+        id_fact_org=self.id
         # FIN CODIGO DARRELL
         
         if not default_values_list:
@@ -594,25 +594,16 @@ class AccountMove(models.Model):
             reverse_move._recompute_dynamic_lines(recompute_all_taxes=False)
         reverse_moves._check_balanced()
 
-        # Reconcile moves together to cancel the previous one.
-        """if cancel:
-            reverse_moves.with_context(move_reverse_cancel=cancel).post()
-            for move, reverse_move in zip(self, reverse_moves):
-                accounts = move.mapped('line_ids.account_id') \
-                    .filtered(lambda account: account.reconcile or account.internal_type == 'liquidity')
-                for account in accounts:
-                    (move.line_ids + reverse_move.line_ids)\
-                        .filtered(lambda line: line.account_id == account and line.balance)\
-                        .reconcile()"""
+       
 
         # CODIGO DARRELL AQUI COLOCA EN EL CAMPO DE REFERENCIA LA FACTURA AFECTADA
-        lista_move = move.env['account.move'].search([('id','=',id_fact_rec)])
+        lista_move = self.env['account.move'].search([('id','=',id_fact_rec)])
         for det in lista_move:
-            move.env['account.move'].browse(det.id).write({
+            self.env['account.move'].browse(det.id).write({
                 'ref': fact_org,
                 })
         # FIN CODIGO DARRELL
-        return reverse_moves
+        return reverse_moves"""
 
     def verifica_exento_iva(self):
         acum=0
