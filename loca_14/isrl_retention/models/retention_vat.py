@@ -171,7 +171,7 @@ class RetentionVat(models.Model):
         if self.invoice_id.type=="in_invoice" or self.invoice_id.type=="in_receipt":
             signed_amount_total=self.total_ret() #self.conv_div_extranjera(self.total_ret()) #self.vat_retentioned
         if self.type=="out_invoice" or self.type=="out_receipt":
-            signed_amount_total=-1*self.self.total_ret() #self.conv_div_extranjera(self.total_ret()) #(-1*self.vat_retentioned)
+            signed_amount_total=-1*self.total_ret() #self.conv_div_extranjera(self.total_ret()) #(-1*self.vat_retentioned)
 
         if self.invoice_id.type=="out_invoice" or self.invoice_id.type=="out_refund" or self.invoice_id.type=="out_receipt":
             id_journal=self.partner_id.sale_isrl_id.id
