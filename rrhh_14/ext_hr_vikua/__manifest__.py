@@ -2,12 +2,12 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 {
-    'name': 'Contract Aditional Data',
+    'name': 'Funcionalidades personalizadas vikua RRHH',
     'version': 'odoo 14',
     'author': 'INM&RDL - Ing Darrell Sojo',
     'category': 'Human Resources',
     'sequence': 104,
-    'summary': 'Adds aditional fields to hr_contract module',
+    'summary': 'Funcionalidades personalizadas vikua RRHH',
     'description': '''
         Agrega  campos y fuancionalidades adicionales partivulares al modulo rrhh:\n
             

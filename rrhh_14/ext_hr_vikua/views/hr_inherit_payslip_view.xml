@@ -9,7 +9,7 @@
             <field name="arch" type="xml">
                 
                 <!--xpath expr="//field[@name='name']" position="before"-->
-                <xpath expr="//form[1]/sheet[1]/group[2]/group[1]" position="before">
+                <xpath expr="//form[1]/sheet[1]/group[2]/group[1]/label[1]" position="before">
 
                     <label for="comision_check"/>
                                 <div>
@@ -20,6 +20,72 @@
                                     </div>
                                 </div>
 
+                    <label for="bono_uni_check"/>
+                                <div>
+                                    <div class="address_format">
+                                        <field name="bono_uni_check" style="width: 15%%"/>
+                                        <field name="bono_uni_value" string="Monto" attrs="{'invisible': [('bono_uni_check', '!=', True)]}" nolabel="1"/>
+                                            <!--span>/ month</span-->
+                                    </div>
+                                </div>
+
+                    <label for="anticipo_salario_check"/>
+                                <div>
+                                    <div class="address_format">
+                                        <field name="anticipo_salario_check" style="width: 15%%"/>
+                                        <field name="anticipo_salario_value" string="Monto" attrs="{'invisible': [('anticipo_salario_check', '!=', True)]}" nolabel="1"/>
+                                            <!--span>/ month</span-->
+                                    </div>
+                                </div>
+
+                    <label for="asig_espe_check"/>
+                                <div>
+                                    <div class="address_format">
+                                        <field name="asig_espe_check" style="width: 15%%"/>
+                                        <field name="asig_espe_value" string="Monto" attrs="{'invisible': [('asig_espe_check', '!=', True)]}" nolabel="1"/>
+                                            <!--span>/ month</span-->
+                                    </div>
+                                </div>
+
+                    <label for="asig_ante_check"/>
+                                <div>
+                                    <div class="address_format">
+                                        <field name="asig_ante_check" style="width: 15%%"/>
+                                        <field name="asig_ante_value" string="Monto" attrs="{'invisible': [('asig_ante_check', '!=', True)]}" nolabel="1"/>
+                                            <!--span>/ month</span-->
+                                    </div>
+                                </div>
+
+                </xpath>
+
+                <xpath expr="//form[1]/sheet[1]/group[2]/group[2]/label[1]" position="before">
+                    <label for="adelanto_comisions_check"/>
+                                <div>
+                                    <div class="address_format">
+                                        <field name="adelanto_comisions_check" style="width: 15%%"/>
+                                        <field name="adelanto_comisions_value" string="Monto" attrs="{'invisible': [('adelanto_comisions_check', '!=', True)]}" nolabel="1"/>
+                                           
+                                    </div>
+                                </div>
+
+                    <label for="anticipo_salario_check"/>
+                                <div>
+                                    <div class="address_format">
+                                        <field name="anticipo_salario_check" style="width: 15%%"/>
+                                        <field name="anticipo_salario_value" string="Monto" attrs="{'invisible': [('anticipo_salario_check', '!=', True)]}" nolabel="1"/>
+                                           
+                                    </div>
+                                </div>
+
+                    <label for="descuento_esp_check"/>
+                                <div>
+                                    <div class="address_format">
+                                        <field name="descuento_esp_check" style="width: 15%%"/>
+                                        <field name="descuento_esp_value" string="Monto" attrs="{'invisible': [('descuento_esp_check', '!=', True)]}" nolabel="1"/>
+                                           
+                                    </div>
+                                </div>
+                                
                 </xpath>
 
                 

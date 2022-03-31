@@ -10,9 +10,32 @@ from odoo.exceptions import UserError, ValidationError
 class hr_special_days(models.Model):
     _inherit = 'hr.payslip'
 
+    ############################# ASIGNACIONES #######################################
+
     ########################33 CAMPO PARA ASIGNACIONES DE COMISIONES ###############################
     comision_check = fields.Boolean(default=False, string="Monto Comisiones adicionales")
     comision_value = fields.Float(default=0)
+    ########################33 CAMPO PARA ASIGNACIONES DE COMISIONES ###############################
+    bono_uni_check = fields.Boolean(default=False, string="Bono Unico")
+    bono_uni_value = fields.Float(default=0)
+    ########################33 ASIGNACIONES ESPECIALES ###############################
+    asig_espe_check = fields.Boolean(default=False, string="Asig. Especiales")
+    asig_espe_value = fields.Float(default=0)
+    ########################33 ASIGNACIONES pendientes quincena anterior ###############################
+    asig_ante_check = fields.Boolean(default=False, string="Asig. Quincena anterior")
+    asig_ante_value = fields.Float(default=0)
+
+    ############################# DEDUCCIONES #######################################
+
+    ########################33 CAMPO PARA ANTICIPO SALARIOS ###############################
+    anticipo_salario_check = fields.Boolean(default=False, string="Anticipo Salario")
+    anticipo_salario_value = fields.Float(default=0)
+    ########################33 CAMPO PARA ADELANTO DE COMISIONES ###############################
+    adelanto_comisions_check = fields.Boolean(default=False, string="Adelanto de Comisiones")
+    adelanto_comisions_value = fields.Float(default=0)
+    ########################33 DESCUENTOS ESPECIALES ###############################
+    descuento_esp_check = fields.Boolean(default=False, string="Descuentos Especiales")
+    descuento_esp_value = fields.Float(default=0)
     
 
 
