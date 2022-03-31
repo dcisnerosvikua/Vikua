@@ -24,7 +24,7 @@
         'hr_campos_parametrizacion',  ## este es un modulo de odoo nativo para que haga el asiento de la nomina
     ],
     'data': [
-    'hr_inherit_payslip_view.xml',
+    'views/hr_inherit_payslip_view.xml',
     ],
     'demo': [],
     'installable': True,
