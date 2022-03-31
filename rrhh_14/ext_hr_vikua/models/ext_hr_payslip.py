@@ -11,7 +11,7 @@ class hr_special_days(models.Model):
     _inherit = 'hr.payslip'
 
     ########################33 CAMPO PARA ASIGNACIONES DE COMISIONES ###############################
-    comision_check = fields.Boolean(default=False, string="Monto Abonos adicionales")
+    comision_check = fields.Boolean(default=False, string="Monto Comisiones adicionales")
     comision_value = fields.Float(default=0)
     
 
