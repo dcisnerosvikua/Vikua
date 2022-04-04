@@ -49,7 +49,8 @@ class libro_compras(models.TransientModel):
             ('fecha_fact','>=',self.date_from),
             ('fecha_fact','<=',self.date_to),
             ('state','in',('posted','cancel' )),
-            ('type','in',('in_invoice','in_refund','in_receipt'))
+            ('type','in',('in_invoice','in_refund','in_receipt')),
+            ('invoice_id.company_id','=',self.company_id)
             ])
         for det in cursor_resumen:
             if det.invoice_id.ocultar_libros!=True:
