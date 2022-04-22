@@ -11,7 +11,14 @@ class HrPauslipLine(models.Model):
     _inherit = 'hr.payslip.line'
 
     dias = fields.Char(compute='_compute_dias')
+    total_uds = fields.Float(compute='_compute_total_usd')
 
+    def _compute_total_usd(self):
+        for rec in self:
+            if rec.slip_id.os_currecy_rate_gene!=0:
+                rec.total_uds=rec.total/rec.slip_id.os_currecy_rate_gene
+            else:
+                rec.total_uds=rec.total
 
     """@api.depends('quantity', 'amount', 'rate','dias')
     def _compute_total(self):

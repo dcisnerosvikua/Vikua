@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="hr_yoko_view_inherit" model="ir.ui.view">
+            <field name="name">hr.yoko.view.inherit</field>
+            <field name="model">hr.contract</field>
+            <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='wage_div']" position="after">
+                    <field name="sueldo_currency" string="Moneda del sueldo"/>
+                    <field name="sueldo_div" string='Sueldo $/mes'/>
+                    <field name="wage_aux" invisible="1"/>
+                    <field name="porcentage_sueldo" string='% Sueldo'/>
+                    <field name="porcentage_sueldo_aux" invisible="1"/>
+                    <field name="monto_porcentage_sueldo" string='Monto % Sueldo ($)' readonly="1"/>
+                    <field name="porcentage_bono" string='% Bono' readonly="1"/>
+                    <field name="monto_porcentage_bono" string='Monto % Bono ($)' readonly="1"/>
+                </xpath>
+
+                <xpath expr="//field[@name='wage']" position="attributes">
+                    <attribute name="attrs">{}</attribute>
+                    <attribute name="force_save">True</attribute>
+                    <attribute name="readonly">1</attribute>
+                    <attribute name="string">Salario Bs/Mes</attribute>
+                </xpath>
+
+                <!--xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='information']/group[@name='main_info']/group[@name='salary_and_advantages']/label[1]" position="attributes">
+                    <attribute name="string">Salario Bs/Mes</attribute>
+                </xpath-->
+
+            </field>
+        </record>
+    </data>
+</odoo>

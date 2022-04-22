@@ -68,11 +68,11 @@
                                     </div>
                                 </div>
 
-                    <label for="adelanto_salario_check"/>
+                    <label for="anticipo_salario_check"/>
                                 <div>
                                     <div class="address_format">
-                                        <field name="adelanto_salario_check" style="width: 15%%"/>
-                                        <field name="adelanto_salario_value" string="Monto" attrs="{'invisible': [('adelanto_salario_check', '!=', True)]}" nolabel="1"/>
+                                        <field name="anticipo_salario_check" style="width: 15%%"/>
+                                        <field name="anticipo_salario_value" string="Monto" attrs="{'invisible': [('anticipo_salario_check', '!=', True)]}" nolabel="1"/>
                                            
                                     </div>
                                 </div>

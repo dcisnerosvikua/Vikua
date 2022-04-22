@@ -70,6 +70,7 @@
         'wizard/wizard_generar_txt_view.xml',
         'views/hr_config_faov.xml',
         'report/monto_faov.xml',
+        'views/hr_control_periodo_vacaciones.xml',
     ],
     'demo': [],
     'installable': True,

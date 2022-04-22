@@ -18,9 +18,6 @@ class hr_special_days(models.Model):
     ########################33 CAMPO PARA ASIGNACIONES DE COMISIONES ###############################
     bono_uni_check = fields.Boolean(default=False, string="Bono Unico")
     bono_uni_value = fields.Float(default=0)
-    ########################33 CAMPO PARA ANTICIPO SALARIOS ###############################
-    anticipo_salario_check = fields.Boolean(default=False, string="Anticipo Salario")
-    anticipo_salario_value = fields.Float(default=0)
     ########################33 ASIGNACIONES ESPECIALES ###############################
     asig_espe_check = fields.Boolean(default=False, string="Asig. Especiales")
     asig_espe_value = fields.Float(default=0)
@@ -29,10 +26,10 @@ class hr_special_days(models.Model):
     asig_ante_value = fields.Float(default=0)
 
     ############################# DEDUCCIONES #######################################
-    
+
     ########################33 CAMPO PARA ANTICIPO SALARIOS ###############################
-    adelanto_salario_check = fields.Boolean(default=False, string="Adelanto Salario")
-    adelanto_salario_value = fields.Float(default=0)
+    anticipo_salario_check = fields.Boolean(default=False, string="Anticipo Salario")
+    anticipo_salario_value = fields.Float(default=0)
     ########################33 CAMPO PARA ADELANTO DE COMISIONES ###############################
     adelanto_comisions_check = fields.Boolean(default=False, string="Adelanto de Comisiones")
     adelanto_comisions_value = fields.Float(default=0)

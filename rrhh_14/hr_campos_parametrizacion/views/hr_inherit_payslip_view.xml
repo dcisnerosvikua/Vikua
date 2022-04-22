@@ -12,11 +12,11 @@
 
                 </xpath>
 
-                <!--xpath expr="//field[@name='name']" position="after">
+                <xpath expr="//field[@name='name']" position="after">
                     <field name="custom_rate_gene" string="Tasa Personalizada"/>
                     <field name="os_currecy_rate_gene" string="Tasa" attrs="{'readonly': [('custom_rate_gene', '!=', True)]}"/>
                     <field name="os_currecy_rate_gene_aux" invisible="1"/>
-                </xpath-->
+                </xpath>
 
                 <xpath expr="//form/sheet/notebook" position="attributes">
                     <attribute name="name">identification_employee</attribute>
@@ -173,6 +173,11 @@
                 <xpath expr="//form[1]/sheet[1]/notebook[@name='identification_employee']/page[2]/field[@name='line_ids']/tree[1]/field[@name='rate']" position="after">
                     <field name="dias" string="Nro días"/>
                 </xpath>
+
+                <xpath expr="//form[1]/sheet[1]/notebook[@name='identification_employee']/page[2]/field[@name='line_ids']/tree[1]/field[@name='total']" position="after">
+                    <field name="total_uds" string="Total $"/>
+                </xpath>
+
             </field>
         </record>
 

@@ -85,11 +85,11 @@ class hr_special_days(models.Model):
     fecha_hoy = fields.Date(compute='_compute_hoy')
 
     ################ si piden tasa personalizada
-    #custom_rate_gene = fields.Boolean(default=False)
-    #os_currecy_rate_gene = fields.Float(digits=(12, 4))
-    #os_currecy_rate_gene_aux = fields.Float(compute='_compute_tasa_odoo',digits=(12, 4))
+    custom_rate_gene = fields.Boolean(default=False)
+    os_currecy_rate_gene = fields.Float(digits=(12, 4))
+    os_currecy_rate_gene_aux = fields.Float(compute='_compute_tasa_odoo',digits=(12, 4))
 
-    """@api.onchange('employee_id','currecy_rate_gene')
+    @api.onchange('employee_id','currecy_rate_gene')
     def _compute_tasa_odoo(self):
         valor=1
         lista_tasa = self.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('name','<=',self.fecha_hoy)],order='name ASC')
@@ -109,7 +109,7 @@ class hr_special_days(models.Model):
             raise UserError(_('Valor de la tasa no puede ser nula o negativa'))
 
     ######### FUNCION QUE COLOCA LA TASA PERSONALIZADA EN EL ASIENTO CONTABLE
-    def action_payslip_done(self):
+    """def action_payslip_done(self):
         super().action_payslip_done()
         #raise UserError(_('asiento=%s')%self.move_id.id)
         for roc in self:

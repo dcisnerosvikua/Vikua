@@ -25,6 +25,7 @@
     ],
     'data': [
     'views/hr_inherit_payslip_view.xml',
+    'views/hr_contract_add_fields_view.xml',
     ],
     'demo': [],
     'installable': True,

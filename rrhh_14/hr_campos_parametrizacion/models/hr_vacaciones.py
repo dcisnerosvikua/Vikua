@@ -1,5 +1,5 @@
 # coding: utf-8
-from datetime import datetime
+from datetime import datetime, date
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 from dateutil.relativedelta import relativedelta
 from odoo import models, fields, api, _
@@ -108,3 +108,166 @@ class HrLeave(models.Model):
             for det in empleado:
                 ano=det.tiempo_antiguedad
         self.nro_ano_periodo=ano
+
+
+class ControlVacaciones(models.Model):
+    _name = 'hr.control.vacaciones'
+
+    employee_id = fields.Many2one('hr.employee')
+    fecha_ingreso = fields.Date(compute='_compute_ingreso')
+    date_actual = fields.Date(string='Date From', compute='_compute_fecha_hoy')
+    tiempo_antiguedad = fields.Integer(compute='_compute_tiempo_antiguedad')
+    periodos_ids = fields.One2many('hr.periodo','control_id', string='Periodos')
+
+    def _compute_fecha_hoy(self):
+        hoy=datetime.now().strftime('%Y-%m-%d')
+        self.date_actual=hoy
+
+    def _compute_tiempo_antiguedad(self):
+        tiempo=0
+        for selff in self:
+            if selff.employee_id.id:
+                fecha_ing=selff.fecha_ingreso
+                fecha_actual=selff.date_actual
+                if selff.employee_id.contract_id:
+                    dias=selff.days_dife(fecha_actual,fecha_ing)
+                    tiempo=dias/360
+            selff.tiempo_antiguedad=tiempo
+
+    def days_dife(self,d1, d2):
+       return abs((d2 - d1).days)
+
+    @api.depends('employee_id')
+    def _compute_ingreso(self):
+        for rec in self:
+            if rec.employee_id.contract_id.date_start:
+                rec.fecha_ingreso=rec.employee_id.contract_id.date_start
+            else:
+                rec.fecha_ingreso="1999-01-01"
+
+
+    def calcular(self):
+        lista=self.env['hr.control.vacaciones'].search([])
+        #periodos=self.env['hr.periodo'].search([]).unlink()
+        #raise UserError(_('lista= %s')%lista)
+        for rec in lista:
+            tiempo=rec.tiempo_antiguedad
+            dias=60
+            inicio=rec.employee_id.contract_id.date_start
+            valida_fec_inicio=rec.env['hr.periodo'].search([('control_id','=',rec.id)],order='periodo ASC')
+            if valida_fec_inicio:
+                for det in valida_fec_inicio:
+                    valor=det.hasta
+                if valor:
+                    inicio=valor
+            for seq in range(1,tiempo+1,1):
+                valida=rec.env['hr.periodo'].search([('periodo','=',seq),('control_id','=',rec.id)],order='periodo ASC')
+                if not valida:
+                    hasta=rec.hastadelta(inicio)
+                    #raise UserError(_('verifica= %s')%hasta)
+                    periodo=self.env['hr.periodo']
+                    values={
+                    'periodo':seq,
+                    'control_id':rec.id,
+                    'desde':inicio,
+                    'hasta':hasta,
+                    }
+                    periodo_ids = periodo.create(values)
+                    inicio=rec.new_inicio(hasta)
+
+
+    def hastadelta(self,inicio):
+        fecha=str(inicio)
+        days = int(fecha[8:10])
+        mes = int(fecha[5:7])
+        year = int(fecha[0:4])
+        if days==1:
+            days=30
+            if mes>1:
+                mes=mes-1
+            else:
+                mes=12
+        else:
+            days=days-1
+        year=year+1
+        if mes<10:
+            mess="0"+str(mes)
+        else:
+            mess=mes
+        if days<10:
+            dayss="0"+str(days)
+        else:
+            dayss=str(days)
+        resultado=str(year)+"-"+mess+"-"+dayss
+        #raise UserError(_('verifica= %s')%resultado)
+        return resultado
+
+    def new_inicio(self,hasta):
+        fecha=str(hasta)
+        days = int(fecha[8:10])
+        mes = int(fecha[5:7])
+        year = int(fecha[0:4])
+        #raise UserError(_('verifica= %s')%year)
+        if days>31:
+            days=1
+            if mes<12:
+                mes=mes+1
+            else:
+                mes=1
+        else:
+            days=days+1
+        if mes<10:
+            mess="0"+str(mes)
+        else:
+            mess=mes
+        if days<10:
+            dayss="0"+str(days)
+        else:
+            dayss=str(days)
+        resultado=str(year)+"-"+str(mess)+"-"+str(dayss)
+        return resultado
+
+
+class ListaPeriodos(models.Model):
+    _name = 'hr.periodo'
+
+    control_id = fields.Many2one('hr.control.vacaciones')
+    periodo = fields.Char()
+    desde = fields.Date()
+    hasta = fields.Date()
+    ano_antiguedad = fields.Integer(compute='_compute_ano_antiguedad')
+    dias_disfrute = fields.Float(compute='_compute_dias_vacaciones')
+    dias_adicionales = fields.Float(compute='_compute_dias_vacaciones')
+    dias_disfrute_ley = fields.Float(compute='_compute_dias_vacaciones')
+    dias_disfrutados = fields.Float()
+    dias_pendientes = fields.Float()
+
+    @api.depends('desde','hasta')
+    def _compute_ano_antiguedad(self):
+        tiempo=0
+        for selff in self:
+            dias=selff.days_dife(selff.control_id.employee_id.contract_id.date_start,selff.hasta)
+            tiempo=dias/360
+            selff.ano_antiguedad=tiempo
+
+    def days_dife(self,d1, d2):
+       return abs((d2 - d1).days)
+
+    def _compute_dias_vacaciones(self):
+        dias_difrute=0
+        for selff in self:
+            verifica=selff.env['hr.payroll.dias.vacaciones'].search([('service_years','=',selff.ano_antiguedad)])
+            if verifica:
+                for det in verifica:
+                    dias_difrute=det.pay_day
+            selff.dias_disfrute=dias_difrute
+            selff.dias_adicionales=dias_difrute-15
+            selff.dias_disfrute_ley=15
+
+    def unlink(self):
+        for rec in self:
+            raise UserError(_("No se pueden eliminar estos registros"))
+        super().unlink()
+
+
+
