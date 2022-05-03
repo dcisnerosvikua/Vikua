@@ -50,6 +50,10 @@ class HrPayslip(models.Model):
     def action_payslip_done(self):
         #raise UserError(_('Prueba BEBE'))
         res = super(HrPayslip, self).action_payslip_done()
+        cal=self.calculo_prestaciones()
+
+
+    def calculo_prestaciones(self):
         if not self.company_id.tipo_metodo:
             raise UserError(_('Configure un tipo de metodo para el cálculo de prestaciones sociales de empleados para esta compañia'))
         if self.company_id.tipo_metodo=='tri':
@@ -95,7 +99,7 @@ class HrPayslip(models.Model):
                             if not busca_mes:
                                 dias_disfrutes=0
                         if mes>0:
-                        	dias_add_gps=0
+                            dias_add_gps=0
                         #if self.tiempo_antiguedad==0:
                             #dias_disfrutes=15
                         #if self.tiempo_antiguedad>0:

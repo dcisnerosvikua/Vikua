@@ -12,6 +12,7 @@ class HrPayrollStructure(models.Model):
     activo_prestaciones = fields.Boolean(string='Calcular Prsetaciones Sociales', default=True)
     shedule_pay_value = fields.Integer(string='Valor Pago Planificado', compute='_compute_dias_pago')
     employee_ids = fields.One2many('hr.payroll.employeed','structure_id')
+    company_id = fields.Many2one('res.company','Company',default=lambda self: self.env.company.id)
 
     @api.onchange('schedule_pay')
     def _compute_dias_pago(self):
@@ -38,3 +39,11 @@ class HrPayrollEmployeed(models.Model):
     structure_id = fields.Many2one('hr.payroll.structure', string='Nómina')
     name=fields.Char()
     empleado_id = fields.Many2one('hr.employee')
+    company_id = fields.Many2one('res.company','Company')
+    company_aux_id = fields.Many2one('res.company',compute='_compute_company_employee')
+
+    @api.onchange('empleado_id')
+    def _compute_company_employe(self):
+        valor=self.empleado_id.company_id.id
+        self.company_aux_id=valor
+        self.company_id=valor

@@ -20,12 +20,12 @@
         'hr_payroll',
         'hr_attendance',
         'hr_holidays',
-        'hr_holidays',
         'hr_campos_parametrizacion',  ## este es un modulo de odoo nativo para que haga el asiento de la nomina
     ],
     'data': [
     'views/hr_inherit_payslip_view.xml',
     'views/hr_contract_add_fields_view.xml',
+    'views/hr_inherit_payroll_structure.xml',
     ],
     'demo': [],
     'installable': True,

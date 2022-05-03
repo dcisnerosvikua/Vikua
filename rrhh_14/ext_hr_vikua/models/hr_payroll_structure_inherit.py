@@ -6,8 +6,7 @@ from odoo import models, fields, api, _
 import calendar
 from odoo.exceptions import UserError, ValidationError
 
-class HrSalaryRule(models.Model):
-    _inherit = 'hr.salary.rule'
+class HrPayrollStructure(models.Model):
+    _inherit = 'hr.payroll.structure'
 
-    desc_ley = fields.Char()
-    company_id = fields.Many2one('res.company','Company',default=lambda self: self.env.company.id)
+    campo_sueldo =  fields.Selection([('sc', 'Sueldo Completo'),('sf', 'Sueldo fijo'),('sb','Bono')])

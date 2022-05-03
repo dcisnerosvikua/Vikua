@@ -78,7 +78,16 @@ class HrEmployee(models.Model):
 
     @api.onchange('company_id')
     def _compute_direccion(self):
-        self.direccion_trabajo="los alpes"#self.company_id.street+" "+self.company_id.street2+". "+self.company_id.city+"/"+self.company_id.state_id.name
+        if self.company_id.street:
+            self.direccion_trabajo=self.company_id.street
+            if self.company_id.street2:
+                self.direccion_trabajo=self.company_id.street+" "+self.company_id.street2
+                if self.company_id.city:
+                    self.direccion_trabajo=self.company_id.street+" "+self.company_id.street2+". "+self.company_id.city
+                    if self.company_id.state_id.name:
+                        self.direccion_trabajo=self.company_id.street+" "+self.company_id.street2+". "+self.company_id.city+"/"+self.company_id.state_id.name
+        else: 
+            self.direccion_trabajo="****"
 
     def formato_fecha(self,date):
         resultado="0000/00/00"

@@ -9,6 +9,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='active']" position="after">
                     <field name="desc_ley" string="Articulo o ley"/>
+                    <field name="company_id" string="Compañia"/>
                 </xpath>
 
                 <!--xpath expr="//field[@name='name']" position="before"-->
@@ -23,6 +24,9 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='code']" position="before">
                     <field name="desc_ley" string="Articulo o ley"/>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="replace">
+                    <field name="company_id" string="Compañia"/>
                 </xpath>
 
                 <!--xpath expr="//field[@name='name']" position="before"-->
