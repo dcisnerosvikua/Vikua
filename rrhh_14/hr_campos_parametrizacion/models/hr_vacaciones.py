@@ -1,5 +1,5 @@
 # coding: utf-8
-from datetime import datetime
+from datetime import datetime, date
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 from dateutil.relativedelta import relativedelta
 from odoo import models, fields, api, _
@@ -109,6 +109,7 @@ class HrLeave(models.Model):
                 ano=det.tiempo_antiguedad
         self.nro_ano_periodo=ano
 
+
 class ControlVacaciones(models.Model):
     _name = 'hr.control.vacaciones'
 
@@ -117,7 +118,6 @@ class ControlVacaciones(models.Model):
     date_actual = fields.Date(string='Date From', compute='_compute_fecha_hoy')
     tiempo_antiguedad = fields.Integer(compute='_compute_tiempo_antiguedad')
     periodos_ids = fields.One2many('hr.periodo','control_id', string='Periodos')
-    company_id = fields.Many2one('res.company','Company',default=lambda self: self.env.company.id) # nuevo2
 
     def _compute_fecha_hoy(self):
         hoy=datetime.now().strftime('%Y-%m-%d')
@@ -174,77 +174,6 @@ class ControlVacaciones(models.Model):
                     }
                     periodo_ids = periodo.create(values)
                     inicio=rec.new_inicio(hasta)
-                    #if not periodo.leave_allocation_id:
-                        #periodo_ids.leave_allocation_id=self.asignacion_vaca_auto(periodo_ids,rec.employee_id) # nuevo2
-                        #periodo_ids.leave_allocation_id.action_approve() # nuevo2
-                    periodo_ids.dias_pendientes=periodo_ids.dias_disfrute#-periodo_ids.dias_disfrutados # nuevo2
-            # nuevo2 de aqui para abajo
-            total_dias_aprobadas=0
-            limpia=self.env['hr.leave'].search([('employee_id','=',rec.employee_id.id),('holiday_status_id.code','=','VAC'),('state','=','validate')])
-            if limpia:
-                total_dias_aprobadas=0
-                for det in limpia:
-                    total_dias_aprobadas=total_dias_aprobadas+det.number_of_days
-                #raise UserError(_('total=%s')%total_dias_aprobadas)
-
-            revisa=rec.env['hr.periodo'].search([('control_id','=',rec.id)],order='periodo ASC')
-            if revisa:
-                for item in revisa:
-                    if item.calc_aut=='si':
-                        vector=rec.funcion_chequea(rec.employee_id,item.dias_disfrute,total_dias_aprobadas)
-                        total_dias_aprobadas=vector['total_dias_aprobadas']
-                        item.dias_disfrutados=vector['valor'] 
-                        if not item.leave_allocation_id:
-                            item.leave_allocation_id=self.asignacion_vaca_auto(item,rec.employee_id) # nuevo2
-                            item.leave_allocation_id.action_approve() # nuevo2
-                    if item.calc_aut=='no' or not item.calc_aut:
-                        if item.leave_allocation_id:
-                            if item.leave_allocation_id.state=='validate':
-                                item.leave_allocation_id.action_refuse()
-                            if item.leave_allocation_id.state=='refuse':
-                                item.leave_allocation_id.action_draft()
-                            if item.leave_allocation_id.state=='draft':
-                                item.leave_allocation_id.unlink()
-
-
-                    if (item.dias_disfrute-item.dias_disfrutados)<0:
-                        raise UserError(_('Los dias disfrutados no pueden ser mayor a los asignados para este periodo'))
-                    else:
-                        item.dias_pendientes=item.dias_disfrute-item.dias_disfrutados
-
-    # nuevo2
-    def funcion_chequea(self,employee_id,dias_asignados,total_dias_aprobadas):
-        valor=0
-        if total_dias_aprobadas>=dias_asignados:
-            valor=dias_asignados
-            total_dias_aprobadas=total_dias_aprobadas-dias_asignados
-        else:
-            valor=total_dias_aprobadas
-            total_dias_aprobadas=0
-
-        vector=({
-            'valor':valor,
-            'total_dias_aprobadas':total_dias_aprobadas,
-            })
-        return vector   
-
-
-    # nuevo2
-    def asignacion_vaca_auto(self,periodo,employee_id):
-        holiday_status_id=self.env['hr.leave.type'].search([('tipo_vacaciones','=','si'),('code','=','VAC')], limit=1)
-        values={
-        'name':"Vacaciones x",
-        'allocation_type':"regular",
-        #'number_of_days_display':periodo.dias_disfrute,
-        'number_of_days':periodo.dias_disfrute,
-        'holiday_type':"employee",
-        'employee_id':employee_id.id,
-        'holiday_status_id':holiday_status_id.id,
-        }
-        leave_allocation_id=self.env['hr.leave.allocation'].create(values)
-        leave_allocation_id.name=leave_allocation_id.display_name
-        return leave_allocation_id
-
 
 
     def hastadelta(self,inicio):
@@ -302,7 +231,7 @@ class ControlVacaciones(models.Model):
 class ListaPeriodos(models.Model):
     _name = 'hr.periodo'
 
-    control_id = fields.Many2one('hr.control.vacaciones', ondelete="cascade")
+    control_id = fields.Many2one('hr.control.vacaciones')
     periodo = fields.Char()
     desde = fields.Date()
     hasta = fields.Date()
@@ -312,12 +241,6 @@ class ListaPeriodos(models.Model):
     dias_disfrute_ley = fields.Float(compute='_compute_dias_vacaciones')
     dias_disfrutados = fields.Float()
     dias_pendientes = fields.Float()
-    leave_allocation_id = fields.Many2one('hr.leave.allocation') # nuevo2
-    calc_aut = fields.Selection([('si', 'si'),('no', 'no')],default="si",help="Si= Que al recalcular tomara las vacaciones aprobadas "
-        "y automaticamente calculara los dias usados y disponibles. No = Al recalcular, esta linea sera obviada y puede ser modificada"
-        " manulmente por el usuario") # nuevo2
-
-
 
     @api.depends('desde','hasta')
     def _compute_ano_antiguedad(self):
@@ -345,3 +268,6 @@ class ListaPeriodos(models.Model):
         for rec in self:
             raise UserError(_("No se pueden eliminar estos registros"))
         super().unlink()
+
+
+

@@ -42,7 +42,7 @@
                         </td>
                       </tr>
                       <tr> 
-                        <td colspan="5" align="left">SUELDO MENSUAL A LA FECHA: <span t-esc="o.float_format(o.sueldo)"/> Bs.</td>
+                        <td colspan="5" align="left">SUELDO MENSUAL: <span t-field="o.employee_id.contract_id.wage"/></td>
                       </tr>
                     </table>
 

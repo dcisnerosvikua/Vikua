@@ -42,7 +42,6 @@
         #'l10n_ve_res_currency',
         'hr_holidays',
         'hr_payroll_account',  ## este es un modulo de odoo nativo para que haga el asiento de la nomina
-        'l10n_ve_dpt',
     ],
     'data': [
         'views/hr_contract_add_fields_view1.xml',
@@ -72,9 +71,6 @@
         'views/hr_config_faov.xml',
         'report/monto_faov.xml',
         'views/hr_control_periodo_vacaciones.xml',
-        'views/hr_ad_personal.xml',
-        'report/recibo_pago_utilidades.xml', # nuevo2
-        'views/hr_inherit_payslip_run_view.xml',
     ],
     'demo': [],
     'installable': True,

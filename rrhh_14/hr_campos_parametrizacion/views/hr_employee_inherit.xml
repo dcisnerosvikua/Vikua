@@ -7,58 +7,6 @@
             <field name="model">hr.employee</field>
             <field name="inherit_id" ref="hr.view_employee_form"/>
             <field name="arch" type="xml">
-
-                <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='personal_information']" position="replace">
-                    <page string="Inf. Personal del Empleado" name="personal_information">
-                        <group name="central">
-                            <group name="nro_1" string="Dirección">
-                                <field name="direccion" string="Dirección Domicilio"/>
-                                <field name="ciudad" string="Ciudad" placeholder="Ejm: Caracas"/>
-                                <field name="country_id" string="Pais" placeholder="Pais" />
-                                <field name="state_id" string="Estado" placeholder="Estado o Región" domain="[('country_id','=',country_id)]" />
-                                <field name="cod_post" string="Código Postal" />
-                                <field name="municipality_id" string="Municipio" placeholder="Municipio" domain="[('state_id','=',state_id)]"/>
-                                <field name="parish_id" string="Parroquia" placeholder="Parroquia" domain="[('municipality_id','=',municipality_id)]"/>
-                            </group>
-
-                            <group name="nro_2" string="Datos Personales">
-                                <field name="tipo_contribuyente" string="Tipo"/>
-                                <field name="identification_id" string="Cédula" invisible="1"/>
-                                <field name="cedula" string="Cédula"/>
-                                <field name="rif" string="Rif"/>
-                                <field name="passport_id" />
-                                <field name="gender" />
-                                <field name="birthday" />
-                                <field name="place_of_birth" />
-                                <field name="country_of_birth" />
-                                <field name="marital" string="Estado Civil" />
-
-                            </group>
-
-                            <group name="nro_3" string="Contactos de Emergencias">
-                                <field name="emergency_contact" string="Contácto de Emergencia"/>
-                                <field name="emergency_phone" string="Teléfono de contacto"/>
-                            </group>
-                            <group name="nro_4" string="Educación">
-                                <field name="grado_instruccion" string="Grado de Instrucción"/>
-                                <field name="profesion" string="Profesión"/>
-                            </group>
-                            <group name="nro_5" string="Salario">
-                                <field name="salario" string="Salario Base"/>
-                            </group>
-
-                             <group name="nro_6" string="Información Médica">
-                                <field name="tipo_sangre" string="Tipo de Sangre:"/>
-                                <field name="alergico_descripcion" string="Alergic@ a:"/>
-                                <field name="patologia" string="Patologías:"/>
-                                <field name="tipo_discapacidad" string="Tipo de Discapacidad:"/>
-                            </group>
-                           
-                        </group>
-                    </page>
-                </xpath>
-                
-
                 <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
                     <page string="Datos del Uniforme" name="page_eALy2">
                         <group name="group_eALy2">
@@ -72,7 +20,7 @@
                             </group>
                         </group>
                     </page>
-
+                    
                     <page string="Control de días de Vacaciones" name="page_eALy1">
                         <separator string="Control dias de Vacaciónes"/>
                         <group name="group_eALy1">
@@ -86,7 +34,6 @@
                             </group>
                         </group>
                     </page>
-
                     <page string="Información de Prestaciones Sociales" name="page_eALy0">
                         <group name="group_eALy0">
                             <group name="group_eALy0_left">
@@ -105,10 +52,13 @@
                             </group>
                         </group>
                     </page>
-                    
-                </xpath>
 
+                </xpath>
+                
+
+                <!--xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside"-->
                 <xpath expr="//page[@name='personal_information']" position="after">
+
                     <page string="Grupo Familiar" name="studio_page_q7DRg">
                       <group name="studio_group_q7DRg">
                         <field name="grupo_familiar_ids" nolabel="1" readonly="False">
@@ -138,7 +88,6 @@
                             <field name="duracion" string="Duración"/>
                             <field name="contacto" string="Contacto"/>
                             <field name="nro_telefono" string="Teléfonos"/>  
-                            <field name="tipo" string="Origen"/>
                         </tree>
                         </field>
                         <!--group name="studio_group_q7DRg_left"/>
@@ -189,7 +138,45 @@
                             </group>
                         </group>
                     </page>
+                </xpath>
 
+                <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='personal_information']" position="replace">
+                    <page string="Inf. Personal del Empleado" name="personal_information">
+                        <group name="central">
+                            <group name="nro_1" string="Dirección">
+                                <field name="direccion" string="Dirección Domicilio"/>
+                                <field name="ciudad" string="Ciudad" placeholder="Ejm: Caracas"/>
+                                <field name="country_id" string="Pais" placeholder="Pais" />
+                                <field name="state_id" string="Estado" placeholder="Estado o Región" domain="[('country_id','=',country_id)]" />
+                                <field name="cod_post" string="Código Postal" />
+                                <field name="municipality_id" string="Municipio" placeholder="Municipio" domain="[('state_id','=',state_id)]"/>
+                                <field name="parish_id" string="Parroquia" placeholder="Parroquia" domain="[('municipality_id','=',municipality_id)]"/>
+                            </group>
+                            <group name="nro_2" string="Datos Personales">
+                                <field name="tipo_contribuyente" string="Tipo"/>
+                                <field name="identification_id" string="Cédula"/>
+                                <field name="rif" string="Rif"/>
+                                <field name="passport_id" />
+                                <field name="gender" />
+                                <field name="birthday" />
+                                <field name="place_of_birth" />
+                                <field name="country_of_birth" />
+                                <field name="marital" string="Estado Civil" />
+
+                            </group>
+                            <group name="nro_3" string="Contactos de Emergencias">
+                                <field name="emergency_contact" string="Contácto de Emergencia"/>
+                                <field name="emergency_phone" string="Teléfono de contacto"/>
+                            </group>
+                            <group name="nro_4" string="Educación">
+                                <field name="grado_instruccion" string="Grado de Instrucción"/>
+                                <field name="profesion" string="Profesión"/>
+                            </group>
+                            <group name="nro_5" string="Salario">
+                                <field name="salario" string="Salario Base"/>
+                            </group>
+                        </group>
+                    </page>
                 </xpath>
 
                 <xpath expr="//field[@name='address_id']" position="replace">
@@ -197,12 +184,7 @@
                     <!--xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='personal_information']/group[1]/group[1]/field[@name='address_home_id']" position="move"/-->
                 </xpath>
 
-                <xpath expr="//field[@name='work_location']" position="replace">
-                    <field name="work_location_pri" string="Ubicacion de trabajo" />
-                     <field name="work_location" invisible="1" />
-                </xpath>
-
-                <xpath expr="//field[@name='pin']" position="before">
+                 <xpath expr="//field[@name='pin']" position="before">
                     <div class="o_row">
                         <field name="constancia_trab" string="Jefe de RRHH" readonly="1" />
                         <field name="gerente_rrhh_id" string="Jefe de RRHH"/>
@@ -211,30 +193,6 @@
                 </xpath>
                 <xpath expr="//field[@name='parent_id']" position="after">
                     <field name="fecha_hoy" string="Dia actual"/>
-                </xpath>
-                <xpath expr="//field[@name='mobile_phone']" position="before">
-                    <field name="job_id" string="Cargo"/>
-                </xpath>
-
-                <xpath expr="//field[@name='registration_number']" position="replace">
-                    <label for="registration_number"/>
-                    <div class="o_row">
-                        <field name="registration_number" string="Número de Registro del Empleado"/>
-                        <button string="Generar" class="btn btn-link" type="object" name="generate_nro_registro" attrs="{'invisible': [('registration_number', '!=', False)]}"/>
-                    </div>
-                </xpath>
-
-                <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='public']" position="before">
-                    <page name="adjuntar" string="Adjuntar Soportes">
-                        <group name="central_doc">
-                        <field name="documentos_ids" nolabel="1" readonly="False">
-                        <tree string="Documentos" editable="buttom">
-                            <field name="name" string="Descripción"/>
-                            <field name="documento" string="Documento" class="fa fa-download"/>
-                        </tree>
-                        </field>
-                      </group>
-                    </page>
                 </xpath>
 
             </field>

@@ -10,14 +10,9 @@
                 <xpath expr="//field[@name='country_id']" position="after">
                     <field name="activo_prestaciones" string="Ejecutar rutina de prestaciones sociales en esta nomina?"/>
                 </xpath>
-
-                <xpath expr="//field[@name='schedule_pay']" position="before">
-                    <field name="tipo_struct" string="Modo de Pago" required="1"/><!-- nuevo2 -->
-                </xpath>
-
                 <xpath expr="//field[@name='schedule_pay']" position="after">
                     <field name="shedule_pay_value" string="Cada cuanto dias se paga"/>
-                    <field name="company_id" string="Compañia" invisible="1"/>
+                    <field name="company_id" string="Compañia"/>
                 </xpath>
 
                 <xpath expr="//page[@name='salary_rules']" position="after">

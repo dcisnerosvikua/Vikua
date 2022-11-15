@@ -47,22 +47,6 @@
             </field>
         </record>
 
-        <record id="vista_ubicacion_from" model="ir.ui.view">
-            <field name="name">vista.ubicacion.from</field>
-            <field name="model">hr.ubicacion</field>
-            <field name="arch" type="xml">
-                <form string="Ubicaciones del Trabajo">
-                    <sheet>
-                        <group name="central">
-                            <field name="name" string="Descripcón"/>
-                            <field name="activo" string="Activo"/> 
-                        </group>
-                    </sheet>
-                </form>
-            </field>
-        </record>
-
-
         <record id="vista_grado_tree" model="ir.ui.view">
         <field name="name">vista.grado.tree</field>
         <field name="model">hr.grado.instruccion</field>
@@ -96,18 +80,6 @@
         </field>
         </record>
 
-        <record id="vista_ubicacion_tree" model="ir.ui.view">
-        <field name="name">vista.ubicacion.tree</field>
-        <field name="model">hr.ubicacion</field>
-        <field name="arch" type="xml">
-            <tree string="Ubicacion Laboral" >
-                <field name="name" string="Ubicacion"></field>
-                <field name="activo" string="activo"></field>     
-            </tree>
-        </field>
-        </record>
-
-
        
 
         <record id="act_hr_grado_tree" model="ir.actions.act_window">
@@ -131,13 +103,6 @@
             <field name="view_id" ref="vista_parentesco_tree"></field>
         </record>
 
-         <record id="act_hr_ubicacion_tree" model="ir.actions.act_window">
-            <field name="name">Ubicaciones de Trabajo</field>
-            <field name="res_model">hr.ubicacion</field>
-            <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="vista_ubicacion_tree"></field>
-        </record>
-
         <menuitem
             id="view_grado_instruccion_menu"
             parent="hr.menu_human_resources_configuration_employee"
@@ -158,12 +123,5 @@
             name="Parentesco"
             sequence="22"
             action="act_hr_parentesco_tree"/>
-
-        <menuitem
-            id="view_ubicacion_menu"
-            parent="hr.menu_human_resources_configuration_employee"
-            name="Ubicaciones de Trabajo"
-            sequence="23"
-            action="act_hr_ubicacion_tree"/>
     </data>
 </odoo>

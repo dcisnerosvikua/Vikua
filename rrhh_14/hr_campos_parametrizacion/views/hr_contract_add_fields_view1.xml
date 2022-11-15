@@ -37,14 +37,6 @@
                                         </div>
                                     </div>
 
-                                <label for="night_bonus_comple_check" string="Bono Nocturno (%)"/>
-                                    <div>
-                                        <div class="address_format">
-                                            <field name="night_bonus_comple_check" style="width: 15%%"/>
-                                            <field name="night_bonus_comple_value" string="Monto" attrs="{'invisible': [('night_bonus_comple_check', '!=', True)]}"/>
-                                        </div>
-                                    </div>
-
                                 <label for="holidays_check" string="Dias Feriados"/>
                                     <div>
                                         <div class="address_format">

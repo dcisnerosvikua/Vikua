@@ -29,12 +29,10 @@
       
 
             <xpath expr="//group[@name='social_media']" position="after">
-                    <group string="Configuracion RRHH y Pagos Nómina" name="tipo_metodo_prestaciones" aling="center">
-                        <field name="tipo_metodo" string="Calculo de Prestaciones:" widget="radio"/>
-                        <field name="tipo_dif_dias" string="Modo de dias a pagar" widget="radio"/>
+                    <group string="Configuracion Metodo Calculo de Prestaciones" name="tipo_metodo_prestaciones" aling="center">
+                        <field name="tipo_metodo" string="Tipo de metodo para Prestaciones:"/>
                     </group>
-            </xpath>
-
+                </xpath>
         </field>
     </record>
     </data>

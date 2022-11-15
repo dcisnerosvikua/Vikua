@@ -7,10 +7,6 @@
             <field name="model">hr.payslip</field>
             <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
             <field name="arch" type="xml">
-                <!--xpath expr="//header//button[@name='action_payslip_cancel']" position="before">
-                     <button name="recalcular_nom" type="object" class="oe_highlight" string="Recalcular Nómina" attrs="{'invisible': [('state','!=','verify') ]}"/>
-                </xpath--><!-- nuevo2 -->
-
                 <xpath expr="//field[@name='struct_id']" position="after">
                     <field name="fecha_hoy"/>
 
@@ -19,9 +15,7 @@
                 <xpath expr="//field[@name='name']" position="after">
                     <field name="custom_rate_gene" string="Tasa Personalizada"/>
                     <field name="os_currecy_rate_gene" string="Tasa" attrs="{'readonly': [('custom_rate_gene', '!=', True)]}"/>
-                    <field name="sueldo" string="Sueldo a este Periodo(Bs)"/> <!-- nuevo2 -->
                     <field name="os_currecy_rate_gene_aux" invisible="1"/>
-
                 </xpath>
 
                 <xpath expr="//form/sheet/notebook" position="attributes">
@@ -81,7 +75,7 @@
 
                     </group>
 
-                    <h3><a><b>Descuentos por prestamos</b></a></h3>
+                    <!--h3><a><b>Descuentos por prestamos</b></a></h3>
                     <newline/>
                     <group col="4">
                         <group>
@@ -95,21 +89,17 @@
                         <group col="2">
                             <field name="monto" string="Monto a descontar" attrs="{'invisible': [('habilitar_des_pres', '!=', True)]}" />
                             <field name="currency_pres_id" string="Moneda" attrs="{'invisible': [('habilitar_des_pres', '!=', True)]}"/>
-                            <field name="monto_bs" string="Equivalente en (Bs)" readonly="0" attrs="{'invisible': [('habilitar_des_pres', '!=', True)]}"/>
+                            <field name="monto_bs" string="Equivalente en (Bs)" readonly="1" attrs="{'invisible': [('habilitar_des_pres', '!=', True)]}"/>
                         </group>
-                    </group>
+                    </group-->
 
                     <h3><a><b>Dias Especiales</b></a></h3>
                     <newline/>
                     <group col="4">
                         <group col="2">
                         <field name="mondays"/>
-                        <field name="mondays_activo"/> <!-- nuevo2 -->
                         <field name="holydays"/>
                         <field name="workdays" invisible="0"/>
-                        <field name="workdays_periodo" invisible="1"/><!-- nuevo2 -->
-                        <field name="workdays_periodo2" invisible="0"/><!-- nuevo2 -->
-                        <field name="saturdays_sundays_act" string="Sabados/Domingos Activos" invisible="0"/><!-- nuevo2 -->
                         <field name="hollydays_str" nolabel="1" readonly="1" invisible="1 "/>
                         </group>
                         <group col="2">
@@ -118,8 +108,6 @@
                         <field name="days_attended" readonly="1" invisible="0"/>
                         <field name="days_inasisti" readonly="1" invisible="0"/>
                         <field name="monto_bono_alimenticio" invisible="1"/>
-                        <field name="dif_dias_ingreso" string="Dif. dias Ingreso"/>
-                        <field name="dif_dias_egreso" string="Dif. dias Egreso"/>
                         </group>
                         
                     </group>
@@ -143,21 +131,6 @@
                         </group>
                     </group>
 
-
-                    <h3><a><b>Tiempo de Vacaciones Para este periodo de Nómina</b></a></h3>
-                    <newline/>
-                    <group col="4">
-                        <group col="2">
-                            <field name="tiempo_antiguedad" string="Antiguedad (años)" readonly="1"/>
-                            <field name="dias_vacaciones" string="Dias a Disfrutar" readonly="1"/>
-                            <field name="dias_vacaciones_pedidas" string="Dias solicitados"/>
-                        </group>
-                        <group col="2">
-                           <field name="dias_vacaciones_en_nomina" string="Dias en Vac. de este Periódo de Nóm."/>
-                           <field name="saturdays_sundays_vac" string="Sabados y Domingos"/>
-                        </group>
-                    </group>
-
                     <h3><a><b>Tiempo Laborados</b></a></h3>
                     <newline/>
                     <group col="4">
@@ -171,6 +144,17 @@
                         </group>
                     </group>
 
+                    <h3><a><b>Tiempo de Vacaciones</b></a></h3>
+                    <newline/>
+                    <group col="4">
+                        <group col="2">
+                            <field name="tiempo_antiguedad" string="Antiguedad (años)" readonly="1"/>
+                        </group>
+                        <group col="2">
+                            <field name="dias_vacaciones" string="Dias a Disfrutar" readonly="1"/>
+                            <field name="dias_vacaciones_pedidas" string="Dias solicitados"/>
+                        </group>
+                    </group>
 
                     <h3><a><b>Otros</b></a></h3>
                     <newline/>
@@ -193,7 +177,7 @@
                 <xpath expr="//form[1]/sheet[1]/notebook[@name='identification_employee']/page[2]/field[@name='line_ids']/tree[1]/field[@name='total']" position="after">
                     <field name="total_uds" string="Total $"/>
                 </xpath>
-                
+
             </field>
         </record>
 
