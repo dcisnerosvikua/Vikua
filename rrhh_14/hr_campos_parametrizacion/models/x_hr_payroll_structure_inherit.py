@@ -13,25 +13,27 @@ class HrPayrollStructure(models.Model):
     shedule_pay_value = fields.Integer(string='Valor Pago Planificado', compute='_compute_dias_pago')
     employee_ids = fields.One2many('hr.payroll.employeed','structure_id')
     company_id = fields.Many2one('res.company','Company',default=lambda self: self.env.company.id)
+    tipo_struct = fields.Selection([('reg', 'Pago Regular'),('vac', 'Vacaciones'),('uti','Utilidades'),('bon','Bonos'),('liq','Liquidacion'),('cest','Cesta Ticket'),('otr','Otros')])# nuevo2 *
 
     @api.onchange('schedule_pay')
     def _compute_dias_pago(self):
         value=15
-        if self.schedule_pay=="monthly":
-            value=30
-        if self.schedule_pay=="quarterly":
-            value=90
-        if self.schedule_pay=="semi-annually":
-            value=180
-        if self.schedule_pay=="annually":
-            value=360
-        if self.schedule_pay=="weekly":
-            value=7
-        if self.schedule_pay=="bi-weekly":
-            value=15
-        if self.schedule_pay=="bi-monthly":
-            value=60
-        self.shedule_pay_value=value
+        for selff in self:
+            if selff.schedule_pay=="monthly":
+                value=30
+            if selff.schedule_pay=="quarterly":
+                value=90
+            if selff.schedule_pay=="semi-annually":
+                value=180
+            if selff.schedule_pay=="annually":
+                value=360
+            if selff.schedule_pay=="weekly":
+                value=7
+            if selff.schedule_pay=="bi-weekly":
+                value=15
+            if selff.schedule_pay=="bi-monthly":
+                value=60
+            selff.shedule_pay_value=value
 
 class HrPayrollEmployeed(models.Model):
     _name = 'hr.payroll.employeed'

@@ -18,3 +18,5 @@ from . import hr_payslip_line
 from . import hr_requisiciones
 from . import hr_config_ret_ince
 from . import hr_config_ret_faov
+from . import hr_ad_personal
+from . import hr_payslip_run

@@ -23,6 +23,7 @@
                             </group>
                             <group name="der">
                                 <field name="tiempo_antiguedad" string="Años de antiguedad"/>
+                                <field name="company_id" string="Compañia" /><!-- nuevo2 -->
                             </group>
                         </group>
                         <notebook>
@@ -40,6 +41,8 @@
                                     <field name="dias_disfrute" string="Difrute Total"/>
                                     <field name="dias_disfrutados"/>
                                     <field name="dias_pendientes"/>
+                                    <field name="leave_allocation_id" string="Asignación"/><!-- nuevo2 -->
+                                    <field name="calc_aut" string="Cal Aut" attribute="upgrade_radio"/><!-- nuevo2 -->
                                 </tree>
                             </field>
                         </page>
@@ -58,6 +61,7 @@
                 <field name="employee_id" string="Empleado"></field> 
                 <field name="fecha_ingreso" string="Ingreso"/>
                 <field name="date_actual" string="Fecha actual"/>
+                <field name="company_id" string="Compañia" /><!-- nuevo2 -->
 
             </tree>
         </field>

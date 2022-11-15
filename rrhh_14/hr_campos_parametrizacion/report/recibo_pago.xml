@@ -10,12 +10,12 @@
         <field name="page_height">279</field>
         <field name="page_width">216</field>
         <field name="orientation">Portrait</field>
-        <field name="margin_top">40</field>
+        <field name="margin_top">26</field>
         <field name="margin_bottom">20</field>
         <field name="margin_left">7</field>
         <field name="margin_right">7</field>
         <field name="header_line" eval="False"/>
-        <field name="header_spacing">35</field>
+        <field name="header_spacing">20</field>
         <field name="dpi">96</field>
     </record>
 
@@ -32,7 +32,7 @@
                           </t>
                         </td>
                         <td align="right">
-                          Recibo de Pago
+                          Recibo de Pago  xxx
                           <br/>
                           Emisión:&amp;nbsp;&amp;nbsp;
                           <span t-field="o.fecha_hoy"/>
@@ -48,7 +48,7 @@
                     <table class="table table-sm table-bordered" style="font-size:13px;">
                       <tr>
                         <td>
-                          Cédula No .V-<span t-field="o.employee_id.identification_id"/>
+                          Cédula No .V-<span t-field="o.employee_id.cedula"/>
                         </td>
                         <td colspan="2">
                           Apellidos y Nombres: &amp;nbsp;&amp;nbsp;<span t-field="o.employee_id.name"/>
@@ -60,8 +60,8 @@
                         <td>Cargo: &amp;nbsp;&amp;nbsp;<span t-field="o.employee_id.job_id"/></td>
                       </tr>
                       <tr>
-                        <td>Sueldo Mensual:&amp;nbsp;&amp;nbsp;<span t-esc="o.float_format(o.employee_id.contract_id.wage)"/> Bs.</td>
-                        <td>Sueldo Diario:&amp;nbsp;&amp;nbsp;<span t-esc="o.float_format(o.employee_id.contract_id.wage/30)"/> Bs.</td>
+                        <td>Sueldo Mensual a la fecha:&amp;nbsp;&amp;nbsp;<span t-esc="o.float_format(o.sueldo)"/> Bs.</td>
+                        <td>Sueldo Diario:&amp;nbsp;&amp;nbsp;<span t-esc="o.float_format(o.sueldo/30)"/> Bs.</td>
                         <td>Dpto:&amp;nbsp;&amp;nbsp;<span t-field="o.employee_id.department_id.name"/></td>
                       </tr>
                     </table>

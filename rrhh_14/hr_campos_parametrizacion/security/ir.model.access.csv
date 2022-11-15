@@ -22,9 +22,11 @@ hr_resumen_pago_ince,hr.resumen.pago_ince,model_hr_resumen_pago_ince,base.group_
 hr_config_faov,hr.config.faov,model_hr_config_faov,base.group_user,1,1,1,1
 hr_faov_reglas,hr.faov.reglas,model_hr_faov_reglas,base.group_user,1,1,1,1
 hr_resumen_pago_faov,hr.resumen.pago_faov,model_hr_resumen_pago_faov,base.group_user,1,1,1,1
-snc_wizard_pagar_faov,snc.wizard.pagar_faov,model_snc_wizard_pagar_faov,base.group_user,1,1,1,1
-snc_wizard_pagar_ince,snc.wizard.pagar_ince,model_snc_wizard_pagar_ince,base.group_user,1,1,1,1
-snc_wizard_faov,snc.wizard.faov,model_snc_wizard_faov,base.group_user,1,1,1,1
-snc_wizard_mintra,snc.wizard.mintra,model_snc_wizard_mintra,base.group_user,1,1,1,1
 hr_control_vacaciones,hr.control.vacaciones,model_hr_control_vacaciones,base.group_user,1,1,1,1
 hr_periodo,hr.periodo,model_hr_periodo,base.group_user,1,1,1,1
+hr_ad_personal,hr.ad.personal,model_hr_ad_personal,base.group_user,1,1,1,1
+hr_documentos,hr.documentos,model_hr_documentos,base.group_user,1,1,1,1
+snc_wizard_mintra,snc.wizard.mintra,model_snc_wizard_mintra,base.group_user,1,1,1,1
+snc_wizard_faov,snc.wizard.faov,model_snc_wizard_faov,base.group_user,1,1,1,1
+snc_wizard_pagar_ince,snc.wizard.pagar_ince,model_snc_wizard_pagar_ince,base.group_user,1,1,1,1
+snc_wizard_pagar_faov,snc_wizard_pagar_faov,model_snc_wizard_pagar_faov,base.group_user,1,1,1,1

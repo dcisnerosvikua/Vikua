@@ -8,6 +8,10 @@ hr_payroll_employeed
   modelo : 	hr.payroll.employeed
   definicion de regla = ['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]
 
+hr_control_vacaciones
+  modelo : 	hr.control.vacaciones
+  definicion de regla = ['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]
+
 
 *******************************************************************************************************
 REGLAS A MODIFICAR
