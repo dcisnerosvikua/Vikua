@@ -20,6 +20,7 @@ class HrPauslipLine(models.Model):
             else:
                 rec.total_uds=rec.total
 
+
     """@api.depends('quantity', 'amount', 'rate','dias')
     def _compute_total(self):
         for line in self:
@@ -29,9 +30,11 @@ class HrPauslipLine(models.Model):
         valor="--"
         for rec in self:
             if rec.code=="BASIC":
-                valor=rec.slip_id.days_attended
+                valor=rec.slip_id.workdays#rec.slip_id.days_attended
             if rec.code=='DIADES':
-                valor=rec.slip_id.saturdays+rec.slip_id.sundays
+                valor=rec.slip_id.saturdays_sundays_act #-rec.slip_id.saturdays_sundays_vac # nuevo2
+            if rec.code=='DIADEL':
+                valor=rec.slip_id.hollydays_str # nuevo2
             if rec.code=="DIAFE":
                 valor=rec.slip_id.holydays
             if rec.code=="DIAFEL":
@@ -51,8 +54,13 @@ class HrPauslipLine(models.Model):
             if rec.code=="INASIS":
                 valor=rec.slip_id.dias_ausencia_injus
             if rec.code=="BOAYEC":
-                valor=rec.slip_id.days_attended
+                #valor=rec.slip_id.days_attended # nuevo2
+                valor=rec.slip_id.struct_id.shedule_pay_value-rec.slip_id.dif_dias_ingreso-rec.slip_id.dif_dias_egreso # nuevo2
             if rec.code=="DSP":
                 valor=int(rec.slip_id.dias_pen_d_value)
+            if rec.code=="BFA":
+                valor=int(rec.slip_id.dias_utilidades) # nuevo2
+            if rec.code=="CESTIK":
+                valor=rec.slip_id.struct_id.shedule_pay_value-rec.slip_id.dif_dias_ingreso-rec.slip_id.dif_dias_egreso # nuevo2
             rec.dias=str(valor)
             valor="--"

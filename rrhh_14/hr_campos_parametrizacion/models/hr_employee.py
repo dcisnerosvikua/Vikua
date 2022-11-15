@@ -19,8 +19,10 @@ class HrEmployee(models.Model):
     profesion = fields.Many2one('hr.profesion')
     grupo_familiar_ids = fields.One2many('hr.grupo.familiar', 'employee_id', string='Grupo Familiar')
     cursos_ids = fields.One2many('hr.cursos', 'employee_id', string='Cursos')
+    documentos_ids = fields.One2many('hr.documentos', 'employee_id', string='Documentos')
     promocion_ids = fields.One2many('hr.promocion', 'employee_id', string='Promociones')
     rif = fields.Char()
+    cedula = fields.Char()
     tipo_contribuyente = fields.Selection([('V','V'),('E','E'),('J','J'),('G','G'),('P','P'),('C','C'),])
 
     direccion = fields.Text()
@@ -58,6 +60,35 @@ class HrEmployee(models.Model):
     mujer_embarazad = fields.Selection([('N','No'),('S','Si')])
 
 
+    work_location_pri = fields.Many2one('hr.ubicacion')
+    tipo_sangre = fields.Char()
+    alergico_descripcion = fields.Char()
+    patologia = fields.Char()
+    tipo_discapacidad = fields.Char()
+
+    def get_nro_registro_empleado(self):
+
+        self.ensure_one()
+        SEQUENCE_CODE = 'nro_registro_empleado'
+        company_id = self.company_id.id
+        IrSequence = self.env['ir.sequence'].with_context(force_company=company_id)
+        name = IrSequence.next_by_code(SEQUENCE_CODE)
+
+        # si aún no existe una secuencia para esta empresa, cree una
+        if not name:
+            IrSequence.sudo().create({
+                'prefix': '000-',
+                'name': 'secuencia nro registro empleado compañia: %s' % self.company_id.name,
+                'code': SEQUENCE_CODE,
+                'implementation': 'no_gap',
+                'padding': 4,
+                'number_increment': 1,
+                'company_id': self.company_id.id,
+            })
+            name = IrSequence.next_by_code(SEQUENCE_CODE)
+        #self.invoice_number_cli=name
+        return name
+
     def _compute_datos_contrato(self):
         valor='1999-01-01'
         sueldo=0
@@ -68,7 +99,12 @@ class HrEmployee(models.Model):
             selff.fecha_ingreso=valor
             selff.salario=sueldo
 
+    @api.onchange('work_location_pri')
+    def actualiza_ubicacion(self):
+        self.work_location=self.work_location_pri.name
 
+    def generate_nro_registro(self):
+        self.registration_number=self.get_nro_registro_empleado()
 
 
     def _compute_hoy(self):
@@ -253,6 +289,15 @@ class HrCursos(models.Model):
     duracion = fields.Char()
     nro_telefono = fields.Char()
     contacto = fields.Char()
+    tipo = fields.Selection([('Externo','Externo'),('Interno','Interno')])
+
+class HrDocumentos(models.Model):
+
+    _name = 'hr.documentos'
+
+    employee_id = fields.Many2one('hr.employee', string='Documentos')
+    name = fields.Char()
+    documento = fields.Binary()
 
 class HrPromosiones(models.Model):
 
@@ -263,6 +308,13 @@ class HrPromosiones(models.Model):
     motivo = fields.Char()
     fecha = fields.Date()
     autorizor_id = fields.Many2one('hr.employee')
+
+class HrUbicacionTrabajo(models.Model):
+
+    _name = 'hr.ubicacion'
+
+    name = fields.Char()
+    activo = fields.Boolean(default=True)
 
 
 class HrGrupoFamiliar(models.Model):

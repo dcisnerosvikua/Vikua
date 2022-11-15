@@ -17,6 +17,8 @@ class Contract(models.Model):
     #######################################ASIGNACIONES##################################################################
     night_bonus_check = fields.Boolean(string='Night Bonus')
     night_bonus_value = fields.Integer(string='Night Bonus Value', default=7)
+    night_bonus_comple_check = fields.Boolean(string='Night Bonus')
+    night_bonus_comple_value = fields.Integer(string='Night Bonus Value', default=7)
     #night_bonus = fields.Float(string='Night Bonus', digits=(10,2))
     days_of_salary_pending_check = fields.Boolean(string='Days of Salary Pending')
     days_of_salary_pending_value = fields.Integer('Days of Salary Pending Value', size=2)
