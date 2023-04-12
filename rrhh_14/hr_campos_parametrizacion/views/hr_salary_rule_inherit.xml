@@ -30,6 +30,17 @@
                             <field name="rpvh" string="Ley de politica Habitacional"/>
                         </group>
                     </div>
+                    <div name="central_tipo">
+                        <h3><a><b>Este Concepto sera de tipo?:</b></a></h3>
+                        <newline/>
+                        <group name="tipos_details" col="4">
+                            <field name="islr_c" string="ISLR"/>
+                            <field name="faov_c" string="FAOV"/>
+                            <field name="sso_c" string="SSO"/>
+                            <field name="ince_c" string="INCE"/>
+                            <field name="rpe_c" string="LPF" />
+                        </group>
+                    </div>
                 </xpath>
                 
             </field>

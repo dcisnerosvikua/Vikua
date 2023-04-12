@@ -51,7 +51,7 @@
                         <tr align="center">
                           <td>COD. </td>
                           <td>DESCRIPCIONES</td>
-                          <td>VALOR AUXILIAR</td>
+                          <!--td>VALOR AUXILIAR</td-->
                           <td>ASIGNACIONES</td>
                           <td>DEDUCCIONES</td>
                           
@@ -65,7 +65,7 @@
                         <tr>
                           <td><span t-field="line.code"/></td>
                           <td><span t-field="line.name"/></td>
-                          <td align="center">
+                          <!--td align="center">
                             <t t-if="line.code == 'DIVA'">
                               <span t-field="o.workdays"/>
                             </t>
@@ -79,7 +79,7 @@
                             <t t-if="line.code == 'DIFE'">
                               <span t-field="o.holydays"/>
                             </t>
-                          </td>
+                          </td-->
                           <td align="right">
                             <t t-if="line.category_id.code != 'DED'">
                             <span t-esc="line.total"
@@ -100,7 +100,7 @@
                         </t>
                         </t>
                         <tr>
-                          <td colspan="3" align="right">
+                          <td colspan="2" align="right">
                             TOTALES:
                           </td>
                           <td align="right"><t t-esc="acum_asig" t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/></td>

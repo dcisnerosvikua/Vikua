@@ -177,7 +177,7 @@
     <report
             id="payslip_recibo_liq"
             model="hr.payslip"
-            string="Recibo de Pago de Liquidacion"
+            string="Recibo de Pago de Liquidación"
             report_type="qweb-pdf"
             name="hr_campos_parametrizacion.report_recibo_liqui"
             file="hr_campos_parametrizacion.report_recibo_liqui"

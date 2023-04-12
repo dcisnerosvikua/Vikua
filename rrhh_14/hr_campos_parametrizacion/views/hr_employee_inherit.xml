@@ -22,6 +22,7 @@
                             </group>
 
                             <group name="nro_2" string="Datos Personales">
+                                <field name="status_legal" string="Estatus Legal"/>
                                 <field name="tipo_contribuyente" string="Tipo"/>
                                 <field name="identification_id" string="Cédula" invisible="1"/>
                                 <field name="cedula" string="Cédula"/>
@@ -32,6 +33,7 @@
                                 <field name="place_of_birth" />
                                 <field name="country_of_birth" />
                                 <field name="marital" string="Estado Civil" />
+                                <field name="lateralidad" string="Lateralidad Manual"/>
 
                             </group>
 
@@ -52,6 +54,7 @@
                                 <field name="alergico_descripcion" string="Alergic@ a:"/>
                                 <field name="patologia" string="Patologías:"/>
                                 <field name="tipo_discapacidad" string="Tipo de Discapacidad:"/>
+                                <field name="tratamiento_medico" string="Tratamiento Médico:"/>
                             </group>
                            
                         </group>
@@ -65,10 +68,12 @@
                             <group name="group_eALy2_left">
                                 <field name="zapatos" string="Zapatos:"/>
                                 <field name="camisas" string="Camisa:"/>
+                                <field name="chaqueta" string="Chaqueta" />
                             </group>
                             <group name="group_eALy2_right">
                                 <field name="pantalon" string="Pantalón">%</field>
                                 <field name="chemise" string="Chemise"/>
+                                <field name="bata" string="Bata de laboratorio" />
                             </group>
                         </group>
                     </page>
@@ -121,6 +126,49 @@
                             <field name="sexo" string="Género"/>
                             <field name="parentesco_din" string="Parentesco"/>
                             <field name="nro_telefono" string="Teléfono contacto"/>
+
+                            <field name="estudia" />
+                            <field name="institucion" />
+                            <field name="grad_ano_semestre" />
+                            <field name="trabaja" />
+                            <field name="discapacidad" />
+                            <!--field name="referencias" />
+                            <field name="talla" /-->
+                        </tree>
+                        </field>
+                        <!--group name="studio_group_q7DRg_left"/>
+                        <group name="studio_group_q7DRg_right"/-->
+                      </group>
+                    </page>
+
+                    <page string="Datos academicos" name="studio_academico">
+                      <group name="studio_academico">
+                        <field name="academicos_ids" nolabel="1" readonly="False">
+                        <tree string="Datos academicos" editable="buttom">
+                            <field name="employee_id" string="Empleado" invisible="1"/>
+                            <field name="institucion" string="Instituto"/>
+                            <field name="ano_egreso" string="Año de Egreso"/>
+                            <field name="duracion" string="Duración"/>
+                            <field name="titulo" string="Titulo"/>
+                            <!--field name="estado" string="Estado"/-->  
+                        </tree>
+                        </field>
+                        <!--group name="studio_group_q7DRg_left"/>
+                        <group name="studio_group_q7DRg_right"/-->
+                      </group>
+                    </page>
+
+                    <page string="Idiomas" name="studio_idiomas">
+                      <group name="studio_idiomas">
+                        <field name="idiomas_ids" nolabel="1" readonly="False">
+                        <tree string="Datos academicos" editable="buttom">
+                            <field name="employee_id" string="Empleado" invisible="1"/>
+                            <field name="lenguaje" string="Lenguaje"/>
+                            <field name="lee" string="Lee"/>
+                            <field name="escribe" string="Escribe"/>
+                            <field name="habla" string="Habla"/>
+                            <field name="instituto" string="Instituto"/> 
+                            <field name="ano" string="Año de Culminacion"/> 
                         </tree>
                         </field>
                         <!--group name="studio_group_q7DRg_left"/>

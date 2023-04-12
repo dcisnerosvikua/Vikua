@@ -692,8 +692,8 @@ class hr_special_days(models.Model):
         #raise UserError(_('asiento=%s')%self.move_id.id)
         for roc in self:
             roc.valida_pago_repetido()
-            roc.move_id.custom_rate=roc.custom_rate_gene
-            roc.move_id.os_currency_rate=roc.os_currecy_rate_gene
+            #roc.move_id.custom_rate=roc.custom_rate_gene
+            #roc.move_id.os_currency_rate=roc.os_currecy_rate_gene
 
     #@api.onchange('employee_id') # ojo
     #def _compute_hoy(self):

@@ -18,7 +18,7 @@
 				    <group name="group1">
 				    	<group name="group11">
 					    	<field name="tipo_aumento" required='1' attrs="{'readonly': [('state', '!=','draft')]}"></field>
-                            <field name="seleccion_aumento" attrs="{'readonly': [('state', '!=','draft')]}"/>					
+                            <field name="seleccion_aumento" attrs="{'readonly': [('state', '!=','draft')]}" required='1'/>					
 					        <field name="motivo" attrs="{'readonly': [('state', '!=','draft')]}"></field>
 					        <field name="responsable" string="Responsable" required='1' attrs="{'readonly': [('state', '!=','draft')]}"></field>
 					        
@@ -27,6 +27,8 @@
 					    	<field name="fecha_decreto" required='1' attrs="{'readonly': [('state', '!=','draft')]}"></field>
 				        	<field name="fecha_incremento" required='1' attrs="{'readonly': [('state', '!=','draft')]}"></field>
 				        	<field name="sueldo_minimo" required='1' attrs="{'readonly': [('state', '!=','draft')]}"/>
+                            <field name="moneda_sueldo_incrementar" string="Tipo de sueldo Afectar" required='1' attrs="{'readonly': [('state', '!=','draft')]}"/>
+                            <field name="tasa" string="Tasa del dia" required='1' attrs="{'readonly': [('state', '!=','draft')]}"/>
 				    	</group>
 				    </group>
 				    <group name="group2">
@@ -63,8 +65,10 @@
                             <!--field name="retention_line_ids" nolabel="1" readonly="True"-->
                                 <tree string="Banda Salarial Empleados" editable="buttom">
                                     <field name="employee_id" string="Empleados"/>
-                                    <field name="sueldo_anterior" string="Sueldo Anterior"/>
-                                    <field name="sueldo_nuevo" string="Sualdo Nuevo"/>
+                                    <field name="sueldo_anterior" string="Sueldo Anterior (Bs.)"/>
+                                    <field name="sueldo_anterior_div" string="Sueldo Anterior (usd.)"/>
+                                    <field name="sueldo_nuevo" string="Sueldo Nuevo (Bs.)"/>
+                                    <field name="sueldo_nuevo_div" string="Sueldo Nuevo (usd.)"/>
                                 </tree>
                                 
                             </field>

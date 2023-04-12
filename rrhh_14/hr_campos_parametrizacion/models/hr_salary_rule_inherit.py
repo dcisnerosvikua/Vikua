@@ -32,6 +32,15 @@ class HrSalaryRule(models.Model):
     inces = fields.Boolean(default=False)
     salario_normal = fields.Boolean(default=False)
 
+    islr_c = fields.Boolean(default=False)
+    faov_c = fields.Boolean(default=False)
+    sso_c = fields.Boolean(default=False)
+    ince_c = fields.Boolean(default=False)
+    rpe_c = fields.Boolean(default=False)
+
+
+
+
 
     def _satisfy_condition(self, localdict):
         self.ensure_one()
@@ -70,6 +79,7 @@ class HrSalaryRule(models.Model):
                         fecha=str(localdict['payslip'].date_from)
                         mes = int(fecha[5:7])
                         year = int(fecha[0:4])
+                        mess='12'
                         if mes<10:
                             mess="0"+str(mes)
                         if det.shedule_pay_mensual=="1ra":

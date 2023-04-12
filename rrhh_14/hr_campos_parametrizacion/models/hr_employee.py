@@ -13,16 +13,21 @@ class HrEmployee(models.Model):
     camisas = fields.Selection([('XS', 'XS'),('S', 'S'),('M', 'M'),('M-L', 'M-L'),('L', 'L'),('L-XL', 'L-XL'),('XL', 'XL'),('XL-XXL', 'XL-XXL'),('XXL', 'XXL')])
     pantalon = fields.Selection([('24','24'),('25','25'),('26','26'),('27','27'),('28','28'),('29','29'),('30','30'),('31','31'),('32','32'),('33','33'),('34','34'),('35','35'),('36','36'),('37','37'),('38','38'),('39','39'),('40','40'),('41','41'),('42','42'),('43','43'),('44','44'),('45','45'),('46','46')])
     chemise = fields.Selection([('XS', 'XS'),('S', 'S'),('M', 'M'),('M-L', 'M-L'),('L', 'L'),('L-XL', 'L-XL'),('XL', 'XL'),('XL-XXL', 'XL-XXL'),('XXL', 'XXL')])
+    chaqueta = fields.Selection([('XS', 'XS'),('S', 'S'),('M', 'M'),('M-L', 'M-L'),('L', 'L'),('L-XL', 'L-XL'),('XL', 'XL'),('XL-XXL', 'XL-XXL'),('XXL', 'XXL')])
+    bata = fields.Selection([('XS', 'XS'),('S', 'S'),('M', 'M'),('M-L', 'M-L'),('L', 'L'),('L-XL', 'L-XL'),('XL', 'XL'),('XL-XXL', 'XL-XXL'),('XXL', 'XXL')])
 
 
     grado_instruccion = fields.Many2one('hr.grado.instruccion')
     profesion = fields.Many2one('hr.profesion')
     grupo_familiar_ids = fields.One2many('hr.grupo.familiar', 'employee_id', string='Grupo Familiar')
+    academicos_ids = fields.One2many('hr.datos.academicos', 'employee_id', string='Datos Académicos')
+    idiomas_ids = fields.One2many('hr.idiomas', 'employee_id', string='Idiomas')
     cursos_ids = fields.One2many('hr.cursos', 'employee_id', string='Cursos')
     documentos_ids = fields.One2many('hr.documentos', 'employee_id', string='Documentos')
     promocion_ids = fields.One2many('hr.promocion', 'employee_id', string='Promociones')
     rif = fields.Char()
     cedula = fields.Char()
+    status_legal = fields.Selection([('tran','Transeúnte'),('resi','Residente'),('inve','Inversionista')])
     tipo_contribuyente = fields.Selection([('V','V'),('E','E'),('J','J'),('G','G'),('P','P'),('C','C'),])
 
     direccion = fields.Text()
@@ -38,6 +43,8 @@ class HrEmployee(models.Model):
     constancia_trab = fields.Char(default="Jefe HHRR")
     gerente_rrhh_id = fields.Many2one('hr.employee')
     fecha_hoy = fields.Date(compute='_compute_hoy')
+
+    lateralidad = fields.Selection([('zurd','Zurdo'),('dere','Derecho'),('ambi','Ambidiestro')])
 
     ###### CAMPOS PARA EL MINTRA  #############
     tipo_trabajador = fields.Selection([('1','De Dirección'),('2','De Inspección o Vigilancia'),('3','Aprendiz Ince'),('4','Pasante'),('5','Trabajador Calificado'),('6','Trabajador no Calificado')])
@@ -65,6 +72,9 @@ class HrEmployee(models.Model):
     alergico_descripcion = fields.Char()
     patologia = fields.Char()
     tipo_discapacidad = fields.Char()
+    tratamiento_medico = fields.Char()
+
+
 
     def get_nro_registro_empleado(self):
 
@@ -317,6 +327,31 @@ class HrUbicacionTrabajo(models.Model):
     activo = fields.Boolean(default=True)
 
 
+class HrDatosAcademicos(models.Model):
+
+    _name = 'hr.datos.academicos'
+
+    # DATO ACADEMICOS
+    employee_id = fields.Many2one('hr.employee', string='Empleados')
+    institucion= fields.Char()
+    ano_egreso=fields.Char()
+    duracion = fields.Float()
+    titulo = fields.Char()
+    #estado = fields.Many2one('res.country.state')
+
+class HrIdiomas(models.Model):
+
+    _name = 'hr.idiomas'
+
+    # DATO ACADEMICOS
+    employee_id = fields.Many2one('hr.employee', string='Empleados')
+    lenguaje= fields.Many2one('res.lang')
+    lee = fields.Boolean(default=False)
+    escribe = fields.Boolean(default=False)
+    habla = fields.Boolean(default=False)
+    instituto = fields.Char()
+    ano = fields.Char()
+
 class HrGrupoFamiliar(models.Model):
 
     _name = 'hr.grupo.familiar'
@@ -332,6 +367,14 @@ class HrGrupoFamiliar(models.Model):
     parentesco = fields.Selection([('ma','Madre'),('pa','Padre'),('hi','Hijo(@)'),('ab','Abuelo@'),('ti','Tio(@)'),('pr','Padrino'),('mr','Madrina'),('ot','Otro')])
     parentesco_din = fields.Many2one('hr.parentesco')
     date_actual = fields.Date(string='Date From', compute='_compute_fecha_hoy')
+
+    estudia = fields.Selection([('si','si'),('no','no')])
+    #talla = fields.Char()
+    institucion = fields.Char()
+    grad_ano_semestre = fields.Char()
+    trabaja = fields.Selection([('si','si'),('no','no')])
+    discapacidad = fields.Selection([('si','si'),('no','no')])
+    #referencias = fields.Char()
 
     @api.onchange('fecha_nac')
     def _compute_edad(self):

@@ -1,7 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+        <record id="hr_payslip_especial_days_tree" model="ir.ui.view">
+            <field name="name">hr.payslip.holidays.tree</field>
+            <field name="model">hr.payslip</field>
+            <field name="inherit_id" ref="hr_payroll.view_hr_payslip_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='net_wage']" position="before">
+                    <field name="struct_id" string="Nómina"/>
+                </xpath>
+                <xpath expr="//field[@name='basic_wage']" position="attributes">
+                    <attribute name="attrs">{}</attribute>
+                    <attribute name="invisible">1</attribute>
+                </xpath>
 
+            </field>
+        </record>
         <record id="hr_payslip_especial_days_form" model="ir.ui.view">
             <field name="name">hr.payslip.holidays</field>
             <field name="model">hr.payslip</field>
@@ -192,6 +206,18 @@
 
                 <xpath expr="//form[1]/sheet[1]/notebook[@name='identification_employee']/page[2]/field[@name='line_ids']/tree[1]/field[@name='total']" position="after">
                     <field name="total_uds" string="Total $"/>
+                </xpath>
+
+                <xpath expr="//form[1]/sheet[1]/notebook[@name='identification_employee']/page[@name='salary_computation']/field[@name='line_ids']/tree[1]/field[@name='name']" position="attributes">
+                    <attribute name="attrs">{}</attribute>
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <!--xpath expr="//form[1]/sheet[1]/notebook[@name='identification_employee']/page[@name='salary_computation']/field[@name='line_ids']/tree[1]/field[@name='name']" position="after">
+                    <xpath expr="//form[1]/sheet[1]/notebook[@name='identification_employee']/page[@name='salary_computation']/field[@name='line_ids']/tree[1]/field[@name='salary_rule_id']" position="move"/>
+                </xpath-->
+
+                <xpath expr="//form[1]/sheet[1]/notebook[@name='identification_employee']/page[@name='salary_computation']/field[@name='line_ids']/tree[1]/field[@name='name']" position="after">
+                   <field name="name2" readonly="0"/>
                 </xpath>
                 
             </field>

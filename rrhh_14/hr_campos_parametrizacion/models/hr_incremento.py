@@ -13,8 +13,9 @@ class hrIncrementoBanda(models.Model):
     fecha_decreto = fields.Date()
     fecha_incremento = fields.Date()
     motivo = fields.Char()
-    responsable = field_id = fields.Many2one('res.partner')
-    sueldo_minimo = fields.Float()
+    #responsable = field_id = fields.Many2one('res.partner')
+    responsable = field_id = fields.Many2one('hr.employee')
+    sueldo_minimo = fields.Float(compute='_compute_sueldo_minimo')
     state = fields.Selection([('draft','Borrador'),('actv','Activo'),('inactv','Inactivo')],default="draft")
     tipo_aumento = fields.Selection([('porcentaje', 'Porcentaje(%)'),('fix','Monto Fijo'),('fac','Factor de corrección')],default="fix")
     monto_fijo = fields.Float()
@@ -24,15 +25,37 @@ class hrIncrementoBanda(models.Model):
     seleccion_aumento = fields.Selection([('lot','Por Lote'),('ind','Individual')],default='lot')
     line  = fields.Many2many(comodel_name='hr.banda.empleado', string='Lineas de Empleados')
     line_ind_empleado  = fields.One2many('hr.ind.empleado','banda_incremento_id', string='Selección Empleados')
+    moneda_sueldo_incrementar = fields.Selection([('n', 'Sueldo en Bs'),('d', 'Sueldo en Divisas')])
+    tasa = fields.Float()
+
+    @api.depends('tipo_aumento','seleccion_aumento','fecha_decreto','fecha_incremento')
+    def _compute_sueldo_minimo(self):
+        for selff in self:
+            valor=0
+            busca=self.env['hr.payroll.indicadores.economicos'].search([('code','=','SM')])
+            if busca:
+                for det in busca:
+                    valor=det.valor
+            selff.sueldo_minimo=valor
+
+
 
     def procesar(self):
         if self.tipo_aumento=="fix" and self.seleccion_aumento!='ind':
             verifica=self.env['hr.contract'].search([('state','=','open')],order='id desc')
             if verifica:
                 for det in verifica:
-                    sueldo_anterior=det.wage
-                    det.wage=det.wage+self.monto_fijo
-                    self.registra_employe(det,sueldo_anterior)
+                    if self.moneda_sueldo_incrementar=='n':
+                        sueldo_anterior=det.wage
+                        sueldo_anterior_div=det.wage_div
+                        det.wage=det.wage+self.monto_fijo
+                        det.wage_div=det.wage/self.tasa
+                    if self.moneda_sueldo_incrementar=='d':
+                        sueldo_anterior=det.wage
+                        sueldo_anterior_div=det.wage_div
+                        det.wage=det.wage+self.monto_fijo*self.tasa
+                        det.wage_div=det.wage_div+self.monto_fijo
+                    self.registra_employe(det,sueldo_anterior,sueldo_anterior_div)
                 self.state="actv"
                 lista_banda=self.env['hr.banda.incremento'].search([('id','!=',self.id)],order='id desc')
                 for det_ban in lista_banda:
@@ -45,16 +68,30 @@ class hrIncrementoBanda(models.Model):
             if verifica:
                 for det in verifica:
                     if self.monto_porcentage_basa=="wage":
-                        sueldo_anterior=det.wage
-                        det.wage=(det.wage+det.wage*self.porcentage/100)
-                        self.registra_employe(det,sueldo_anterior)
+                        if self.moneda_sueldo_incrementar=='n':
+                            sueldo_anterior=det.wage
+                            sueldo_anterior_div=det.wage_div
+                            det.wage=(det.wage+det.wage*self.porcentage/100)
+                            det.wage_div=det.wage/self.tasa
+                        if self.moneda_sueldo_incrementar=='d':
+                            sueldo_anterior=det.wage
+                            sueldo_anterior_div=det.wage_div
+                            det.wage_div=(det.wage_div+det.wage_div*self.porcentage/100)
+                            det.wage=(det.wage_div*self.tasa)
+                        self.registra_employe(det,sueldo_anterior,sueldo_anterior_div)
                     if self.monto_porcentage_basa=="sm":
                         if self.sueldo_minimo==0 or self.sueldo_minimo<0:
                             raise UserError(_('El campo dee sueldo minimo no debe ser nulo ni negativo'))
                         else:
                             sueldo_anterior=det.wage
-                            det.wage=(det.wage+self.sueldo_minimo*self.porcentage/100)
-                            self.registra_employe(det,sueldo_anterior)
+                            sueldo_anterior_div=det.wage_div
+                            if self.moneda_sueldo_incrementar=='n':
+                                det.wage=(det.wage+self.sueldo_minimo*self.porcentage/100)
+                                det.wage_div=det.wage/self.tasa
+                            if self.moneda_sueldo_incrementar=='d':
+                                det.wage=(det.wage+self.sueldo_minimo*self.porcentage/100)
+                                det.wage_div=(det.wage_div+(self.sueldo_minimo*self.porcentage/100)/self.tasa)
+                            self.registra_employe(det,sueldo_anterior,sueldo_anterior_div)
                 self.state="actv"
                 lista_banda=self.env['hr.banda.incremento'].search([('id','!=',self.id)],order='id desc')
                 for det_ban in lista_banda:
@@ -73,20 +110,38 @@ class hrIncrementoBanda(models.Model):
                         for det in verifica:
                             if self.tipo_aumento=="fix":
                                 sueldo_anterior=det.wage
-                                det.wage=det.wage+self.monto_fijo
-                                self.registra_employe(det,sueldo_anterior)
+                                sueldo_anterior_div=det.wage_div
+                                if self.moneda_sueldo_incrementar=='n':
+                                    det.wage=det.wage+self.monto_fijo
+                                    det.wage_div=det.wage/self.tasa
+                                if self.moneda_sueldo_incrementar=='d':
+                                    det.wage=det.wage+self.monto_fijo*self.tasa
+                                    det.wage_div=det.wage_div+self.monto_fijo
+                                self.registra_employe(det,sueldo_anterior,sueldo_anterior_div)
                             if self.tipo_aumento=="porcentaje":
                                 if self.monto_porcentage_basa=="wage":
                                     sueldo_anterior=det.wage
-                                    det.wage=(det.wage+det.wage*self.porcentage/100)
-                                    self.registra_employe(det,sueldo_anterior)
+                                    sueldo_anterior_div=det.wage_div
+                                    if self.moneda_sueldo_incrementar=='n':
+                                        det.wage=(det.wage+det.wage*self.porcentage/100)
+                                        det.wage_div=det.wage/self.tasa
+                                    if self.moneda_sueldo_incrementar=='d':
+                                        det.wage_div=(det.wage_div+det.wage_div*self.porcentage/100)
+                                        det.wage=(det.wage_div*self.tasa)
+                                    self.registra_employe(det,sueldo_anterior,sueldo_anterior_div)
                                 if self.monto_porcentage_basa=="sm":
                                     if self.sueldo_minimo==0 or self.sueldo_minimo<0:
                                         raise UserError(_('El campo dee sueldo minimo no debe ser nulo ni negativo'))
                                     else:
                                         sueldo_anterior=det.wage
-                                        det.wage=(det.wage+self.sueldo_minimo*self.porcentage/100)
-                                        self.registra_employe(det,sueldo_anterior)
+                                        sueldo_anterior_div=det.wage_div
+                                        if self.moneda_sueldo_incrementar=='n':
+                                            det.wage=(det.wage+self.sueldo_minimo*self.porcentage/100)
+                                            det.wage_div=det.wage/self.tasa
+                                        if self.moneda_sueldo_incrementar=='d':
+                                            det.wage=(det.wage+self.sueldo_minimo*self.porcentage/100)
+                                            det.wage_div=(det.wage_div+(self.sueldo_minimo*self.porcentage/100)/self.tasa)
+                                        self.registra_employe(det,sueldo_anterior,sueldo_anterior_div)
                         self.state="actv"
                         lista_banda=self.env['hr.banda.incremento'].search([('id','!=',self.id)],order='id desc')
                         for det_ban in lista_banda:
@@ -107,13 +162,15 @@ class hrIncrementoBanda(models.Model):
 
 
 
-    def registra_employe(self,contrac,sueldo_anterior):
+    def registra_employe(self,contrac,sueldo_anterior,sueldo_anterior_div):
         employee=self.env['hr.banda.empleado']
         values={
         'banda_incremento_id':self.id,
         'employee_id':contrac.employee_id.id,
         'sueldo_anterior':sueldo_anterior,
         'sueldo_nuevo':contrac.wage,
+        'sueldo_anterior_div':sueldo_anterior_div,
+        'sueldo_nuevo_div':contrac.wage_div,
         }
         id_employee = employee.create(values)
 
@@ -123,7 +180,8 @@ class hrIncrementoBanda(models.Model):
             for det_emple in banda_emple:
                 list_contrato=self.env['hr.contract'].search([('state','=','open'),('employee_id','=',det_emple.employee_id.id)])
                 list_contrato.write({
-                    'wage':det_emple.sueldo_anterior
+                    'wage':det_emple.sueldo_anterior,
+                    'wage_div':det_emple.sueldo_anterior_div,
                     })
             banda_emple.unlink()
             self.state="draft"
@@ -138,7 +196,9 @@ class hrBantaEmpleado(models.Model):
     banda_incremento_id=fields.Many2one('hr.banda.incremento')
     employee_id=fields.Many2one('hr.employee')
     sueldo_anterior=fields.Float()
+    sueldo_anterior_div=fields.Float()
     sueldo_nuevo=fields.Float()
+    sueldo_nuevo_div=fields.Float()
 
 class hrIndEmpleado(models.Model):
     _name = 'hr.ind.empleado'

@@ -20,9 +20,9 @@
             ],
         'data': [
             'security/ir.model.access.csv',
-            'data/vat_retention_data.xml',
-            'views/retention_vat_views.xml',
+            #'data/vat_retention_data.xml',
             'views/menu_vat_retention.xml',
+            'views/retention_vat_views.xml',
             'views/partner_views.xml',
             'views/account_move_views.xml',
             'wizards/xml_views.xml',

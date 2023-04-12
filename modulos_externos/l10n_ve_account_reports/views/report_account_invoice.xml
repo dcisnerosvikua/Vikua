@@ -177,7 +177,7 @@
                                                 <span t-esc="o.float_format(line.price_unit)"/>
                                             </td>
                                             <td style="border-left:1px solid black;">
-                                                <span t-esc="o.float_format(o.amount_total)"/>
+                                                <span t-esc="o.float_format(line.price_subtotal)"/>
 <!--                                                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>-->
                                             </td>
                                             <t t-if="line.discount">

@@ -30,3 +30,5 @@ snc_wizard_mintra,snc.wizard.mintra,model_snc_wizard_mintra,base.group_user,1,1,
 snc_wizard_faov,snc.wizard.faov,model_snc_wizard_faov,base.group_user,1,1,1,1
 snc_wizard_pagar_ince,snc.wizard.pagar_ince,model_snc_wizard_pagar_ince,base.group_user,1,1,1,1
 snc_wizard_pagar_faov,snc_wizard_pagar_faov,model_snc_wizard_pagar_faov,base.group_user,1,1,1,1
+hr_datos_academicos,hr.datos.academicos,model_hr_datos_academicos,base.group_user,1,1,1,1
+hr_idiomas,hr.idiomas,model_hr_idiomas,base.group_user,1,1,1,1

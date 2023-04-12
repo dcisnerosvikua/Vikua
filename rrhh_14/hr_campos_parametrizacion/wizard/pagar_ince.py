@@ -107,7 +107,7 @@ class PagarInce(models.TransientModel):
     trimestre = fields.Selection([('1', '1er Trimestre'),('2','2do Trimestre'),('3','3er Trimestre'),('4','4to Trimestre')])
     company_id = fields.Many2one('res.company','Company',default=lambda self: self.env.company.id)
     line  = fields.Many2many(comodel_name='hr.resumen.pago_ince', string='Lineas')
-    ano = fields.Char()
+    anooo = fields.Char()
     ret_patrono = fields.Float(compute='_compute_retenciones')
     ret_empleado = fields.Float(compute='_compute_retenciones')
 
@@ -139,21 +139,22 @@ class PagarInce(models.TransientModel):
         return int(resultado)
 
     def action_generate_reporte(self):
+        #return {'type': 'ir.actions.report','report_name':"hr_campos_parametrizacion.reporte_monto_inces",'report_type':"qweb-pdf"}
         monto_1=monto_2=monto_3=0
-        ano=str(self.ano(self.date_from))
-        self.ano=ano
+        anooo=str(self.ano(self.date_from))
+        self.anooo=anooo
         if self.trimestre=='1':
-            fecha_desde=ano+"-01-01"
-            fecha_hasta=ano+"-03-31"
+            fecha_desde=anooo+"-01-01"
+            fecha_hasta=anooo+"-03-31"
         if self.trimestre=='2':
-            fecha_desde=ano+"-04-01"
-            fecha_hasta=ano+"-06-30"
+            fecha_desde=anooo+"-04-01"
+            fecha_hasta=anooo+"-06-30"
         if self.trimestre=='3':
-            fecha_desde=ano+"-07-01"
-            fecha_hasta=ano+"-09-30"
+            fecha_desde=anooo+"-07-01"
+            fecha_hasta=anooo+"-09-30"
         if self.trimestre=='4':
-            fecha_desde=ano+"-10-01"
-            fecha_hasta=ano+"-12-31"
+            fecha_desde=anooo+"-10-01"
+            fecha_hasta=anooo+"-12-31"
         #fecha_desde=datetime.strptime(str(fecha_desde),'%Y-%m-%d')
         fecha_desde=str(fecha_desde)
         fecha_hasta=str(fecha_hasta)
@@ -171,7 +172,7 @@ class PagarInce(models.TransientModel):
                 if payslip:
                     for rec in payslip:
                         ########## TRIMESTRE 1 #########
-                        if str(rec.date_from) >=ano+'-01-01' and str(rec.date_to)<=ano+'-03-31':
+                        if str(rec.date_from) >=anooo+'-01-01' and str(rec.date_to)<=anooo+'-03-31':
                             if mes_aux!=rec.mes(rec.date_from) or employee_aux!=rec.employee_id.id:
                                 if rec.mes(rec.date_from)==1:
                                     monto_1=monto_1+rec.employee_id.salario
@@ -181,9 +182,8 @@ class PagarInce(models.TransientModel):
                                     monto_3=monto_3+rec.employee_id.salario
                                 employee_aux=rec.employee_id.id
                                 mes_aux=rec.mes(rec.date_from)
-
                         ########## TRIMESTRE 2 #########
-                        if str(rec.date_from) >=ano+'-04-01' and str(rec.date_to)<=ano+'-06-31':
+                        if str(rec.date_from) >=anooo+'-04-01' and str(rec.date_to)<=anooo+'-06-31':
                             if mes_aux!=rec.mes(rec.date_from) or employee_aux!=rec.employee_id.id:
                                 if rec.mes(rec.date_from)==4:
                                     monto_1=monto_1+rec.employee_id.salario
@@ -193,9 +193,8 @@ class PagarInce(models.TransientModel):
                                     monto_3=monto_3+rec.employee_id.salario
                                 employee_aux=rec.employee_id.id
                                 mes_aux=rec.mes(rec.date_from)
-
                         ########## TRIMESTRE 3 #########
-                        if str(rec.date_from) >=ano+'-07-01' and str(rec.date_to)<=ano+'-09-31':
+                        if str(rec.date_from) >=anooo+'-07-01' and str(rec.date_to)<=anooo+'-09-31':
                             if mes_aux!=rec.mes(rec.date_from) or employee_aux!=rec.employee_id.id:
                                 if rec.mes(rec.date_from)==7:
                                     monto_1=monto_1+rec.employee_id.salario
@@ -207,7 +206,7 @@ class PagarInce(models.TransientModel):
                                 mes_aux=rec.mes(rec.date_from)
 
                         ########## TRIMESTRE 4 #########
-                        if str(rec.date_from) >=ano+'-10-01' and str(rec.date_to)<=ano+'-12-31':
+                        if str(rec.date_from) >=anooo+'-10-01' and str(rec.date_to)<=anooo+'-12-31':
                             if mes_aux!=rec.mes(rec.date_from) or employee_aux!=rec.employee_id.id:
                                 if rec.mes(rec.date_from)==10:
                                     monto_1=monto_1+rec.employee_id.salario
@@ -228,9 +227,7 @@ class PagarInce(models.TransientModel):
                     }
                     crea=t.create(values)
                     self.line = self.env['hr.resumen.pago_ince'].search([])
-                #else:
-                    #raise UserError(_('No hay nomina ejecutadas en el trimestre %s')%self.trimestre)
-        return {'type': 'ir.actions.report','report_name': 'hr_campos_parametrizacion.reporte_monto_ince','report_type':"qweb-pdf"}
+        return {'type': 'ir.actions.report','report_name':"hr_campos_parametrizacion.reporte_monto_inces",'report_type':"qweb-pdf"}
 
 
 class ResumenPagoInce(models.Model):

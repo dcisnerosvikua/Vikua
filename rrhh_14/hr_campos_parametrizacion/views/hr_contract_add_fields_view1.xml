@@ -245,7 +245,7 @@
                 
                 <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='information']/group[@name='main_info']/group[@name='salary_and_advantages']/label[1]" position="before">
                     <field name="nr_cuenta"/>
-                    <field name="wage_div"/>
+                    <field name="wage_div" string="Sueldo ($)/mes"/>
                 </xpath>
 
             </field>

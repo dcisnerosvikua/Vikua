@@ -63,6 +63,7 @@
 						<field name="date_from" string="Fecha o Período"/>
 						<field name="trimestre" string="Trimestre" required="1"/>
 						<field name="company_id"/>
+						<field name="anooo" string="Año" invisible="0"/>
 						<field name="ret_patrono" string="Retencion INCE patrono (%)"/>
 						<field name="ret_empleado" string="Retencion INCE Empleado (%)"/>
 					</group>
@@ -151,7 +152,7 @@
 
         <menuitem
 		id="menu_txt_mintra"
-		name="Reporte MINTRA" 
+		name="TXT MINTRA" 
 		parent="hr_payroll.menu_hr_payroll_payslips"
 		action="hr_mintra_menu"
 		sequence="95"/>

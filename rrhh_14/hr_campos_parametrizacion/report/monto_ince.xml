@@ -2,7 +2,7 @@
 <odoo>
   <data> 
   
-  <template id="reporte_monto_ince">
+  <template id="reporte_monto_inces">
             <t t-call="web.html_container">
               <t t-foreach="docs" t-as="o">
                 <t t-call="web.basic_layout" >
@@ -24,7 +24,7 @@
                       </tr>
                       <tr>
                         <t t-if="o.trimestre == '1' ">
-                          <td>NÓMINA</td>
+                          <td>PROCESO NÓMINA</td>
                           <td>Enero</td>
                           <td>Febrero</td>
                           <td>Marzo</td>
@@ -32,7 +32,7 @@
                           <td>UTILIDADES</td>
                         </t>
                         <t t-if="o.trimestre == '2' ">
-                          <td>NÓMINA</td>
+                          <td>PROCESO NÓMINA</td>
                           <td>Abril</td>
                           <td>Mayo</td>
                           <td>Junio</td>
@@ -40,7 +40,7 @@
                           <td>UTILIDADES</td>
                         </t>
                         <t t-if="o.trimestre == '3' ">
-                          <td>NÓMINA</td>
+                          <td>PROCESO NÓMINA</td>
                           <td>Julio</td>
                           <td>Agosto</td>
                           <td>Septiembre</td>
@@ -48,7 +48,7 @@
                           <td>UTILIDADES</td>
                         </t>
                         <t t-if="o.trimestre == '4' ">
-                          <td>NÓMINA</td>
+                          <td>PROCESO NÓMINA</td>
                           <td>Octubre</td>
                           <td>Noviembre</td>
                           <td>Diciembre</td>
@@ -133,12 +133,12 @@
                     <t t-call="account.report_invoice_document_with_payments" t-lang="lang"/-->
 
     <report
-            id="monto_ince"
+            id="monto_inces"
             model="snc.wizard.pagar_ince"
             string="Monto Total INCE"
             report_type="qweb-pdf"
-            name="hr_campos_parametrizacion.reporte_monto_ince"
-            file="hr_campos_parametrizacion.reporte_monto_ince"
+            name="hr_campos_parametrizacion.reporte_monto_inces"
+            file="hr_campos_parametrizacion.reporte_monto_inces"
         /> 
   
   </data>

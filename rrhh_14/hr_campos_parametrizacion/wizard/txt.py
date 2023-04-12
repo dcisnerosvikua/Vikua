@@ -157,7 +157,7 @@ class BsoftContratoReport2(models.TransientModel):
             file.write(cabecera+ "\n")
 
             for det in cursor:
-                if det.identification_id:
+                if det.cedula:
                     file.write(str(det.identification_id))# cedula 1
                     file.write(';')
 

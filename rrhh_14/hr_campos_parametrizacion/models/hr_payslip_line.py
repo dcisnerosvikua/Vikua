@@ -12,6 +12,7 @@ class HrPauslipLine(models.Model):
 
     dias = fields.Char(compute='_compute_dias')
     total_uds = fields.Float(compute='_compute_total_usd')
+    name2 = fields.Char(string="Reglas o Conceptos", compute='_compute_name')
 
     def _compute_total_usd(self):
         for rec in self:
@@ -20,7 +21,9 @@ class HrPauslipLine(models.Model):
             else:
                 rec.total_uds=rec.total
 
-
+    def _compute_name(self):
+        for selff in self:
+            selff.name2=selff.salary_rule_id.name
     """@api.depends('quantity', 'amount', 'rate','dias')
     def _compute_total(self):
         for line in self:
@@ -29,6 +32,7 @@ class HrPauslipLine(models.Model):
     def _compute_dias(self):
         valor="--"
         for rec in self:
+            rec.name=rec.salary_rule_id.name
             if rec.code=="BASIC":
                 valor=rec.slip_id.workdays#rec.slip_id.days_attended
             if rec.code=='DIADES':

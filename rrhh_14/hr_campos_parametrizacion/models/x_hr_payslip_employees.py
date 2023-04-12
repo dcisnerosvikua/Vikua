@@ -25,8 +25,16 @@ class HrPayslipEmployees(models.TransientModel):
     structure_type_id = fields.Many2one('hr.payroll.structure.type')
 
     ############### NUEVO PROPIO ################
+    def _tasa_actual(self):
+        tasa=1
+        busca=self.env['res.currency'].search([('id','=',2)],order='id asc')
+        if busca:
+            for det in busca:
+                tasa=det.rate_real
+        return tasa
+
     custom_rate_gene = fields.Boolean(default=True)
-    os_currency_rate_gene = fields.Float(digits=(12, 4),default=1)
+    os_currency_rate_gene = fields.Float(digits=(12, 4),default=lambda self:self._tasa_actual())
 
 
     @api.onchange('structure_id')

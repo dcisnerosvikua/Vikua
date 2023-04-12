@@ -137,5 +137,6 @@
             <field name="name">ISLR</field>
             <field name="digits">2</field>
         </record>
+
    
 </odoo>

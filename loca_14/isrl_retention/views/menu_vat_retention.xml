@@ -11,7 +11,7 @@
 
 
     <menuitem 
-        id="action_isrl_vendors_retention"
+        id="menu_customers_isrl_retention"
         name="Retención de ISLR Cliente"
         action="action_isrl_customers_retention"
         parent="account.menu_finance_receivables"

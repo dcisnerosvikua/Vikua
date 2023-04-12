@@ -34,7 +34,7 @@ class HrAdPeronal(models.Model):
         ('quincenal','Cada Quincena'),
         ('semanal','Cada Semana'),
     ], string="Pago planificado", default='mensual', required=True)
-    shedule_pay_mensual=fields.Selection([('1ra','Primera Semana mes'),('ult','Ultima Semana mes')],default='1ra')
+    shedule_pay_mensual=fields.Selection([('1ra','Primera quincena mes'),('ult','Segunda quincena mes')],default='1ra')
     fecha=fields.Date()
 
     origen_calculo=fields.Selection([('1','Confg. en la regla o concepto'),('2','Aqui en AD Personal')],default="1")
