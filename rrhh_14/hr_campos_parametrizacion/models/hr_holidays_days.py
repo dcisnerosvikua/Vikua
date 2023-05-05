@@ -146,6 +146,36 @@ class hr_special_days(models.Model):
                     valor=5-selff.valida_cant_dia_feriado(selff.date_from,selff.date_to)
             selff.workdays_periodo2=valor
 
+    def verifica_salto_mes(self,mes,dia):
+        result='False'
+        if mes==1 and dia>=32:
+            result='True'
+        if mes==2 and dia>=29:
+            result='True'
+        if mes==3 and dia>=32:
+            result='True'
+        if mes==4 and dia>=31:
+            result='True'
+        if mes==5 and dia>=32:
+            result='True'
+        if mes==6 and dia>=31:
+            result='True'
+        if mes==7 and dia>=32:
+            result='True'
+        if mes==8 and dia>=32:
+            result='True'
+        if mes==9 and dia>=31:
+            result='True'
+        if mes==10 and dia>=32:
+            result='True'
+        if mes==11 and dia>=31:
+            result='True'
+        if mes==12 and dia>=32:
+            result='True'
+        return result
+
+
+
     @api.depends('date_from','date_to','employee_id') # nuevo2 *
     def _compute_mondays_activo(self):
         if self.struct_id.tipo_struct!='vac':
@@ -157,15 +187,24 @@ class hr_special_days(models.Model):
                 ano_in=selff.ano(selff.date_from)
                 dia=dia_in
                 i=0
-                for i in range(rango_dias+1):
+                cont=0
+                for i in range(0,rango_dias+1,1):
                     dia_aux=10
-                    dia_aux=calendar.weekday(ano_in,mes_in,dia+i)
+                    dia=dia_in+cont
+                    if selff.verifica_salto_mes(mes_in,dia)=='True':
+                        mes_in=mes_in+1
+                        dia_in=1
+                        cont=0
+                        dia=1
+                    dia_aux=calendar.weekday(ano_in,mes_in,dia)
                     if dia_aux==0:
                         nro_lunes=nro_lunes+1
+                    cont=cont+1
 
                 op1=selff.env['hr.leave'].search([('holiday_status_id.code','=','VAC'),('employee_id','=',selff.employee_id.id),('state','=','validate'),('request_date_to','>=',selff.date_from),('request_date_to','<=',selff.date_to)])
                 op2=selff.env['hr.leave'].search([('holiday_status_id.code','=','VAC'),('employee_id','=',selff.employee_id.id),('state','=','validate'),('request_date_from','<=',selff.date_to),('request_date_from','>=',selff.date_from)])
                 op3=selff.env['hr.leave'].search([('holiday_status_id.code','=','VAC'),('employee_id','=',selff.employee_id.id),('state','=','validate'),('request_date_from','<',selff.date_from),('request_date_to','>',selff.date_to)])
+
                 # regresa de vacaciones
                 if op1:
                     for det in op1:
@@ -176,14 +215,21 @@ class hr_special_days(models.Model):
                         mes_in=selff.mes(det.request_date_to)
                         ano_in=selff.ano(det.request_date_to)
                         dia=dia_in
+                        cont=0
                         j=0
                         for j in range(delta+1):
                             dia_auxx=10
-                            dia_auxx=calendar.weekday(ano_in,mes_in,dia+j)
+                            dia=dia_in+cont
+                            if selff.verifica_salto_mes(mes_in,dia)=='True':
+                                mes_in=mes_in+1
+                                dia_in=1
+                                cont=0
+                                dia=1
+                            dia_auxx=calendar.weekday(ano_in,mes_in,dia)
                             if dia_auxx==0:
                                 nro_lunes_no_activo=nro_lunes_no_activo+1
                         nro_lunes=0
-                                #raise UserError(_('aux=%s')%dia_auxx)
+
                 # SALE A VACACIONES
                 if op2:
                     for det in op2:
@@ -192,10 +238,17 @@ class hr_special_days(models.Model):
                         mes_in=selff.mes(selff.date_from)
                         ano_in=selff.ano(selff.date_from)
                         dia=dia_in
+                        cont=0
                         j=0
                         for j in range(delta):
                             dia_auxx=10
-                            dia_auxx=calendar.weekday(ano_in,mes_in,dia+j)
+                            dia=dia_in+cont
+                            if selff.verifica_salto_mes(mes_in,dia)=='True':
+                                mes_in=mes_in+1
+                                dia_in=1
+                                cont=0
+                                dia=1
+                            dia_auxx=calendar.weekday(ano_in,mes_in,dia)
                             if dia_auxx==0:
                                 nro_lunes_no_activo=nro_lunes_no_activo+1
                         nro_lunes=0
@@ -212,14 +265,21 @@ class hr_special_days(models.Model):
                     ano_in=selff.ano(selff.contract_id.date_start)
                     dia=dia_in
                     k=0 
+                    cont=0
                     #raise UserError(_('delta=%s')%delta)
                     for k in range(rango+1):
                         dia_ayu=10
-                        dia_ayu=calendar.weekday(ano_in,mes_in,dia+k)
+                        dia=dia_in+cont
+                        if selff.verifica_salto_mes(mes_in,dia)=='True':
+                            mes_in=mes_in+1
+                            dia_in=1
+                            cont=0
+                            dia=1
+                        dia_ayu=calendar.weekday(ano_in,mes_in,dia)
                         if dia_ayu==0:
                             nro_lunes_no_activo=nro_lunes_no_activo+1
                     nro_lunes=0
-                    #raise UserError(_('nro_lunes_no_activo=%s')%(dia+k))
+
                 # verifica si hay un contranto por vencer
                 if selff.contract_id.date_end:
                     if selff.contract_id.date_end<=selff.date_to: 
@@ -230,18 +290,26 @@ class hr_special_days(models.Model):
                         ano_in=selff.ano(selff.date_from)
                         dia=dia_in
                         w=0
+                        cont=0
                         for w in range(delta+1):
                             dia_ayuu=10
-                            dia_ayuu=calendar.weekday(ano_in,mes_in,dia+w)
+                            dia=dia_in+cont
+                            if selff.verifica_salto_mes(mes_in,dia)=='True':
+                                mes_in=mes_in+1
+                                dia_in=1
+                                cont=0
+                                dia=1
+                            dia_ayuu=calendar.weekday(ano_in,mes_in,dia)
                             if dia_ayuu==0:
                                 nro_lunes_no_activo=nro_lunes_no_activo+1
                         nro_lunes=0
 
-                #selff.mondays_activo=nro_lunes_no_activo
                 selff.mondays_activo=abs(nro_lunes-nro_lunes_no_activo)
+
         else:
             for selff in self:
                 selff.mondays_activo=0
+
 
 
     @api.depends('date_from','date_to','employee_id') # nuevo2
