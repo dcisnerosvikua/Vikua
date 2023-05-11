@@ -50,7 +50,7 @@ class libro_compras(models.TransientModel):
             ('fecha_fact','<=',self.date_to),
             ('state','in',('posted','cancel' )),
             ('type','in',('in_invoice','in_refund','in_receipt')),
-            ('invoice_id.company_id','=',self.company_id.id)
+            ('invoice_id.company_id','=',self.env.company.id)
             ])
         #raise UserError(_('cursor_resumen: %s')%cursor_resumen)
         for det in cursor_resumen:
@@ -124,7 +124,7 @@ class libro_ventas(models.TransientModel):
                 ('type','in',('out_invoice','out_refund','out_receipt')),
                 ('invoice_id.company_id','=',self.env.company.id)
                 ])
-            raise UserError(_('cursor_resumen: %s')%cursor_resumen)
+            #raise UserError(_('cursor_resumen: %s')%cursor_resumen)
         if accion=="voucher":
             cursor_resumen = self.env['account.move.line.resumen'].search([
                 ('fecha_comprobante','>=',self.date_from),
@@ -133,7 +133,7 @@ class libro_ventas(models.TransientModel):
                 #('fecha_fact','>=',self.date_to),
                 ('state_voucher_iva','=','posted'),
                 ('type','in',('out_invoice','out_refund','out_receipt')),
-                ('invoice_id.company_id','=',self.company_id.id)
+                ('invoice_id.company_id','=',self.env.company.id)
                 ])
         for det in cursor_resumen:
             if det.invoice_id.ocultar_libros!=True:
