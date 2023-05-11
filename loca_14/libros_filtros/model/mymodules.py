@@ -52,7 +52,7 @@ class libro_compras(models.TransientModel):
             ('type','in',('in_invoice','in_refund','in_receipt')),
             ('invoice_id.company_id','=',self.company_id.id)
             ])
-        raise UserError(_('cursor_resumen: %s')%cursor_resumen)
+        #raise UserError(_('cursor_resumen: %s')%cursor_resumen)
         for det in cursor_resumen:
             if det.invoice_id.ocultar_libros!=True:
                 values={
@@ -134,6 +134,7 @@ class libro_ventas(models.TransientModel):
                 ('type','in',('out_invoice','out_refund','out_receipt')),
                 ('invoice_id.company_id','=',self.company_id.id)
                 ])
+        raise UserError(_('cursor_resumen: %s')%cursor_resumen)
         for det in cursor_resumen:
             if det.invoice_id.ocultar_libros!=True:
                 alicuota_reducida=0
