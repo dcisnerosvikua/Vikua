@@ -195,17 +195,20 @@ class libro_ventas(models.TransientModel):
         for det in busca_partner:
             tipo_doc=busca_partner.doc_type
             nro_doc=str(busca_partner.vat)
-        nro_doc=nro_doc.replace('V','')
-        nro_doc=nro_doc.replace('v','')
-        nro_doc=nro_doc.replace('E','')
-        nro_doc=nro_doc.replace('e','')
-        nro_doc=nro_doc.replace('G','')
-        nro_doc=nro_doc.replace('g','')
-        nro_doc=nro_doc.replace('J','')
-        nro_doc=nro_doc.replace('j','')
-        nro_doc=nro_doc.replace('P','')
-        nro_doc=nro_doc.replace('p','')
-        nro_doc=nro_doc.replace('-','')
+        if nro_doc:
+            nro_doc=nro_doc.replace('V','')
+            nro_doc=nro_doc.replace('v','')
+            nro_doc=nro_doc.replace('E','')
+            nro_doc=nro_doc.replace('e','')
+            nro_doc=nro_doc.replace('G','')
+            nro_doc=nro_doc.replace('g','')
+            nro_doc=nro_doc.replace('J','')
+            nro_doc=nro_doc.replace('j','')
+            nro_doc=nro_doc.replace('P','')
+            nro_doc=nro_doc.replace('p','')
+            nro_doc=nro_doc.replace('-','')
+        else:
+            nro_doc=''
         
         if tipo_doc=="v":
             tipo_doc="V"
