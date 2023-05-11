@@ -122,7 +122,7 @@ class libro_ventas(models.TransientModel):
                 ('fecha_fact','<=',self.date_to),
                 ('state','in',('posted','cancel' )),
                 ('type','in',('out_invoice','out_refund','out_receipt')),
-                ('invoice_id.company_id','=',self.company_id.id)
+                #('invoice_id.company_id','=',self.company_id.id)
                 ])
         if accion=="voucher":
             cursor_resumen = self.env['account.move.line.resumen'].search([

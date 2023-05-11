@@ -246,7 +246,7 @@ class libro_ventas(models.TransientModel):
                 ('state_voucher_iva','=','posted'),
                 ('type','in',('out_invoice','out_refund','out_receipt'))
                 ])
-        raise UserError(_('cursor_resumen: %s')%cursor_resumen)
+        #raise UserError(_('state: %s')%dett.invoice_id.id)
         for det in cursor_resumen:
             alicuota_reducida=0
             alicuota_general=0
