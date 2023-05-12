@@ -150,12 +150,14 @@ class RetentionVat(models.Model):
             if self.invoice_id.type in vendor:
                 historial = self.env['account.history.invoice'].search([('invoice_id','=',id_factura),('existe_doc_islr','=',True)]) #1
                 if historial:
-                    raise UserError(_('entro aqui 1'))
+                    #raise UserError(_('entro aqui 1'))
                     for det_historial in historial:
                         if det_historial.nro_comprobante_islr:
                             islr_nro_comprobante=det_historial.nro_comprobante_islr
+                        else:
+                            islr_nro_comprobante=self.env['ir.sequence'].next_by_code('purchase.isrl.retention.voucher.number')
                 else:
-                    raise UserError(_('entro aqui 2'))
+                    #raise UserError(_('entro aqui 2'))
                     islr_nro_comprobante=self.env['ir.sequence'].next_by_code('purchase.isrl.retention.voucher.number')
                 #raise UserError(_('islr_nro_comprobante = %s')%islr_nro_comprobante)
                 self.name=islr_nro_comprobante
