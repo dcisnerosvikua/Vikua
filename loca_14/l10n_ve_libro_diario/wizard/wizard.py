@@ -44,7 +44,7 @@ class WizardReport_1(models.TransientModel): # aqui declaro las variables del wi
     date_from  = fields.Date('Date From', default=lambda *a:(datetime.now() - timedelta(days=(1))).strftime('%Y-%m-%d'))
     date_to = fields.Date(string='Date To', default=lambda *a:datetime.now().strftime('%Y-%m-%d'))
 
-    company_id = fields.Many2one('res.company','Company',default=lambda self: self.env.user.company_id.id)
+    company_id = fields.Many2one('res.company','Company',default=lambda self: self.env.company.id)
     line  = fields.Many2many(comodel_name='libro.diario.wizard.pdf', string='Lineas')
 
     def rif(self,aux):
