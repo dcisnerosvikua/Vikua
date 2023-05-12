@@ -154,6 +154,7 @@ class RetentionVat(models.Model):
                         if det_historial.nro_comprobante_islr:
                             islr_nro_comprobante=det_historial.nro_comprobante_islr
                 else:
+                	raise UserError(_('entro aqui '))
                     islr_nro_comprobante=self.env['ir.sequence'].next_by_code('purchase.isrl.retention.voucher.number')
                 #raise UserError(_('islr_nro_comprobante = %s')%islr_nro_comprobante)
                 self.name=islr_nro_comprobante
