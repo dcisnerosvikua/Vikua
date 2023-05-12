@@ -49,21 +49,24 @@ class WizardReport_1(models.TransientModel): # aqui declaro las variables del wi
 
     def rif(self,aux):
         #nro_doc=self.partner_id.vat
+        tipo_doc="E"
+        nro_doc="00000"
         busca_partner = self.env['res.partner'].search([('id','=',aux)])
         for det in busca_partner:
             tipo_doc=busca_partner.doc_type
             nro_doc=str(busca_partner.vat)
-        nro_doc=nro_doc.replace('V','')
-        nro_doc=nro_doc.replace('v','')
-        nro_doc=nro_doc.replace('E','')
-        nro_doc=nro_doc.replace('e','')
-        nro_doc=nro_doc.replace('G','')
-        nro_doc=nro_doc.replace('g','')
-        nro_doc=nro_doc.replace('J','')
-        nro_doc=nro_doc.replace('j','')
-        nro_doc=nro_doc.replace('P','')
-        nro_doc=nro_doc.replace('p','')
-        nro_doc=nro_doc.replace('-','')
+        if nro_doc:
+            nro_doc=nro_doc.replace('V','')
+            nro_doc=nro_doc.replace('v','')
+            nro_doc=nro_doc.replace('E','')
+            nro_doc=nro_doc.replace('e','')
+            nro_doc=nro_doc.replace('G','')
+            nro_doc=nro_doc.replace('g','')
+            nro_doc=nro_doc.replace('J','')
+            nro_doc=nro_doc.replace('j','')
+            nro_doc=nro_doc.replace('P','')
+            nro_doc=nro_doc.replace('p','')
+            nro_doc=nro_doc.replace('-','')
         
         if tipo_doc=="v":
             tipo_doc="V"
