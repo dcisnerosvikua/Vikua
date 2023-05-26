@@ -26,9 +26,9 @@ class AccountMove(models.Model):
                 valor=selff.amount_total
             if self.env.company.currency_id.id==selff.currency_id.id:
                 if selff.move_type=="entry":
-                    lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('name','<=',selff.date)],order='hora ASC')
+                    lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('hora','<=',selff.date)],order='hora DESC',limit=1)
                 else:
-                    lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('name','<=',selff.invoice_date)],order='hora ASC')
+                    lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('hora','<=',selff.invoice_date)],order='hora DESC',limit=1)
                 if lista_tasa:
                     for det in lista_tasa:
                         valor=selff.amount_total_signed*det.rate
@@ -43,9 +43,9 @@ class AccountMove(models.Model):
                 valor=selff.amount_untaxed
             if self.env.company.currency_id.id==selff.currency_id.id:
                 if selff.move_type=="entry":
-                    lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('name','<=',selff.date)],order='hora ASC')
+                    lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('hora','<=',selff.date)],order='hora DESC',limit=1)
                 else:
-                    lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('name','<=',selff.invoice_date)],order='hora ASC')
+                    lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('hora','<=',selff.invoice_date)],order='hora DESC',limit=1)
                 if lista_tasa:
                     for det in lista_tasa:
                         valor=selff.amount_untaxed_signed*det.rate
@@ -59,9 +59,9 @@ class AccountMove(models.Model):
                 valor=selff.amount_residual
             if self.env.company.currency_id.id==selff.currency_id.id:
                 if selff.move_type=="entry":
-                    lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('name','<=',selff.date)],order='hora ASC')
+                    lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('hora','<=',selff.date)],order='hora DESC',limit=1)
                 else:
-                    lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('name','<=',selff.invoice_date)],order='hora ASC')
+                    lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('hora','<=',selff.invoice_date)],order='hora DESC',limit=1)
                 if lista_tasa:
                     for det in lista_tasa:
                         valor=selff.amount_residual_signed*det.rate
@@ -75,9 +75,9 @@ class AccountMove(models.Model):
                 valor=selff.amount_tax
             if self.env.company.currency_id.id==selff.currency_id.id:
                 if selff.move_type=="entry":
-                    lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('name','<=',selff.date)],order='hora ASC')
+                    lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('hora','<=',selff.date)],order='hora DESC',limit=1)
                 else:
-                    lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('name','<=',selff.invoice_date)],order='hora ASC')
+                    lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('hora','<=',selff.invoice_date)],order='hora DESC',limit=1)
                 if lista_tasa:
                     for det in lista_tasa:
                         valor=selff.amount_tax_signed*det.rate
@@ -97,9 +97,9 @@ class  AccountMoveLine(models.Model):
         self.env.company.currency_secundaria_id.id
         for selff in self:
             if selff.move_id.move_type=="entry" and selff.move_id.asiento_retencion!=True:
-                lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('name','<=',selff.move_id.date)],order='hora ASC')
+                lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('hora','<=',selff.move_id.date)],order='hora DESC',limit=1)
             else:
-                lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('name','<=',selff.move_id.invoice_date)],order='hora ASC')
+                lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('hora','<=',selff.move_id.invoice_date)],order='hora DESC',limit=1)
             if lista_tasa:
                 for det in lista_tasa:
                     valor=(selff.credit*det.rate)
@@ -110,9 +110,9 @@ class  AccountMoveLine(models.Model):
         self.env.company.currency_secundaria_id.id
         for selff in self:
             if selff.move_id.move_type=="entry" and selff.move_id.asiento_retencion!=True:
-                lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('name','<=',selff.move_id.date)],order='hora ASC')
+                lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('hora','<=',selff.move_id.date)],order='hora DESC',limit=1)
             else:
-                lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('name','<=',selff.move_id.invoice_date)],order='hora ASC')
+                lista_tasa = selff.env['res.currency.rate'].search([('currency_id', '=', self.env.company.currency_secundaria_id.id),('hora','<=',selff.move_id.invoice_date)],order='hora DESC',limit=1)
             if lista_tasa:
                 for det in lista_tasa:
                     valor=(selff.debit*det.rate)
