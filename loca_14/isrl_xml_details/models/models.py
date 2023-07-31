@@ -47,6 +47,7 @@ class XmlLines(models.Model):
         action['domain'] = [('id', 'in', self.line_id.ids)]
         action['context'] = dict(self._context, default_detalle_id=self.id)
         return action
+
     def ajusta_type_doc(self,nro_doc):
         #nro_doc=self.partner_id.vat
         if nro_doc:
@@ -61,7 +62,7 @@ class XmlLines(models.Model):
         #resultado=nro_doc
         resultado=str(nro_doc)
         return resultado
-        
+
     def generar_xml(self):
         periodo = str(self.date_from.year) 
         rif= self.env.company.vat
@@ -90,7 +91,7 @@ class XmlLines(models.Model):
             else:
                 nro_fact=0
             elemento_hijo_1 = ET.SubElement(elemento_1, 'DetalleRetencion')
-            elemento_hijo_2 = ET.SubElement(elemento_hijo_1, 'RifRetenido').textself.ajusta_type_doc(item.rif_retenido)
+            elemento_hijo_2 = ET.SubElement(elemento_hijo_1, 'RifRetenido').text=self.ajusta_type_doc(item.rif_retenido)
             elemento_hijo_3 = ET.SubElement(elemento_hijo_1, 'NumeroFactura').text=str(nro_fact) if item.numero_factura else '0'
             elemento_hijo_4 = ET.SubElement(elemento_hijo_1, 'NumeroControl').text=str(item.numero_control) if  item.numero_control else 'NA'
             elemento_hijo_5 = ET.SubElement(elemento_hijo_1, 'FechaOperacion').text=str(fecha)
