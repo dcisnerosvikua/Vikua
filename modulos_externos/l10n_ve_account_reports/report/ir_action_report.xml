@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="action_account_invoice_libre" model="ir.actions.report">
+            <field name="name">Factura Libre</field>
+            <field name="model">account.move</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">l10n_ve_account_reports.report_account_invoice_with_payments</field>
+            <field name="report_file">l10n_ve_account_reports.report_account_invoice_with_payments</field>
+            <field name="binding_model_id" ref="account.model_account_move"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <record id="action_account_invoice_libre" model="ir.actions.report">
+             <field name="paperformat_id" ref="l10n_ve_account_reports.paperformat_account_invoice"/>
+        </record>
+
+        <record id="action_purchase_order_libre" model="ir.actions.report">
+            <field name="name">Orden de compra Libre</field>
+            <field name="model">purchase.order</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">l10n_ve_account_reports.report_purchase_order_free</field>
+            <field name="report_file">l10n_ve_account_reports.report_purchase_order_free</field>
+            <field name="binding_model_id" ref="purchase.model_purchase_order"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <record id="action_purchase_order_libre" model="ir.actions.report">
+             <field name="paperformat_id" ref="l10n_ve_account_reports.paperformat_purchase_order"/>
+        </record>
+    </data>
+</odoo>

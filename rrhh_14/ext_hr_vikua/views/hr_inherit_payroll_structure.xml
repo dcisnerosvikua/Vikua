@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="hr_payroll_structure_form_inherit" model="ir.ui.view">
+            <field name="name">hr_payroll_structure</field>
+            <field name="model">hr.payroll.structure</field>
+            <field name="inherit_id" ref="hr_payroll.view_hr_employee_grade_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='activo_prestaciones']" position="after">
+                    <field name="campo_sueldo" string="Basado a que sueldo segun contrato?" attrs="{'invisible': [('activo_prestaciones', '!=', True)], 'required':[('activo_prestaciones', '=', True)]}" />
+                </xpath>
+                
+            </field>
+        </record>
+
+    </data>
+</odoo>
