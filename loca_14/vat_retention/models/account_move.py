@@ -72,7 +72,8 @@ class AccountMove(models.Model):
         if self.move_type=="in_invoice" or self.move_type=="in_refund" or self.move_type=="in_receipt":
             tipo_fact="proveedor"
             if self.company_id.confg_ret_proveedores=="c":
-                if self.company_id.partner_id.ret_agent:
+                #if self.company_id.partner_id.ret_agent:
+                if self.partner_id.ret_agent:
                     ban=0
                     ban=self.verifica_exento_iva()
                     if ban>0:
