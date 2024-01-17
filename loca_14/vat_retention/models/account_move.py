@@ -59,6 +59,16 @@ class AccountMove(models.Model):
         # si es agente de retencion
         self.funcion_numeracion_fac()
         #raise UserError(_('tipo fact = %s')%self.type)
+       
+        #La siguiente validacion es para que solo se generen retenciones de IVA a facturas emitidas desde 01-12-2023
+        #ya que desde esa fecha la empresa es agente de retencion.
+        #La solucion no es elegante ni parametrizable, pero es temporal y rapida, solo por eso la hice asi
+        #Carlos Alfonzo
+        #
+        fecha_inicial = datetime.date(2023, 12, 1)
+        #Si se desea agregar alguna otra llamada no relacionada a la retencion de IVA debe ser antes de este if
+        if self.invoice_date < fecha_inicial:
+           return
         if self.move_type=="out_invoice" or self.move_type=="out_refund" or self.move_type=="out_receipt":
             tipo_fact="cliente"
             if self.partner_id.ret_agent:
