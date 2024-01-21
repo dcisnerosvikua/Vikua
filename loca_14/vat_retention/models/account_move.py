@@ -68,30 +68,11 @@ class AccountMove(models.Model):
         #
         fecha_inicial = datetime.date(2023, 12, 1)
         #Si se desea agregar alguna otra llamada no relacionada a la retencion de IVA debe ser antes de este if
-        if self.invoice_date < fecha_inicial:
-           return
+        #if self.invoice_date < fecha_inicial:
+        #   return
         if self.move_type=="out_invoice" or self.move_type=="out_refund" or self.move_type=="out_receipt":
-            tipo_fact="cliente"
-            if self.partner_id.ret_agent:
-                ban=0
-                ban=self.verifica_exento_iva()
-                if ban>0:
-                    self.action_create_vat_retention(tipo_fact)
-                    id_vat_ret=self.vat_ret_id.id
-                    self.actualiza_voucher(id_vat_ret,tipo_fact)
-
-        if self.move_type=="in_invoice" or self.move_type=="in_refund" or self.move_type=="in_receipt":
-            tipo_fact="proveedor"
-            if self.company_id.confg_ret_proveedores=="c":
-                #if self.company_id.partner_id.ret_agent:
-                if self.partner_id.ret_agent:
-                    ban=0
-                    ban=self.verifica_exento_iva()
-                    if ban>0:
-                        self.action_create_vat_retention(tipo_fact)
-                        id_vat_ret=self.vat_ret_id.id
-                        self.actualiza_voucher(id_vat_ret,tipo_fact) #self.asiento_retencion(self.id,id_vat_ret) #funtcion darrell
-            if self.company_id.confg_ret_proveedores=="p":
+            if self.invoice_date >= fecha_inicial:
+                tipo_fact="cliente"
                 if self.partner_id.ret_agent:
                     ban=0
                     ban=self.verifica_exento_iva()
@@ -99,6 +80,27 @@ class AccountMove(models.Model):
                         self.action_create_vat_retention(tipo_fact)
                         id_vat_ret=self.vat_ret_id.id
                         self.actualiza_voucher(id_vat_ret,tipo_fact)
+
+        if self.move_type=="in_invoice" or self.move_type=="in_refund" or self.move_type=="in_receipt":
+            if self.invoice_date >= fecha_inicial:
+                tipo_fact="proveedor"
+                if self.company_id.confg_ret_proveedores=="c":
+                    #if self.company_id.partner_id.ret_agent:
+                    if self.partner_id.ret_agent:
+                        ban=0
+                        ban=self.verifica_exento_iva()
+                        if ban>0:
+                            self.action_create_vat_retention(tipo_fact)
+                            id_vat_ret=self.vat_ret_id.id
+                            self.actualiza_voucher(id_vat_ret,tipo_fact) #self.asiento_retencion(self.id,id_vat_ret) #funtcion darrell
+                if self.company_id.confg_ret_proveedores=="p":
+                    if self.partner_id.ret_agent:
+                        ban=0
+                        ban=self.verifica_exento_iva()
+                        if ban>0:
+                            self.action_create_vat_retention(tipo_fact)
+                            id_vat_ret=self.vat_ret_id.id
+                            self.actualiza_voucher(id_vat_ret,tipo_fact)
 
 
     def funcion_numeracion_fac(self):
