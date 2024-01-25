@@ -5,7 +5,6 @@ from odoo import models, fields, api, _, tools
 from odoo.exceptions import UserError
 import openerp.addons.decimal_precision as dp
 import logging
-_logger = logging.getLogger(__name__)
 
 import io
 from io import BytesIO
@@ -244,11 +243,6 @@ class WizardReport_2(models.TransientModel): # aqui declaro las variables del wi
             ('date_isrl','<=',self.date_to),
             ('state','=','done'),
             ])
-        #_logger.info("\n\n\n retention %s\n\n\n", retention)
-        _logger.info("\n\nISLR report ----------------\n" )
-        _logger.info(self.date_from )
-        _logger.info(self.date_from )
-        _logger.info("\n\n------------------- " )
         for det in cursor_resumen:
             #det2=det.lines_id.search([('code','=',id_code.code)])
             #if det.invoice_id.type=="in_invoice" or det.invoice_id.type=="in_refund" or det.invoice_id.type=="in_recept":
