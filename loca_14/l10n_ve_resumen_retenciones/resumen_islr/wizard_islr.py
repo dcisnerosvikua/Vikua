@@ -5,6 +5,7 @@ from odoo import models, fields, api, _, tools
 from odoo.exceptions import UserError
 import openerp.addons.decimal_precision as dp
 import logging
+_logger = logging.getLogger(__name__)
 
 import io
 from io import BytesIO
@@ -243,23 +244,29 @@ class WizardReport_2(models.TransientModel): # aqui declaro las variables del wi
             ('date_isrl','<=',self.date_to),
             ('state','=','done'),
             ])
+        _logger.info("Reporte de ISLR. Validacion de fechas-----------------------------" )
+        _logger.info( self.date_from )
+        _logger.info( self.date_to )
+        _logger.info("Fechas de items" )
         for det in cursor_resumen:
             #det2=det.lines_id.search([('code','=',id_code.code)])
             #if det.invoice_id.type=="in_invoice" or det.invoice_id.type=="in_refund" or det.invoice_id.type=="in_recept":
             if det.invoice_id.type=="in_invoice" or det.invoice_id.type=="in_refund":
-	            for det_line in det.lines_id:
-	                values={
-	                'fecha_comprobante':det.date_isrl,
-	                'invoice_id':det.invoice_id.id,
-	                'retention_id':det_line.retention_id.id,
-	                'code':det_line.code,
-	                'abono_cta':abs(det.invoice_id.amount_total_signed),
-	                'cant_retencion':det_line.base,
-	                'porcentaje':det_line.cantidad,
-	                'total':det_line.total,
-	                #'id_code':id_code.id,
-	                }
-	                pdf_id = t.create(values)
+                for det_line in det.lines_id:
+                    values={
+                    'fecha_comprobante':det.date_isrl,
+                    'invoice_id':det.invoice_id.id,
+                    'retention_id':det_line.retention_id.id,
+                    'code':det_line.code,
+                    'abono_cta':abs(det.invoice_id.amount_total_signed),
+                    'cant_retencion':det_line.base,
+                    'porcentaje':det_line.cantidad,
+                    'total':det_line.total,
+                    #'id_code':id_code.id,
+                    }
+                    pdf_id = t.create(values)
+                    _logger.info(det.date_isrl)
+        _logger.info("FIN --------------------------------------------------------------" )
         #self.line_people = self.env['resumen.islr.wizard.pdf'].search([])
 
     def arma_tabla_code(self):
