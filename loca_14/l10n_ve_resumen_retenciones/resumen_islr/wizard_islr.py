@@ -331,9 +331,14 @@ class WizardReport_2(models.TransientModel): # aqui declaro las variables del wi
         #pass
         w=self.env['wizard.resumen.islr'].search([('id','!=',self.id)])
         w.unlink()
+        _logger.info("print_resumen_islr #1")
         self.get_invoice()
+        _logger.info("print_resumen_islr #2")
         self.arma_tabla_code()
+        _logger.info("print_resumen_islr #3")
         self.arma_tabla_type_people()
+        _logger.info("print_resumen_islr #4")
         self.line_people = self.env['resumen.islr.wizard.type.people'].search([])
+        _logger.info("print_resumen_islr #5")
         return {'type': 'ir.actions.report','report_name': 'l10n_ve_resumen_retenciones.libro_resumen_islr','report_type':"qweb-pdf"}
 
