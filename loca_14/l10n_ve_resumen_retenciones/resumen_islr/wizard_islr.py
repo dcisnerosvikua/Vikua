@@ -277,8 +277,8 @@ class WizardReport_2(models.TransientModel): # aqui declaro las variables del wi
                     values={
                     'code':det.code,
                     'islr_concept_id':det.islr_concept_id.id,
-                    'line_resumen':self.env['resumen.islr.wizard.pdf'].search([('code','=',det.code)]),
-                    #'line_resumen':self.env['resumen.islr.wizard.pdf'].search(['&', ('code','=',det.code),('retention_id', '!=', False)]),
+                    #'line_resumen':self.env['resumen.islr.wizard.pdf'].search([('code','=',det.code)]),
+                    'line_resumen':self.env['resumen.islr.wizard.pdf'].search(['&', ('code','=',det.code),('retention_id', '!=', False)]),
                     #'id_people':id_people.id,
                     }
                     #search(['&',('marital', '=', 'single'),('gender', '=', 'male')])
