@@ -244,10 +244,6 @@ class WizardReport_2(models.TransientModel): # aqui declaro las variables del wi
             ('date_isrl','<=',self.date_to),
             ('state','=','done'),
             ])
-        _logger.info("Reporte de ISLR. Validacion de fechas-----------------------------" )
-        _logger.info( self.date_from )
-        _logger.info( self.date_to )
-        _logger.info("Fechas de items" )
         for det in cursor_resumen:
             #det2=det.lines_id.search([('code','=',id_code.code)])
             #if det.invoice_id.type=="in_invoice" or det.invoice_id.type=="in_refund" or det.invoice_id.type=="in_recept":
@@ -265,8 +261,6 @@ class WizardReport_2(models.TransientModel): # aqui declaro las variables del wi
                     #'id_code':id_code.id,
                     }
                     pdf_id = t.create(values)
-                    _logger.info(det.date_isrl)
-        _logger.info("FIN --------------------------------------------------------------" )
         #self.line_people = self.env['resumen.islr.wizard.pdf'].search([])
 
     def arma_tabla_code(self):
@@ -283,11 +277,14 @@ class WizardReport_2(models.TransientModel): # aqui declaro las variables del wi
                     values={
                     'code':det.code,
                     'islr_concept_id':det.islr_concept_id.id,
-                    'line_resumen':self.env['resumen.islr.wizard.pdf'].search([('code','=',det.code)]),
+                    #'line_resumen':self.env['resumen.islr.wizard.pdf'].search([('code','=',det.code)]),
+                    'line_resumen':self.env['resumen.islr.wizard.pdf'].search(['&', ('code','=',det.code),('retention_id', '!=', False)]),
                     #'id_people':id_people.id,
                     }
+                    #search(['&',('marital', '=', 'single'),('gender', '=', 'male')])
                     id_code=code.create(values)
                     det_res.id_code=id_code
+
         #raise UserError(_('det_cur.line_code: %s')%det_cur.line_code)
 
     def arma_tabla_type_people(self):
@@ -302,6 +299,7 @@ class WizardReport_2(models.TransientModel): # aqui declaro las variables del wi
                 if aux!=det.people_type:
                     aux=det.people_type
                     valida=people.search([('name','=',det.people_type)])
+                    _logger.info(valida)
                     if not valida:
                         values={
                         'name':det.people_type,
@@ -328,3 +326,4 @@ class WizardReport_2(models.TransientModel): # aqui declaro las variables del wi
         self.arma_tabla_type_people()
         self.line_people = self.env['resumen.islr.wizard.type.people'].search([])
         return {'type': 'ir.actions.report','report_name': 'l10n_ve_resumen_retenciones.libro_resumen_islr','report_type':"qweb-pdf"}
+
