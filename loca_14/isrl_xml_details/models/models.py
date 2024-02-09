@@ -71,6 +71,7 @@ class XmlLines(models.Model):
         else :
             periodo += str(self.date_from.month)
 
+        num_linea = 1
         elemento_1 = ET.Element('RelacionRetencionesISLR',RifAgente=rif,Periodo=periodo)
         for item in self.line_id:
             fecha = ''
@@ -91,13 +92,16 @@ class XmlLines(models.Model):
             else:
                 nro_fact=0
             elemento_hijo_1 = ET.SubElement(elemento_1, 'DetalleRetencion')
-            elemento_hijo_2 = ET.SubElement(elemento_hijo_1, 'RifRetenido').text=self.ajusta_type_doc(item.rif_retenido)
-            elemento_hijo_3 = ET.SubElement(elemento_hijo_1, 'NumeroFactura').text=str(nro_fact) if item.numero_factura else '0'
-            elemento_hijo_4 = ET.SubElement(elemento_hijo_1, 'NumeroControl').text=str(item.numero_control) if  item.numero_control else 'NA'
-            elemento_hijo_5 = ET.SubElement(elemento_hijo_1, 'FechaOperacion').text=str(fecha)
-            elemento_hijo_6 = ET.SubElement(elemento_hijo_1, 'CodigoConcepto').text=str(item.codigo_concepto)
-            elemento_hijo_7 = ET.SubElement(elemento_hijo_1, 'MontoOperacion').text=str(item.monto_operacion)
-            elemento_hijo_8 = ET.SubElement(elemento_hijo_1, 'PorcentajeRetencion').text=str(item.porcentaje_retencion)
+            elemento_hijo_2 = ET.SubElement(elemento_hijo_1, 'ID-Sec').text=str(num_linea)
+            elemento_hijo_3 = ET.SubElement(elemento_hijo_1, 'RifRetenido').text=self.ajusta_type_doc(item.rif_retenido)
+            elemento_hijo_4 = ET.SubElement(elemento_hijo_1, 'NumeroFactura').text=str(nro_fact) if item.numero_factura else '0'
+            elemento_hijo_5 = ET.SubElement(elemento_hijo_1, 'NumeroControl').text=str(item.numero_control) if  item.numero_control else 'NA'
+            elemento_hijo_6 = ET.SubElement(elemento_hijo_1, 'FechaOperacion').text=str(fecha)
+            elemento_hijo_7 = ET.SubElement(elemento_hijo_1, 'CodigoConcepto').text=str(item.codigo_concepto)
+            elemento_hijo_8 = ET.SubElement(elemento_hijo_1, 'MontoOperacion').text=str(item.monto_operacion)
+            elemento_hijo_9 = ET.SubElement(elemento_hijo_1, 'PorcentajeRetencion').text=str(item.porcentaje_retencion)
+
+            num_linea = num_linea + 1
 
         tree = ET.ElementTree(elemento_1)
         tree.write('isrl_odoo.xml', encoding='utf-8',xml_declaration=True) #Habilitar
