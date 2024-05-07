@@ -105,13 +105,18 @@ class AccountMove(models.Model):
 
 
     def funcion_numeracion_fac(self):
+        #Nota: la busqueda parece que tiene un error logico
+        #Interpretacion: Buscar las facturas-Prov que tengan este mismo numero y no sea el mismo ID actual, es decir, otro registro
+        #¿por que es un error? Porque el correlativo puede existir en otro proveedor y eso es valido y quizas lo cuenta como falla
+        #Luego valida: si hay un correlativo en el resultado que contanga un numero de factura, emitir error.
+        #Si el mismo numero de factura lo han registrado otros proveedores dará error y es incorrecto
         if self.move_type=="in_invoice":
-            busca_correlativos = self.env['account.move'].search([('invoice_number','=',self.invoice_number_pro),('id','!=',self.id)])
+            busca_correlativos = self.env['account.move'].search([('invoice_number','=',self.invoice_number_pro),('id','!=',self.id), ('partner_id.id','!=',self.partner_id.id)])
             for det_corr in busca_correlativos:
                 if det_corr.invoice_number:
                     raise UserError(_(' El valor :%s ya se uso en otro documento')%det_corr.invoice_number)
 
-            busca_correlativos2 = self.env['account.move'].search([('invoice_ctrl_number','=',self.invoice_ctrl_number_pro),('id','!=',self.id)])
+            busca_correlativos2 = self.env['account.move'].search([('invoice_ctrl_number','=',self.invoice_ctrl_number_pro),('id','!=',self.id), ('partner_id.id','!=',self.partner_id.id)])
             for det_corr2 in busca_correlativos2:
                 if det_corr2.invoice_ctrl_number:
                     raise UserError(_(' El nro de control :%s ya se uso en otro documento')%det_corr2.invoice_ctrl_number)
