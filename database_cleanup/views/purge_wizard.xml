@@ -13,10 +13,13 @@
                     />
                     <button type="object" name="select_lines" string="Select lines" />
                 </header>
-                <div invisible="purge_line_ids">
+                <div attrs="{'invisible': [('purge_line_ids', '!=', [])]}">
                     Nothing found to clean up.
                 </div>
-                <field name="purge_line_ids" invisible="not purge_line_ids">
+                <field
+                    name="purge_line_ids"
+                    attrs="{'invisible': [('purge_line_ids', '=', [])]}"
+                >
                     <form>
                         <group>
                             <field name="name" />
@@ -28,7 +31,7 @@
                                 name="purge"
                                 class="oe_highlight"
                                 string="Purge"
-                                invisible="purged"
+                                attrs="{'invisible': [('purged', '=', True)]}"
                             />
                         </footer>
                     </form>
@@ -39,7 +42,7 @@
     <record id="tree_purge_line" model="ir.ui.view">
         <field name="model">cleanup.purge.line</field>
         <field name="arch" type="xml">
-            <tree delete="false" create="false">
+            <tree string="Purge models" delete="false" create="false">
                 <field name="name" />
                 <field name="purged" />
                 <button
@@ -47,7 +50,7 @@
                     name="purge"
                     icon="fa-times-circle text-danger"
                     string="Purge this model"
-                    invisible="purged"
+                    attrs="{'invisible': [('purged', '=', True)]}"
                 />
             </tree>
         </field>

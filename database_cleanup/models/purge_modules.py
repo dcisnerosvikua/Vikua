@@ -28,7 +28,7 @@ class IrModelData(models.Model):
                     continue
             if this.model not in self.env:
                 this.unlink()
-        return super()._module_data_uninstall(modules_to_remove)
+        return super(IrModelData, self)._module_data_uninstall(modules_to_remove)
 
 
 class CleanupPurgeLineModule(models.TransientModel):
@@ -50,13 +50,11 @@ class CleanupPurgeLineModule(models.TransientModel):
         if not modules:
             return True
         self.logger.info("Purging modules %s", ", ".join(module_names))
-        installed = modules.filtered(lambda x: x.state in ("installed", "to upgrade"))
-        to_remove = modules - installed
-        to_remove += to_remove.downstream_dependencies()
-        to_remove.write({"state": "to remove"})
-        installed.button_immediate_uninstall()
-        with self.env.registry.cursor() as new_cr:
-            self.env(cr=new_cr)["ir.module.module"].browse(modules.ids).unlink()
+        modules.filtered(
+            lambda x: x.state not in ("uninstallable", "uninstalled")
+        ).button_immediate_uninstall()
+        modules.refresh()
+        modules.unlink()
         return self.write({"purged": True})
 
 
@@ -73,6 +71,13 @@ class CleanupPurgeWizardModule(models.TransientModel):
             [("to_buy", "=", False), ("name", "!=", "studio_customization")]
         ):
             if get_module_path(module.name, display_warning=False):
+                continue
+            if module.state == "uninstalled":
+                self.env["cleanup.purge.line.module"].create(
+                    {
+                        "name": module.name,
+                    }
+                )
                 continue
             res.append((0, 0, {"name": module.name}))
 

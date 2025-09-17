@@ -5,19 +5,21 @@ from psycopg2 import ProgrammingError
 from odoo.tests.common import tagged
 from odoo.tools import mute_logger
 
-from .common import Common, environment
+from .common import Common
 
 
 # Use post_install to get all models loaded more info: odoo/odoo#13458
 @tagged("post_install", "-at_install")
 class TestCleanupPurgeLineTable(Common):
+    def setUp(self):
+        super(TestCleanupPurgeLineTable, self).setUp()
+        # create an orphaned table
+        self.env.cr.execute("create table database_cleanup_test (test int)")
+
     def test_empty_table(self):
-        with environment() as env:
-            # create an orphaned table
-            env.cr.execute("create table database_cleanup_test (test int)")
-            wizard = env["cleanup.purge.wizard.table"].create({})
-            wizard.purge_all()
-            with self.assertRaises(ProgrammingError):
-                with env.registry.cursor() as cr:
-                    with mute_logger("odoo.sql_db"):
-                        cr.execute("select * from database_cleanup_test")
+        wizard = self.env["cleanup.purge.wizard.table"].create({})
+        wizard.purge_all()
+        with self.assertRaises(ProgrammingError):
+            with self.env.registry.cursor() as cr:
+                with mute_logger("odoo.sql_db"):
+                    cr.execute("select * from database_cleanup_test")

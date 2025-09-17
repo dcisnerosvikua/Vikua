@@ -16,8 +16,8 @@ class CleanupPurgeLine(models.AbstractModel):
     _order = "name"
     _description = "Purge Column Abstract Wizard"
 
-    name = fields.Char(readonly=True)
-    purged = fields.Boolean(readonly=True)
+    name = fields.Char("Name", readonly=True)
+    purged = fields.Boolean("Purged", readonly=True)
     wizard_id = fields.Many2one("cleanup.purge.wizard")
 
     logger = logging.getLogger("odoo.addons.database_cleanup")
@@ -25,12 +25,12 @@ class CleanupPurgeLine(models.AbstractModel):
     def purge(self):
         raise NotImplementedError
 
-    @api.model_create_multi
+    @api.model
     def create(self, values):
         # make sure the user trying this is actually supposed to do it
         if self.env.ref("base.group_erp_manager") not in self.env.user.groups_id:
             raise AccessDenied
-        return super().create(values)
+        return super(CleanupPurgeLine, self).create(values)
 
 
 class PurgeWizard(models.AbstractModel):
@@ -41,7 +41,7 @@ class PurgeWizard(models.AbstractModel):
 
     @api.model
     def default_get(self, fields_list):
-        res = super().default_get(fields_list)
+        res = super(PurgeWizard, self).default_get(fields_list)
         if "purge_line_ids" in fields_list:
             res["purge_line_ids"] = self.find()
         return res
@@ -77,15 +77,14 @@ class PurgeWizard(models.AbstractModel):
             "domain": [("wizard_id", "in", self.ids)],
         }
 
-    def _compute_display_name(self):
-        for this in self:
-            this.display_name = self._description
+    def name_get(self):
+        return [(this.id, self._description) for this in self]
 
-    @api.model_create_multi
+    @api.model
     def create(self, values):
         # make sure the user trying this is actually supposed to do it
         if self.env.ref("base.group_erp_manager") not in self.env.user.groups_id:
             raise AccessDenied
-        return super().create(values)
+        return super(PurgeWizard, self).create(values)
 
     purge_line_ids = fields.One2many("cleanup.purge.line", "wizard_id")

@@ -2,14 +2,10 @@
 # Copyright 2021 Camptocamp <https://camptocamp.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 # pylint: disable=consider-merging-classes-inherited
-import logging
-
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 from odoo.addons.base.models.ir_model import MODULE_UNINSTALL_FLAG
-
-_logger = logging.getLogger(__name__)
 
 
 class IrModel(models.Model):
@@ -17,14 +13,14 @@ class IrModel(models.Model):
 
     def _drop_table(self):
         """this function crashes for undefined models"""
-        self = self.filtered(lambda x: x.model in self.env)
-        return super()._drop_table()
+        existing_model_ids = self.filtered(lambda x: x.model in self.env)
+        return super(IrModel, existing_model_ids)._drop_table()
 
     @api.depends()
     def _inherited_models(self):
         """this function crashes for undefined models"""
-        self = self.filtered(lambda x: x.model in self.env)
-        return super()._inherited_models()
+        existing_model_ids = self.filtered(lambda x: x.model in self.env)
+        super(IrModel, existing_model_ids)._inherited_models()
 
 
 class IrModelFields(models.Model):
@@ -32,8 +28,8 @@ class IrModelFields(models.Model):
 
     def _prepare_update(self):
         """this function crashes for undefined models"""
-        self = self.filtered(lambda x: x.model in self.env)
-        return super()._prepare_update()
+        existing = self.filtered(lambda x: x.model in self.env)
+        return super(IrModelFields, existing)._prepare_update()
 
 
 class CleanupPurgeLineModel(models.TransientModel):
@@ -96,9 +92,9 @@ class CleanupPurgeLineModel(models.TransientModel):
                     # cannot be instantiated
                     relation.unlink()
                 except KeyError:
-                    _logger.error("")
+                    pass
                 except AttributeError:
-                    _logger.error("")
+                    pass
             self.env["ir.model.relation"].search(
                 [("model", "=", line.name)]
             ).with_context(**context_flags).unlink()

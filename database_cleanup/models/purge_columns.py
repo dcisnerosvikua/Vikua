@@ -68,8 +68,7 @@ class CleanupPurgeWizardColumn(models.TransientModel):
     # Format: {table: [fields]}
     blacklist = {
         "wkf_instance": ["uid"],  # lp:1277899
-        "res_users": ["password", "password_crypt", "totp_secret"],
-        "res_partner": ["signup_token"],
+        "res_users": ["password", "password_crypt"],
     }
 
     @api.model
@@ -98,7 +97,7 @@ class CleanupPurgeWizardColumn(models.TransientModel):
             "AND a.attname NOT IN %s",
             (model_pools[0]._table, tuple(columns)),
         )
-        return [column for (column,) in self.env.cr.fetchall()]
+        return [column for column, in self.env.cr.fetchall()]
 
     @api.model
     def find(self):
